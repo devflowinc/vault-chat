@@ -12,10 +12,8 @@ export default function DebateHome() {
   return (
     <div class="relative min-h-screen w-screen overflow-x-hidden bg-neutral-50 dark:bg-black">
       <Navbar sidebarOpen={sidebarOpen} setSideBarOpen={setSideBarOpen} />
-      <div class="flex">
-        <Sidebar sidebarOpen={sidebarOpen} topics={topics} />
-        <Layout />
-      </div>
+      <Sidebar sidebarOpen={sidebarOpen} topics={topics} />
+      <Layout />
     </div>
   );
 }

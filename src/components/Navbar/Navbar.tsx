@@ -13,7 +13,7 @@ export const Navbar = (props: NavbarProps) => {
         onClick={toggle}
         class="text-5xl text-gray-400 dark:text-white"
       />
-      <img src="/public/Logo.png" alt="" />
+      <img src="/Logo.png" alt="" />
       <p />
     </div>
   );
