@@ -4,7 +4,7 @@ import { Navbar } from "~/components/Navbar/Navbar";
 import { TopicProps, Sidebar } from "~/components/Navbar/Sidebar";
 
 export default function DebateHome() {
-  const [topics, setTopics] = createSignal<TopicProps[]>([
+  const [topics] = createSignal<TopicProps[]>([
     { name: "Topic 1", resolved: false },
     { name: "Topic 2", resolved: true },
   ]);

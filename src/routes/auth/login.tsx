@@ -1,0 +1,88 @@
+import { createSignal } from "solid-js";
+import { A } from "solid-start";
+import { isActixApiDefaultError } from "~/types/actix-api";
+
+const login = () => {
+  const [getEmail, setEmail] = createSignal("");
+  const [getPassword, setPassword] = createSignal("");
+  const [getErrorMessage, setErrorMessage] = createSignal("");
+
+  const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
+
+  return (
+    <div class="flex h-screen w-screen items-center justify-center bg-neutral-50 px-10 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50">
+      <div class="max-w-80 flex w-full flex-col space-y-2 ">
+        <div class="text-center text-2xl font-bold">
+          <span class="py-2">Login to Arguflow AI Coach</span>
+        </div>
+        <div class="text-center text-red-500">{getErrorMessage()}</div>
+        <form class="flex flex-col space-y-4">
+          <div class="flex flex-col space-y-2">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="rounded border border-neutral-300 p-2 text-neutral-900 dark:border-neutral-700"
+              value={getEmail()}
+              onInput={(e) => setEmail(e.currentTarget.value)}
+            />
+          </div>
+          <div class="flex flex-col space-y-2">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="rounded border border-neutral-300 p-2 text-neutral-900 dark:border-neutral-700"
+              value={getPassword()}
+              onInput={(e) => setPassword(e.currentTarget.value)}
+            />
+          </div>
+          <div class="w-full">
+            <button
+              type="submit"
+              class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+              onClick={(e) => {
+                e.preventDefault();
+                void fetch(`${api_host}/auth`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "include",
+                  body: JSON.stringify({
+                    email: getEmail(),
+                    password: getPassword(),
+                  }),
+                }).then((response) => {
+                  if (!response.ok) {
+                    void response.json().then((data) => {
+                      if (isActixApiDefaultError(data)) {
+                        setErrorMessage(data.message);
+                      }
+                    });
+                    return;
+                  }
+                  window.location.href = "/debate";
+                });
+              }}
+            >
+              Login
+            </button>
+          </div>
+        </form>
+        <div class="flex w-full justify-center">
+          <span class="mt-2">
+            Don't have an account? {` `}
+            <A href="/auth/register" class="text-blue-500 hover:text-blue-600">
+              Register
+            </A>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default login;
