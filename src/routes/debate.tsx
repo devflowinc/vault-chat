@@ -1,4 +1,4 @@
-import { Popover } from "solid-headless";
+import { Popover, PopoverPanel } from "solid-headless";
 import { createSignal, onMount } from "solid-js";
 import Layout from "~/components/Layouts/MainLayout";
 import { Navbar } from "~/components/Navbar/Navbar";
@@ -7,33 +7,17 @@ import {
   Sidebar,
   SidebarWithPopover,
 } from "~/components/Navbar/Sidebar";
+import { Message } from "~/types/messages";
 
 export default function DebateHome() {
-  const [topics] = createSignal<TopicProps[]>([
-    { name: "Topic 1", resolved: false },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-  ]);
-  const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
+  const [selectedTopic, setSelectedTopic] = createSignal<TopicProps | null>(
+    null,
+  );
 
+  const [topics, setTopics] = createSignal<TopicProps[]>([]);
+  const [messages, setMessages] = createSignal<Message[]>([]);
+
+  const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   const [screenWidth, setScreenWidth] = createSignal<number>(window.innerWidth);
 
   onMount(() => {
@@ -51,14 +35,16 @@ export default function DebateHome() {
               <Sidebar sidebarOpen={sidebarOpen} topics={topics} />
             )}
             {screenWidth() <= 1024 && (
-              <SidebarWithPopover sidebarOpen={isOpen} topics={topics} />
+              <PopoverPanel>
+                <Sidebar sidebarOpen={isOpen} topics={topics} />
+              </PopoverPanel>
             )}
             <div class="flex w-full flex-col">
               <Navbar
                 sidebarOpen={sidebarOpen}
                 setSideBarOpen={setSideBarOpen}
               />
-              <Layout />
+              <Layout messages={messages} />
             </div>
           </div>
         );
