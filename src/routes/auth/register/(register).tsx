@@ -11,7 +11,7 @@ const Register = () => {
 
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-neutral-50 px-10 dark:bg-neutral-800">
-      <div class="max-w-80 flex w-full flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
+      <div class="flex w-full max-w-sm flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
         <Show when={!getEmailSent()}>
           <div class="text-center text-2xl font-bold">
             <span class="py-2">Register for Arguflow AI Coach</span>
@@ -74,7 +74,7 @@ const Register = () => {
           </div>
         </Show>
         <Show when={getEmailSent()}>
-          <div class="max-w-80 flex w-full flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
+          <div class="flex w-full max-w-sm flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
             <div class="text-center text-2xl font-bold">
               <span class="py-2">Check your email to finish registration</span>
             </div>
