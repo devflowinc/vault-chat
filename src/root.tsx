@@ -11,6 +11,7 @@ import {
   Scripts,
   Title,
 } from "solid-start";
+import UserStoreContext from "./components/contexts/UserStoreContext";
 import "./root.css";
 
 export default function Root() {
@@ -32,9 +33,11 @@ export default function Root() {
       <Body>
         <Suspense>
           <ErrorBoundary>
-            <Routes>
-              <FileRoutes />
-            </Routes>
+            <UserStoreContext>
+              <Routes>
+                <FileRoutes />
+              </Routes>
+            </UserStoreContext>
           </ErrorBoundary>
         </Suspense>
         <Scripts />
