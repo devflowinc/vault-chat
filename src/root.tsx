@@ -14,8 +14,16 @@ import {
 import "./root.css";
 
 export default function Root() {
+  let theme = "";
+  if (
+    localStorage.theme === "dark" ||
+    (!("theme" in localStorage) &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches)
+  )
+    theme = "dark";
+
   return (
-    <Html lang="en">
+    <Html lang="en" class={theme}>
       <Head>
         <Title>Devils Advocate</Title>
         <Meta charset="utf-8" />

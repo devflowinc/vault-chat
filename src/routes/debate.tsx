@@ -29,7 +29,7 @@ export default function DebateHome() {
   ]);
   const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   return (
-    <div class="relative flex min-h-screen w-screen flex-row overflow-x-hidden bg-neutral-50 dark:bg-black">
+    <div class="relative flex min-h-screen w-screen flex-row overflow-x-hidden bg-neutral-50 dark:bg-neutral-800">
       <Sidebar sidebarOpen={sidebarOpen} topics={topics} />
       <div class="flex w-full flex-col">
         <Navbar sidebarOpen={sidebarOpen} setSideBarOpen={setSideBarOpen} />

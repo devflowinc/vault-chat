@@ -25,6 +25,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-solid": "^0.12.1",
     "prettier-plugin-tailwindcss": "^0.2.7",
+    "solid-headless": "^0.13.1",
     "solid-icons": "^1.0.4",
     "solid-js": "^1.7.2",
     "solid-start": "^0.2.26",
