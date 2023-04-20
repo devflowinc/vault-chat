@@ -4,7 +4,7 @@ import { AiOutlineCheck } from "solid-icons/ai";
 import { BiRegularLogOut } from "solid-icons/bi";
 import { Accessor, For, Show } from "solid-js";
 import { FiHelpCircle } from "solid-icons/fi";
-import { PopoverButton, PopoverPanel } from "solid-headless";
+import { PopoverButton } from "solid-headless";
 
 export interface TopicProps {
   name: string;
@@ -15,14 +15,6 @@ export interface SidebarProps {
   sidebarOpen: Accessor<boolean>;
   topics: Accessor<TopicProps[]>;
 }
-
-export const SidebarWithPopover = (props: SidebarProps) => {
-  return (
-    <PopoverPanel>
-      <Sidebar sidebarOpen={props.sidebarOpen} topics={props.topics} />
-    </PopoverPanel>
-  );
-};
 
 export const Sidebar = (props: SidebarProps) => {
   const api_host = import.meta.env.VITE_API_HOST as unknown as string;
@@ -42,7 +34,8 @@ export const Sidebar = (props: SidebarProps) => {
               {(topic) => (
                 <PopoverButton
                   as="div"
-                  class="flex items-center space-x-4 border-y border-neutral-400 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-800">
+                  class="flex items-center space-x-4 border-y border-neutral-400 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-800"
+                >
                   <div class="text-3xl">
                     {topic.resolved ? <AiOutlineCheck /> : <TiTimes />}
                   </div>
