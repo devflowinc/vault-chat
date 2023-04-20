@@ -1,4 +1,5 @@
 import { BiRegularMenuAltLeft } from "solid-icons/bi";
+import ThemeModeController from "./ThemeModeController";
 
 export interface NavbarProps {
   sidebarOpen: () => boolean;
@@ -8,13 +9,10 @@ export interface NavbarProps {
 export const Navbar = (props: NavbarProps) => {
   const toggle = () => props.setSideBarOpen(!props.sidebarOpen());
   return (
-    <div class="flex w-full items-center justify-between border-b border-gray-600 py-2">
-      <BiRegularMenuAltLeft
-        onClick={toggle}
-        class="text-5xl text-gray-400 dark:text-white"
-      />
+    <div class="flex w-full items-center justify-between border-b border-neutral-600 px-5 py-2 text-neutral-200 dark:text-neutral-700">
+      <BiRegularMenuAltLeft onClick={toggle} class="text-5xl" />
       <img src="/Logo.png" alt="" />
-      <p />
+      <ThemeModeController />
     </div>
   );
 };
