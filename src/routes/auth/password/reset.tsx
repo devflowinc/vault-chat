@@ -2,7 +2,7 @@ import { Show, createSignal } from "solid-js";
 import { A } from "solid-start";
 import { isActixApiDefaultError } from "~/types/actix-api";
 
-const Register = () => {
+const ResetPassword = () => {
   const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
 
   const [getErrorMessage, setErrorMessage] = createSignal("");
@@ -14,7 +14,7 @@ const Register = () => {
       <div class="max-w-80 flex w-full flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
         <Show when={!getEmailSent()}>
           <div class="text-center text-2xl font-bold">
-            <span class="py-2">Register for Arguflow AI Coach</span>
+            <span class="py-2">Reset Your Arguflow AI Coach Password</span>
           </div>
           <div class="text-center text-red-500">{getErrorMessage()}</div>
           <form class="flex flex-col space-y-4">
@@ -24,7 +24,7 @@ const Register = () => {
                 type="email"
                 name="email"
                 id="email"
-                class="rounded border border-neutral-300 p-2 text-neutral-900 dark:border-neutral-700 "
+                class="rounded border border-neutral-300 p-2 text-neutral-900 dark:border-neutral-700"
                 onInput={(e) => {
                   setEmail(e.currentTarget.value);
                 }}
@@ -39,14 +39,15 @@ const Register = () => {
                   e.preventDefault();
                   setErrorMessage("");
                   const email = getEmail();
-                  void fetch(`${api_host}/invitation`, {
-                    method: "POST",
+                  if (!email) {
+                    setErrorMessage("Email is required");
+                    return;
+                  }
+                  void fetch(`${api_host}/password/${email}`, {
+                    method: "GET",
                     headers: {
                       "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                      email: email,
-                    }),
                   }).then((response) => {
                     if (!response.ok) {
                       void response.json().then((data) => {
@@ -60,14 +61,17 @@ const Register = () => {
                   });
                 }}
               >
-                Send Email to Finish Registration
+                Send Email to Reset Password
               </button>
             </div>
           </form>
           <div class="flex w-full justify-center">
             <span class="mt-2">
               Already have an account? {` `}
-              <A href="/auth/login" class="text-blue-500 hover:text-blue-600">
+              <A
+                href="/auth/login"
+                class="text-blue-500 underline hover:text-blue-600"
+              >
                 Login
               </A>
             </span>
@@ -76,18 +80,12 @@ const Register = () => {
         <Show when={getEmailSent()}>
           <div class="max-w-80 flex w-full flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
             <div class="text-center text-2xl font-bold">
-              <span class="py-2">Check your email to finish registration</span>
-            </div>
-            <div class="flex w-full justify-center">
-              <span class="mt-2">
-                Already have an account? {` `}
-                <A
-                  href="/auth/login"
-                  class="text-blue-500 underline hover:text-blue-600"
-                >
-                  Login
-                </A>
+              <span class="py-2">
+                Check your email to finish resetting your password
               </span>
+            </div>
+            <div class="text-center">
+              Your password reset link will expire in 5 minutes
             </div>
           </div>
         </Show>
@@ -96,4 +94,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default ResetPassword;

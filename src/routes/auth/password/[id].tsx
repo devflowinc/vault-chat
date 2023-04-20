@@ -1,41 +1,26 @@
-import { Show, createSignal } from "solid-js";
+import { createSignal } from "solid-js";
+import { useParams } from "solid-start";
 import { A } from "solid-start";
 import { isActixApiDefaultError } from "~/types/actix-api";
 
-const login = () => {
-  const [getEmail, setEmail] = createSignal("");
-  const [getPassword, setPassword] = createSignal("");
-  const [getErrorMessage, setErrorMessage] = createSignal("");
-
+const FinishPasswordReset = () => {
   const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
 
+  const params = useParams();
+  const [getErrorMessage, setErrorMessage] = createSignal("");
+  const [getPassword, setPassword] = createSignal("");
+  const [getPasswordConfirmation, setPasswordConfirmation] = createSignal("");
+
   return (
-    <div class="flex h-screen w-screen items-center justify-center bg-neutral-50 px-10 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50">
-      <div class="max-w-80 flex w-full flex-col space-y-2 ">
+    <div class="flex h-screen w-screen items-center justify-center bg-neutral-50 px-10 dark:bg-neutral-800">
+      <div class="max-w-80 flex w-full flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
         <div class="text-center text-2xl font-bold">
-          <span class="py-2">Login to Arguflow AI Coach</span>
+          <span class="py-2">
+            Finish Resetting Your Password for Arguflow AI Coach
+          </span>
         </div>
         <div class="text-center text-red-500">{getErrorMessage()}</div>
-        <Show when={getErrorMessage().toLowerCase().includes("incorrect")}>
-          <div class="text-center text-sm ">
-            Trouble signing in?{` `}
-            <A class="text-blue-500 underline" href="/auth/password/reset">
-              Reset your password
-            </A>
-          </div>
-        </Show>
         <form class="flex flex-col space-y-4">
-          <div class="flex flex-col space-y-2">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              class="rounded border border-neutral-300 p-2 text-neutral-900 dark:border-neutral-700"
-              value={getEmail()}
-              onInput={(e) => setEmail(e.currentTarget.value)}
-            />
-          </div>
           <div class="flex flex-col space-y-2">
             <label for="password">Password</label>
             <input
@@ -47,21 +32,32 @@ const login = () => {
               onInput={(e) => setPassword(e.currentTarget.value)}
             />
           </div>
+          <div class="flex flex-col space-y-2">
+            <label for="password">Verify Password</label>
+            <input
+              type="password"
+              name="password_confirmation"
+              id="password_confirmation"
+              class="rounded border border-neutral-300 p-2 text-neutral-900 dark:border-neutral-700"
+              value={getPasswordConfirmation()}
+              onInput={(e) => setPasswordConfirmation(e.currentTarget.value)}
+            />
+          </div>
           <div class="w-full">
             <button
               type="submit"
               class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
               onClick={(e) => {
                 e.preventDefault();
-                void fetch(`${api_host}/auth`, {
+                void fetch(`${api_host}/password`, {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
                   },
-                  credentials: "include",
                   body: JSON.stringify({
-                    email: getEmail(),
+                    password_reset_id: params.id,
                     password: getPassword(),
+                    password_confirmation: getPasswordConfirmation(),
                   }),
                 }).then((response) => {
                   if (!response.ok) {
@@ -72,22 +68,22 @@ const login = () => {
                     });
                     return;
                   }
-                  window.location.href = "/debate";
+                  window.location.href = "/auth/login";
                 });
               }}
             >
-              Login
+              Finish Registration
             </button>
           </div>
         </form>
         <div class="flex w-full justify-center">
           <span class="mt-2">
-            Don't have an account? {` `}
+            Already have an account? {` `}
             <A
-              href="/auth/register"
+              href="/auth/login"
               class="text-blue-500 underline hover:text-blue-600"
             >
-              Register
+              Login
             </A>
           </span>
         </div>
@@ -96,4 +92,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default FinishPasswordReset;

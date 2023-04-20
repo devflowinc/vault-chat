@@ -76,7 +76,10 @@ const SetPassword = () => {
         <div class="flex w-full justify-center">
           <span class="mt-2">
             Already have an account? {` `}
-            <A href="/auth/login" class="text-blue-500 hover:text-blue-600">
+            <A
+              href="/auth/login"
+              class="text-blue-500 underline hover:text-blue-600"
+            >
               Login
             </A>
           </span>

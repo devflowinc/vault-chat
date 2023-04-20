@@ -8,12 +8,14 @@ export default function DebateHome() {
     { name: "Topic 1", resolved: false },
     { name: "Topic 2", resolved: true },
   ]);
-  const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(false);
+  const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   return (
-    <div class="relative min-h-screen w-screen overflow-x-hidden bg-neutral-50 dark:bg-black">
-      <Navbar sidebarOpen={sidebarOpen} setSideBarOpen={setSideBarOpen} />
+    <div class="relative flex min-h-screen w-screen flex-row overflow-x-hidden bg-neutral-50 dark:bg-black">
       <Sidebar sidebarOpen={sidebarOpen} topics={topics} />
-      <Layout />
+      <div class="flex w-full flex-col">
+        <Navbar sidebarOpen={sidebarOpen} setSideBarOpen={setSideBarOpen} />
+        <Layout />
+      </div>
     </div>
   );
 }

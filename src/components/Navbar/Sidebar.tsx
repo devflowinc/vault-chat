@@ -38,9 +38,9 @@ export const Sidebar = (props: SidebarProps) => {
 
   return (
     <Show when={props.sidebarOpen()}>
-      <div class="h-screen w-2/12 rounded-md bg-neutral-50">
+      <div class="h-screen w-2/12 bg-neutral-50">
         <div class="flex h-full flex-col">
-          <div class="flex items-center space-x-4 rounded-tr-md border-b-2 bg-gray-400 px-3 py-1">
+          <div class="flex items-center space-x-4 border-b-2 bg-gray-400 px-3 py-1">
             <div class="text-3xl">
               <ImStack />
             </div>
@@ -63,12 +63,28 @@ export const Sidebar = (props: SidebarProps) => {
             </div>
             <div>Help</div>
           </div>
-          <div class="flex items-center space-x-4 rounded-br-md border-b-2 bg-gray-400 px-3 py-1">
+          <button
+            class="flex items-center space-x-4 rounded-br-md border-b-2 bg-gray-400 px-3 py-1"
+            onClick={() => {
+              void fetch(`${api_host}/auth`, {
+                method: "DELETE",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+              }).then((response) => {
+                if (!response.ok) {
+                  return;
+                }
+                window.location.href = "/auth/login";
+              });
+            }}
+          >
             <div class="text-3xl">
               <BiRegularLogOut />
             </div>
-            <div>Log out</div>
-          </div>
+            <div>Logout</div>
+          </button>
         </div>
       </div>
     </Show>
