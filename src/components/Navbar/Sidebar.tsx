@@ -20,9 +20,9 @@ export const Sidebar = (props: SidebarProps) => {
 
   return (
     <Show when={props.sidebarOpen()}>
-      <div class="h-screen w-2/12 rounded-br-full rounded-tr-full bg-neutral-50 dark:bg-neutral-800 dark:text-gray-50">
+      <div class="absolute h-screen w-7/12 rounded-br-md rounded-tr-md bg-neutral-50 dark:bg-neutral-800 dark:text-gray-50 md:relative lg:w-2/12">
         <div class="flex h-full flex-col">
-          <div class="flex items-center space-x-4 border-y border-neutral-400 bg-neutral-200 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-700">
+          <div class="flex items-center space-x-4 rounded-tr-md border-y border-neutral-400 bg-neutral-200 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-700">
             <div class="text-3xl">
               <ImStack />
             </div>
