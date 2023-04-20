@@ -46,7 +46,7 @@ export const Sidebar = (props: SidebarProps) => {
             </div>
             <div>New Topic</div>
           </div>
-          <div class="overflow-y-scroll">
+          <div class="overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400">
             <For each={props.topics()}>
               {(topic) => (
                 <div class="flex items-center space-x-4 border-y px-3 py-1">

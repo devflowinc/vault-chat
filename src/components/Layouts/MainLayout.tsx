@@ -78,7 +78,7 @@ const Layout = () => {
 
   return (
     <div class="flex h-full min-h-[90vh] flex-col justify-between">
-      <div class="flex max-h-[80vh] flex-col items-center overflow-y-scroll">
+      <div class="flex max-h-[80vh] flex-col items-center overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400">
         <For each={messages()}>
           {(message) => {
             return (
