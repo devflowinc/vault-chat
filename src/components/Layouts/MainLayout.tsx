@@ -20,11 +20,65 @@ const Layout = () => {
       content:
         "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
     },
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+      feedback:
+        "The step that contains lighting is the rendering step of the 3D animation process.",
+    },
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+    },
+
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+      feedback:
+        "The step that contains lighting is the rendering step of the 3D animation process.",
+    },
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+    },
+
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+      feedback:
+        "The step that contains lighting is the rendering step of the 3D animation process.",
+    },
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+    },
+
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+      feedback:
+        "The step that contains lighting is the rendering step of the 3D animation process.",
+    },
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+    },
+
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+      feedback:
+        "The step that contains lighting is the rendering step of the 3D animation process.",
+    },
+    {
+      content:
+        "The step that contains lighting is the rendering step of the 3D animation process. In the rendering step, the animation is rendered into final images or video using a rendering software, such as Renderman or Arnold.",
+    },
   ]);
 
   return (
     <div class="flex h-full min-h-[90vh] flex-col justify-between">
-      <div class="flex h-full  flex-col items-center">
+      <div class="flex max-h-[80vh] flex-col items-center overflow-y-scroll scrollbar-thin scrollbar-track-gray-200 scrollbar-thumb-gray-400">
         <For each={messages()}>
           {(message) => {
             return (

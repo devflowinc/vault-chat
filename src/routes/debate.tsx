@@ -7,6 +7,25 @@ export default function DebateHome() {
   const [topics] = createSignal<TopicProps[]>([
     { name: "Topic 1", resolved: false },
     { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
+    { name: "Topic 2", resolved: true },
   ]);
   const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   return (
