@@ -33,7 +33,10 @@ export const SidebarWithPopover = (props: SidebarProps) => {
             <div class="overflow-y-scroll scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
               <For each={props.topics()}>
                 {(topic) => (
-                  <PopoverButton as="div" class="flex items-center space-x-4 border-y border-neutral-400 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-800">
+                  <PopoverButton
+                    as="div"
+                    class="flex items-center space-x-4 border-y border-neutral-400 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-800"
+                  >
                     <div class="text-3xl">
                       {topic.resolved ? <AiOutlineCheck /> : <TiTimes />}
                     </div>

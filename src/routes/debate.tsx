@@ -7,33 +7,17 @@ import {
   Sidebar,
   SidebarWithPopover,
 } from "~/components/Navbar/Sidebar";
+import { Message } from "~/types/messages";
 
 export default function DebateHome() {
-  const [topics] = createSignal<TopicProps[]>([
-    { name: "Topic 1", resolved: false },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-    { name: "Topic 2", resolved: true },
-  ]);
-  const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
+  const [selectedTopic, setSelectedTopic] = createSignal<TopicProps | null>(
+    null,
+  );
 
+  const [topics, setTopics] = createSignal<TopicProps[]>([]);
+  const [messages, setMessages] = createSignal<Message[]>([]);
+
+  const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   const [screenWidth, setScreenWidth] = createSignal<number>(window.innerWidth);
 
   onMount(() => {
@@ -58,7 +42,7 @@ export default function DebateHome() {
                 sidebarOpen={sidebarOpen}
                 setSideBarOpen={setSideBarOpen}
               />
-              <Layout />
+              <Layout messages={messages} />
             </div>
           </div>
         );
