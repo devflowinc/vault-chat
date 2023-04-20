@@ -13,7 +13,6 @@ import { CgScreen } from "solid-icons/cg";
 export const setThemeMode = (mode: "light" | "dark") => {
   const oppositeMode = mode === "light" ? "dark" : "light";
   document.documentElement.classList.remove(oppositeMode);
-  console.log(document.documentElement.classList);
   window.localStorage.setItem("theme", mode);
   document.documentElement.classList.add(mode);
 };
