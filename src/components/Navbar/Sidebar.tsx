@@ -2,7 +2,7 @@ import { ImStack } from "solid-icons/im";
 import { TiTimes } from "solid-icons/ti";
 import { AiOutlineCheck } from "solid-icons/ai";
 import { BiRegularLogOut } from "solid-icons/bi";
-import { Accessor, For, Show, createEffect } from "solid-js";
+import { Accessor, For, Show } from "solid-js";
 import { FiHelpCircle } from "solid-icons/fi";
 
 export interface TopicProps {
@@ -17,24 +17,6 @@ export interface SidebarProps {
 
 export const Sidebar = (props: SidebarProps) => {
   const api_host = import.meta.env.VITE_API_HOST as unknown as string;
-
-  createEffect(() => {
-    void fetch(`${api_host}/auth`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    }).then((response) => {
-      if (!response.ok) {
-        window.location.href = "/auth/login";
-        return;
-      }
-      void response.json().then((data) => {
-        console.log("user response", data);
-      });
-    });
-  });
 
   return (
     <Show when={props.sidebarOpen()}>
