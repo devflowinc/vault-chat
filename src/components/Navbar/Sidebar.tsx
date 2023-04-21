@@ -41,6 +41,9 @@ export const Sidebar = (props: SidebarProps) => {
       if (oldIndex != editingText && editingText) {
         editingText.focus();
         editingText.selectionStart = editingText.selectionEnd;
+        editingText.addEventListener("focusout", () => {
+          setEditingIndex(-1);
+        });
       }
     }, 100);
     return editingIndex();
