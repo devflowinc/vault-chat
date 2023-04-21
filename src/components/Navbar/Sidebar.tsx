@@ -2,15 +2,14 @@ import { ImStack } from "solid-icons/im";
 import { TiTimes } from "solid-icons/ti";
 import { AiOutlineCheck } from "solid-icons/ai";
 import { BiRegularLogOut } from "solid-icons/bi";
-import { Accessor, For, Show } from "solid-js";
+import { Accessor, For, Resource, Show } from "solid-js";
 import { FiHelpCircle } from "solid-icons/fi";
 import { PopoverButton } from "solid-headless";
 import type { Topic } from "~/types/topics";
 
 export interface SidebarProps {
   sidebarOpen: Accessor<boolean>;
-  topics: Accessor<Topic[]>;
-  isCreatingTopic: Accessor<boolean>;
+  topics: Resource<Topic[]>;
   setIsCreatingTopic: (value: boolean) => void;
 }
 

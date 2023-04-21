@@ -1,6 +1,5 @@
 import { Popover, PopoverPanel } from "solid-headless";
-import { createSignal, onMount } from "solid-js";
-import { warnOnce } from "solid-start/session/sessions";
+import { createResource, createSignal, onMount } from "solid-js";
 import { NewTopicForm } from "~/components/Forms/NewTopicForm";
 import Layout from "~/components/Layouts/MainLayout";
 import { Navbar } from "~/components/Navbar/Navbar";
@@ -10,11 +9,8 @@ import { Message } from "~/types/messages";
 import { Topic } from "~/types/topics";
 
 export default function DebateHome() {
-  const [selectedTopic, setSelectedTopic] = createSignal<TopicProps | null>(
-    null,
-  );
+  const [selectedTopic, setSelectedTopic] = createSignal<Topic | null>(null);
 
-  const [topics, setTopics] = createSignal<Topic[]>([]);
   const [messages, setMessages] = createSignal<Message[]>([]);
 
   const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
@@ -23,32 +19,32 @@ export default function DebateHome() {
   const [isCreatingTopic, setIsCreatingTopic] = createSignal<boolean>(false);
 
   const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
+
   onMount(() => {
     window.addEventListener("resize", () => {
       setScreenWidth(window.innerWidth);
     });
+  });
 
-    void fetch(`${api_host}/topic`, {
+  const [topics, { refetch }] = createResource(async (): Promise<Topic[]> => {
+    const response = await fetch(`${api_host}/topic`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
       credentials: "include",
-    }).then((response) => {
-      if (!response.ok) {
-        return;
-      }
-      void response.json().then((data) => {
-        if (data !== null && typeof data === "object" && Array.isArray(data)) {
-          console.log(data);
-          const topics = data.filter((topic: unknown) => {
-            return isTopic(topic);
-          });
-          console.log(topics);
-          setTopics(topics);
-        }
-      });
     });
+    if (!response.ok) return [];
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const data = await response.json();
+
+    if (data !== null && typeof data === "object" && Array.isArray(data)) {
+      return data.filter((topic: unknown) => {
+        return isTopic(topic);
+      }) as Topic[];
+    }
+    return [];
   });
 
   return (
@@ -78,7 +74,10 @@ export default function DebateHome() {
                 setSideBarOpen={setSideBarOpen}
               />
               {isCreatingTopic() && (
-                <NewTopicForm setIsCreatingTopic={setIsCreatingTopic} />
+                <NewTopicForm
+                  refetchTopics={refetch}
+                  setIsCreatingTopic={setIsCreatingTopic}
+                />
               )}
               {!isCreatingTopic() && <Layout messages={messages} />}
             </div>

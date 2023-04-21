@@ -1,6 +1,6 @@
-import { Accessor, createEffect, JSX } from "solid-js";
+import { createEffect, JSX } from "solid-js";
 import { createFocusRing } from "@solid-aria/focus";
-import { AriaSwitchProps, createSwitch } from "@solid-aria/switch";
+import { createSwitch } from "@solid-aria/switch";
 import { createVisuallyHidden } from "@solid-aria/visually-hidden";
 
 export interface AfSwitchProps {

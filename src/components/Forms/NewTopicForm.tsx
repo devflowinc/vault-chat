@@ -1,9 +1,11 @@
-import { createEffect, createSignal, Switch } from "solid-js";
+import { createSignal } from "solid-js";
 import { isActixApiDefaultError } from "~/types/actix-api";
+import type { Topic } from "~/types/topics";
 import { AfSwitch } from "../Atoms/AfSwitch";
 
 export interface NewTopicFormProps {
   setIsCreatingTopic: (value: boolean) => void;
+  refetchTopics: () => Promise<Topic[] | undefined>;
 }
 
 export const NewTopicForm = (props: NewTopicFormProps) => {
@@ -13,6 +15,19 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
   const [errorMessage, setErrorMessage] = createSignal("");
 
   const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
+
+  const processResponse = (response: Response) => {
+    if (!response.ok) {
+      void response.json().then((data) => {
+        if (isActixApiDefaultError(data)) {
+          setErrorMessage(data.message);
+        }
+      });
+      return;
+    }
+    props.setIsCreatingTopic(false);
+    void props.refetchTopics();
+  };
 
   return (
     <div class="flex min-h-[90vh] flex-col items-center justify-center bg-neutral-50 px-10 align-middle text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50">
@@ -49,16 +64,7 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
                 resolution: topicName(),
                 side: side(),
               }),
-            }).then((response) => {
-              if (!response.ok) {
-                void response.json().then((data) => {
-                  if (isActixApiDefaultError(data)) {
-                    setErrorMessage(data.message);
-                  }
-                });
-                return;
-              }
-            });
+            }).then(processResponse);
           }}
         >
           Submit
