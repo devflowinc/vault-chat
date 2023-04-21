@@ -25,6 +25,8 @@ export interface SidebarProps {
     info?: unknown,
   ) => Topic[] | Promise<Topic[] | undefined> | null | undefined;
   setIsCreatingTopic: (value: boolean) => void;
+  currentTopic: Accessor<Topic | undefined>;
+  setCurrentTopic: (topic: Topic | undefined) => void;
 }
 
 export const Sidebar = (props: SidebarProps) => {
@@ -42,7 +44,9 @@ export const Sidebar = (props: SidebarProps) => {
         editingText.focus();
         editingText.selectionStart = editingText.selectionEnd;
         editingText.addEventListener("focusout", () => {
-          setEditingIndex(-1);
+          setTimeout(() => {
+            setEditingIndex(-1);
+          }, 100);
         });
       }
     }, 100);
@@ -116,12 +120,23 @@ export const Sidebar = (props: SidebarProps) => {
                 <PopoverButton
                   disabled={editingIndex() === index()}
                   as="div"
-                  class="flex items-center space-x-4 border-y border-neutral-400 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-800"
+                  classList={{
+                    "flex items-center space-x-4 border-y border-neutral-400 px-3 py-1 dark:border-y-neutral-500 dark:bg-neutral-800":
+                      true,
+                    "border-l-4 border-l-green-500 dark:border-l-green-500":
+                      props.currentTopic() === topic,
+                  }}
+                  onClick={() => {
+                    console.log("set current topic");
+                    const topics = props.topics();
+                    const topic = topics ? topics[index()] : undefined;
+                    props.setCurrentTopic(topic);
+                  }}
                 >
                   <div class="text-3xl">
                     {topic.side ? <BiRegularCheck /> : <BiRegularX />}
                   </div>
-                  {editingIndex() === index() ? (
+                  {editingIndex() === index() && (
                     <div class="flex flex-1 items-center justify-between">
                       <input
                         ref={editingText}
@@ -154,18 +169,21 @@ export const Sidebar = (props: SidebarProps) => {
                         <BiRegularX />
                       </button>
                     </div>
-                  ) : (
+                  )}
+                  {editingIndex() !== index() && (
                     <div class="flex flex-1">
                       <p class="text-left line-clamp-1">{topic.resolution}</p>
                       <div class="flex-1" />
-                      <div class="text-lg">
-                        <AiOutlineEdit
-                          onClick={() => {
-                            setEditingIndex(index());
-                            setEditingTopic(topic.resolution);
-                          }}
-                        />
-                      </div>
+                      {props.currentTopic() == topic && (
+                        <div class="text-lg">
+                          <AiOutlineEdit
+                            onClick={() => {
+                              setEditingIndex(index());
+                              setEditingTopic(topic.resolution);
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   )}
                 </PopoverButton>

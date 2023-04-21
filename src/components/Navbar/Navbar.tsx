@@ -1,10 +1,12 @@
 import { PopoverButton } from "solid-headless";
 import { BiRegularMenuAltLeft } from "solid-icons/bi";
+import { Topic } from "~/types/topics";
 import ThemeModeController from "./ThemeModeController";
 
 export interface NavbarProps {
   sidebarOpen: () => boolean;
   setSideBarOpen: (isOpen: boolean) => void;
+  selectedTopic: () => Topic | undefined;
 }
 
 export const Navbar = (props: NavbarProps) => {
@@ -14,7 +16,16 @@ export const Navbar = (props: NavbarProps) => {
       <PopoverButton>
         <BiRegularMenuAltLeft onClick={toggle} class="text-5xl" />
       </PopoverButton>
-      <img src="/Logo.png" alt="" />
+      <div class="flex-1" />
+      <div class="rounded-xl bg-neutral-200 px-8 py-2 text-neutral-400 dark:bg-neutral-700 dark:text-neutral-500">
+        {props.selectedTopic() ? (
+          <p>{props.selectedTopic()?.resolution}</p>
+        ) : (
+          <p>Arguflow</p>
+        )}
+      </div>
+      <div class="flex-1" />
+      <img src="/public/logo_transparent.svg" alt="" class="h-16" />;
       <ThemeModeController />
     </div>
   );

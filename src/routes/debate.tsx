@@ -9,7 +9,7 @@ import { Message } from "~/types/messages";
 import { Topic } from "~/types/topics";
 
 export default function DebateHome() {
-  const [selectedTopic, setSelectedTopic] = createSignal<Topic | null>(null);
+  const [selectedTopic, setSelectedTopic] = createSignal<Topic | undefined>(undefined);
 
   const [messages, setMessages] = createSignal<Message[]>([]);
 
@@ -54,6 +54,8 @@ export default function DebateHome() {
           <div class="relative flex min-h-screen w-screen flex-row overflow-x-hidden bg-neutral-50 dark:bg-neutral-800">
             {screenWidth() > 1024 && (
               <Sidebar
+                currentTopic={selectedTopic}
+                setCurrentTopic={setSelectedTopic}
                 refetchTopics={refetch}
                 sidebarOpen={sidebarOpen}
                 topics={topics}
@@ -63,6 +65,8 @@ export default function DebateHome() {
             {screenWidth() <= 1024 && (
               <PopoverPanel>
                 <Sidebar
+                  currentTopic={selectedTopic}
+                  setCurrentTopic={setSelectedTopic}
                   refetchTopics={refetch}
                   sidebarOpen={isOpen}
                   topics={topics}
@@ -72,6 +76,7 @@ export default function DebateHome() {
             )}
             <div class="flex w-full flex-col">
               <Navbar
+                selectedTopic={selectedTopic}
                 sidebarOpen={sidebarOpen}
                 setSideBarOpen={setSideBarOpen}
               />
