@@ -16,7 +16,6 @@ export const isActixApiDefaultError = (
 };
 
 export const isTopic = (data: unknown): data is Topic => {
-
   return (
     typeof data === "object" &&
     data !== null &&
