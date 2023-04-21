@@ -5,7 +5,9 @@ import { AfSwitch } from "../Atoms/AfSwitch";
 
 export interface NewTopicFormProps {
   setIsCreatingTopic: (value: boolean) => void;
-  refetchTopics: () => Promise<Topic[] | undefined>;
+  refetchTopics: (
+    info?: unknown,
+  ) => Topic[] | Promise<Topic[] | undefined> | null | undefined;
 }
 
 export const NewTopicForm = (props: NewTopicFormProps) => {

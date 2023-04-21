@@ -54,6 +54,7 @@ export default function DebateHome() {
           <div class="relative flex min-h-screen w-screen flex-row overflow-x-hidden bg-neutral-50 dark:bg-neutral-800">
             {screenWidth() > 1024 && (
               <Sidebar
+                refetchTopics={refetch}
                 sidebarOpen={sidebarOpen}
                 topics={topics}
                 setIsCreatingTopic={setIsCreatingTopic}
@@ -62,6 +63,7 @@ export default function DebateHome() {
             {screenWidth() <= 1024 && (
               <PopoverPanel>
                 <Sidebar
+                  refetchTopics={refetch}
                   sidebarOpen={isOpen}
                   topics={topics}
                   setIsCreatingTopic={setIsCreatingTopic}
