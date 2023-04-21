@@ -1258,6 +1258,96 @@
   resolved "https://registry.yarnpkg.com/@sideway/pinpoint/-/pinpoint-2.0.0.tgz#cff8ffadc372ad29fd3f78277aeb29e632cc70df"
   integrity sha512-RNiOoTPkptFtSVzQevY/yWtZwf/RxyVnPy/OcA9HBM3MlGDnBEYL5B41H0MTn0Uec8Hi+2qUtTfG2WWZBmMejQ==
 
+"@solid-aria/focus@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@solid-aria/focus/-/focus-0.1.4.tgz#2a8ebb25b2ad5709aedb8cc741841a1b5e080cd4"
+  integrity sha512-yX/BbN97s7ascNJu0yB+p1bx48U0NOOWw7+TYlGcAfFGc2HMNpIxG5OdhWGUoz8D9Tp5ELEgWgN3d4dAf7Hk9Q==
+  dependencies:
+    "@solid-aria/interactions" "^0.1.4"
+    "@solid-aria/types" "^0.1.3"
+    "@solid-aria/utils" "^0.2.0"
+    "@solid-primitives/props" "^2.1.7"
+    "@solid-primitives/utils" "^2.1.0"
+
+"@solid-aria/interactions@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@solid-aria/interactions/-/interactions-0.1.4.tgz#7ee16d7cfc06e3dea901a1138223b3908b51935a"
+  integrity sha512-gVJWJTX51mZfURoak39mxCo/vUQl8UInctJBlT2nIc3VQrTPL4ekOV6czrvTffpduoWgXeuf61+Dabc7b920lQ==
+  dependencies:
+    "@solid-aria/types" "^0.1.3"
+    "@solid-aria/utils" "^0.2.0"
+    "@solid-primitives/platform" "^0.0.100"
+    "@solid-primitives/props" "^2.1.7"
+    "@solid-primitives/utils" "^2.1.0"
+
+"@solid-aria/switch@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@solid-aria/switch/-/switch-0.1.2.tgz#a0e3b26cbcbfc8c95f22e3dd67563c10706fe614"
+  integrity sha512-vrGxPwHIJP0oa9Zb1xjNDxa+xE+/nuv/J3oKSo4mrwDe7KxQgJrqAscVPyF0L8YycX9eeCJEWhx2ZVfC7I8HFA==
+  dependencies:
+    "@solid-aria/toggle" "^0.1.2"
+    "@solid-aria/types" "^0.1.2"
+    "@solid-primitives/utils" "^2.1.0"
+
+"@solid-aria/toggle@^0.1.2":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@solid-aria/toggle/-/toggle-0.1.3.tgz#56d5798f6929b32186c07871b533f11b2b3c4ca9"
+  integrity sha512-ZVRhY+Te8XBFFcumuu2J92LBntlmV6ss/6fNkDfhvr4LV42VB1goRZvPJk8rqakyR3JkQBTnQuxt7idrqqaxgA==
+  dependencies:
+    "@solid-aria/focus" "^0.1.4"
+    "@solid-aria/interactions" "^0.1.4"
+    "@solid-aria/types" "^0.1.2"
+    "@solid-aria/utils" "^0.2.0"
+    "@solid-primitives/props" "^2.1.7"
+    "@solid-primitives/utils" "^2.1.0"
+
+"@solid-aria/types@^0.1.2", "@solid-aria/types@^0.1.3", "@solid-aria/types@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@solid-aria/types/-/types-0.1.4.tgz#630f4d69429d20636dcdfa738de68c8c7843d041"
+  integrity sha512-CxVXiZPE+nfD7wr7+6xtY3IrCTyAfL3zW4tH4NtsxlqBoz10tLFRCsTqeyl6OWMDhwABIaSdeHPKXVnKsKErcQ==
+  dependencies:
+    "@solid-primitives/utils" "^2.1.0"
+
+"@solid-aria/utils@^0.2.0":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@solid-aria/utils/-/utils-0.2.1.tgz#4399ae79023521ecad6f7f35c9bbc198f239e474"
+  integrity sha512-zZgPpdg7azQUKE2jDUnCmzopN8CFdeKKcFTIv9ICrc0afS1qUR8ScywWBF/AwNBgGYhneBr7xEOwAHxe+zUcHQ==
+  dependencies:
+    "@solid-aria/types" "^0.1.4"
+    "@solid-primitives/utils" "^2.1.0"
+
+"@solid-aria/visually-hidden@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@solid-aria/visually-hidden/-/visually-hidden-0.1.3.tgz#aa966b00b308a0c494a2c06205087029e0ee1caf"
+  integrity sha512-flMFjefduI4K4jlsN1EGQhf1lMW5ypYy1CjNHoT2n5IVEIkg29viAf2kFX/nX/DmA2FCTuPhrRMijBxVYuG4Qw==
+  dependencies:
+    "@solid-aria/interactions" "^0.1.4"
+    "@solid-aria/types" "^0.1.2"
+    "@solid-aria/utils" "^0.2.0"
+    "@solid-primitives/utils" "^2.1.0"
+
+"@solid-primitives/platform@^0.0.100":
+  version "0.0.100"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/platform/-/platform-0.0.100.tgz#f41d7082e1f9591b9f3ed62d0b0e744dd07c2328"
+  integrity sha512-TMGeDtjA8b7xlUQGq3QhdR8SSa49bvqhFJ0iD+iy4fsnEHr9xA5hIDyBX/ntmz70SbOVyz+z9IdXwBnqurr4bQ==
+
+"@solid-primitives/props@^2.1.7":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/props/-/props-2.2.2.tgz#fe58739eb7a7ed67358a483b52059119f6524b64"
+  integrity sha512-vjRRoi/z3S2ylIJKCs+mN07oxDmt2S9gPCbTqkEx8jYHnvzocpt34UQdglLoSklTE6jI37JhW3g/Cs8Qr/peHg==
+  dependencies:
+    "@solid-primitives/utils" "^3.0.2"
+
+"@solid-primitives/utils@^2.1.0":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/utils/-/utils-2.2.1.tgz#7df54fb4802ea5988cc881f6ee3c4d27bff0c6f6"
+  integrity sha512-vaBO3MGOpjzitbSAVuJkYZnzNPRl6sRrw2do390DEBbfeqMfPpW4fAEb5/tI4b5T13V1xAY+giHoxqvVg2SRhQ==
+
+"@solid-primitives/utils@^3.0.2":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@solid-primitives/utils/-/utils-3.1.0.tgz#52edf36dabe62eba94f8356c3b9b788234d088a8"
+  integrity sha512-/rerChcwgFtHEgVCCBY7BXGHh7a83HcIAzR8QhXJ789geIVbBs2YxHF4UUZlG7ec00NKSfvO3+sQquN/xKQLMw==
+
 "@solidjs/meta@^0.28.2":
   version "0.28.4"
   resolved "https://registry.yarnpkg.com/@solidjs/meta/-/meta-0.28.4.tgz#80f9d10661e289ef780b8920a33f494211199f04"
@@ -1267,6 +1357,11 @@
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/@solidjs/router/-/router-0.8.2.tgz#3dd82fd052cb8654a2948989ed3e17cf6b25b04d"
   integrity sha512-gUKW+LZqxtX6y/Aw6JKyy4gQ9E7dLqp513oB9pSYJR1HM5c56Pf7eijzyXX+b3WuXig18Cxqah4tMtF0YGu80w==
+
+"@tailwindcss/line-clamp@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@tailwindcss/line-clamp/-/line-clamp-0.4.4.tgz#767cf8e5d528a5d90c9740ca66eb079f5e87d423"
+  integrity sha512-5U6SY5z8N42VtrCrKlsTAA35gy2VSyYtHWCsg1H87NU1SXnEfekTVlrga9fzUDrrHcGi2Lb5KenUWb4lRQT5/g==
 
 "@types/babel__core@^7.1.20":
   version "7.20.0"
