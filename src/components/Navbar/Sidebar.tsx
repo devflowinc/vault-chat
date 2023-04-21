@@ -4,6 +4,7 @@ import {
   BiRegularHelpCircle,
   BiRegularLayerPlus,
   BiRegularLogOut,
+  BiRegularTrash,
   BiRegularX,
 } from "solid-icons/bi";
 import {
@@ -82,6 +83,24 @@ export const Sidebar = (props: SidebarProps) => {
 
     setEditingIndex(-1);
     void props.refetchTopics();
+  };
+
+  const deleteSelected = async () => {
+    const res = await fetch(`${api_host}/topic`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        topic_id: props.currentTopic()?.id,
+      }),
+    });
+
+    if (res.ok) {
+      props.setCurrentTopic(undefined);
+      void props.refetchTopics();
+    }
   };
 
   const logout = () => {
@@ -180,6 +199,15 @@ export const Sidebar = (props: SidebarProps) => {
                             onClick={() => {
                               setEditingIndex(index());
                               setEditingTopic(topic.resolution);
+                            }}
+                          />
+                        </div>
+                      )}
+                      {props.currentTopic() == topic && (
+                        <div class="text-lg">
+                          <BiRegularTrash
+                            onClick={() => {
+                              deleteSelected();
                             }}
                           />
                         </div>
