@@ -1,19 +1,19 @@
 import {
   BiRegularCheck,
+  BiRegularEditAlt,
+  BiRegularHelpCircle,
   BiRegularLayerPlus,
   BiRegularLogOut,
   BiRegularX,
 } from "solid-icons/bi";
 import {
   Accessor,
-  createComputed,
   createEffect,
   createSignal,
   For,
   Resource,
   Show,
 } from "solid-js";
-import { FiHelpCircle } from "solid-icons/fi";
 import { PopoverButton } from "solid-headless";
 import type { Topic } from "~/types/topics";
 import { AiOutlineEdit } from "solid-icons/ai";
@@ -176,7 +176,7 @@ export const Sidebar = (props: SidebarProps) => {
                       <div class="flex-1" />
                       {props.currentTopic() == topic && (
                         <div class="text-lg">
-                          <AiOutlineEdit
+                          <BiRegularEditAlt
                             onClick={() => {
                               setEditingIndex(index());
                               setEditingTopic(topic.resolution);
@@ -193,7 +193,7 @@ export const Sidebar = (props: SidebarProps) => {
           <div class="flex-1" />
           <PopoverButton class="flex items-center space-x-4 border-y border-neutral-400 bg-neutral-200 px-3 py-1 dark:border-neutral-500  dark:bg-neutral-700">
             <div class="text-3xl">
-              <FiHelpCircle />
+              <BiRegularHelpCircle />
             </div>
             <div>Help</div>
           </PopoverButton>
