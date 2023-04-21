@@ -14,6 +14,8 @@ export interface TopicProps {
 export interface SidebarProps {
   sidebarOpen: Accessor<boolean>;
   topics: Accessor<TopicProps[]>;
+  isCreatingTopic: Accessor<boolean>;
+  setIsCreatingTopic: (value: boolean) => void;
 }
 
 export const Sidebar = (props: SidebarProps) => {
@@ -23,7 +25,11 @@ export const Sidebar = (props: SidebarProps) => {
     <Show when={props.sidebarOpen()}>
       <div class="absolute h-screen w-7/12 rounded-br-md rounded-tr-md bg-neutral-50 dark:bg-neutral-800 dark:text-gray-50 md:relative lg:w-2/12">
         <div class="flex h-full flex-col">
-          <PopoverButton class="flex items-center space-x-4 rounded-tr-md border-y border-neutral-400 bg-neutral-200 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-700">
+          <PopoverButton
+            onClick={() => {
+              props.setIsCreatingTopic(true);
+            }}
+            class="flex items-center space-x-4 rounded-tr-md border-y border-neutral-400 bg-neutral-200 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-700">
             <div class="text-3xl">
               <ImStack />
             </div>

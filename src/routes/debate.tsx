@@ -1,12 +1,9 @@
 import { Popover, PopoverPanel } from "solid-headless";
 import { createSignal, onMount } from "solid-js";
+import { NewTopicForm } from "~/components/Forms/NewTopicForm";
 import Layout from "~/components/Layouts/MainLayout";
 import { Navbar } from "~/components/Navbar/Navbar";
-import {
-  TopicProps,
-  Sidebar,
-  SidebarWithPopover,
-} from "~/components/Navbar/Sidebar";
+import { TopicProps, Sidebar } from "~/components/Navbar/Sidebar";
 import { Message } from "~/types/messages";
 
 export default function DebateHome() {
@@ -20,6 +17,8 @@ export default function DebateHome() {
   const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   const [screenWidth, setScreenWidth] = createSignal<number>(window.innerWidth);
 
+  const [isCreatingTopic, setIsCreatingTopic] = createSignal<boolean>(false);
+
   onMount(() => {
     window.addEventListener("resize", () => {
       setScreenWidth(window.innerWidth);
@@ -32,11 +31,19 @@ export default function DebateHome() {
         return (
           <div class="relative flex min-h-screen w-screen flex-row overflow-x-hidden bg-neutral-50 dark:bg-neutral-800">
             {screenWidth() > 1024 && (
-              <Sidebar sidebarOpen={sidebarOpen} topics={topics} />
+              <Sidebar
+                sidebarOpen={sidebarOpen}
+                topics={topics}
+                setIsCreatingTopic={setIsCreatingTopic}
+              />
             )}
             {screenWidth() <= 1024 && (
               <PopoverPanel>
-                <Sidebar sidebarOpen={isOpen} topics={topics} />
+                <Sidebar
+                  sidebarOpen={isOpen}
+                  topics={topics}
+                  setIsCreatingTopic={setIsCreatingTopic}
+                />
               </PopoverPanel>
             )}
             <div class="flex w-full flex-col">
@@ -44,7 +51,10 @@ export default function DebateHome() {
                 sidebarOpen={sidebarOpen}
                 setSideBarOpen={setSideBarOpen}
               />
-              <Layout messages={messages} />
+              {isCreatingTopic() && (
+                <NewTopicForm setIsCreatingTopic={setIsCreatingTopic} />
+              )}
+              {!isCreatingTopic() && <Layout messages={messages} />}
             </div>
           </div>
         );
