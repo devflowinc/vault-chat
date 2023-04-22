@@ -3,6 +3,7 @@ import { BiRegularChat } from "solid-icons/bi";
 import { FiRefreshCcw } from "solid-icons/fi";
 import { AiOutlineUpload } from "solid-icons/ai";
 import type { Message } from "~/types/messages";
+import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 
 interface LayoutProps {
   messages: Accessor<Message[]>;
@@ -56,15 +57,19 @@ const Layout = (props: LayoutProps) => {
           </button>
         )}
       </div>
-      <div class="mb-5 flex w-full space-x-4 px-4">
-        <input
-          class="h-12 w-full rounded-xl bg-neutral-200 p-4 text-neutral-400 dark:bg-neutral-700 dark:text-neutral-500"
-          type="text"
-          placeholder="Start your argument"
-        />
-        <button class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-200 text-3xl text-white dark:bg-neutral-700 dark:text-neutral-800">
-          <AiOutlineUpload />
-        </button>
+
+      <div class="mb-5 space-y-5 px-4">
+        <OnScreenThemeModeController />
+        <div class="flex w-full space-x-4">
+          <input
+            class="h-12 w-full rounded-xl bg-neutral-200 p-4 text-neutral-400 dark:bg-neutral-700 dark:text-neutral-500"
+            type="text"
+            placeholder="Start your argument"
+          />
+          <button class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-200 text-3xl text-white dark:bg-neutral-700 dark:text-neutral-800">
+            <AiOutlineUpload />
+          </button>
+        </div>
       </div>
     </div>
   );

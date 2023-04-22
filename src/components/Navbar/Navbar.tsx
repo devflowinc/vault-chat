@@ -26,7 +26,6 @@ export const Navbar = (props: NavbarProps) => {
       </div>
       <div class="flex-1" />
       <img src="/public/logo_transparent.svg" alt="" class="h-16" />;
-      <ThemeModeController />
     </div>
   );
 };
