@@ -1,18 +1,16 @@
 import { Popover, Transition } from "solid-headless";
-import { Show, createEffect, createResource, createSignal } from "solid-js";
+import { Show, createResource, createSignal } from "solid-js";
 import { NewTopicForm } from "~/components/Forms/NewTopicForm";
 import Layout from "~/components/Layouts/MainLayout";
 import { Navbar } from "~/components/Navbar/Navbar";
 import { Sidebar } from "~/components/Navbar/Sidebar";
 import { isTopic } from "~/types/actix-api";
-import { Message } from "~/types/messages";
 import { Topic } from "~/types/topics";
 
 export default function DebateHome() {
   const [selectedTopic, setSelectedTopic] = createSignal<Topic | undefined>(
     undefined,
   );
-  const [messages, setMessages] = createSignal<Message[]>([]);
   const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   const [isCreatingTopic, setIsCreatingTopic] = createSignal<boolean>(false);
   const [loadingTopic, setLoadingTopic] = createSignal<boolean>(false);
@@ -110,7 +108,7 @@ export default function DebateHome() {
                   setSideBarOpen={setSideBarOpen}
                 />
                 <div class="flex h-full flex-col justify-end">
-                  <Layout messages={messages} />
+                  <Layout selectedTopic={selectedTopic} />
                 </div>
               </Transition>
             </Show>
