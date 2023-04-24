@@ -1,9 +1,7 @@
 import { Accessor, For } from "solid-js";
-import { BiRegularChat } from "solid-icons/bi";
+import { BiRegularChat, BiRegularPlusCircle } from "solid-icons/bi";
 import { FiRefreshCcw } from "solid-icons/fi";
-import { AiOutlineUpload } from "solid-icons/ai";
 import type { Message } from "~/types/messages";
-import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 
 interface LayoutProps {
   messages: Accessor<Message[]>;
@@ -11,8 +9,8 @@ interface LayoutProps {
 
 const Layout = (props: LayoutProps) => {
   return (
-    <div class="flex h-full min-h-[90vh] flex-col justify-between">
-      <div class="flex max-h-[80vh] flex-col items-center overflow-y-scroll scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
+    <div class="flex flex-col justify-between">
+      <div class="flex flex-col items-center overflow-y-scroll scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
         <For each={props.messages()}>
           {(message) => {
             return (
@@ -59,17 +57,21 @@ const Layout = (props: LayoutProps) => {
       </div>
 
       <div class="mb-5 space-y-5 px-4">
-        <OnScreenThemeModeController />
-        <div class="flex w-full space-x-4">
+        <form class="flex w-full space-x-4">
           <input
             class="h-12 w-full rounded-xl bg-neutral-200 p-4 text-neutral-400 dark:bg-neutral-700 dark:text-neutral-500"
             type="text"
-            placeholder="Start your argument"
+            placeholder="Write your argument"
           />
-          <button class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-200 text-3xl text-white dark:bg-neutral-700 dark:text-neutral-800">
-            <AiOutlineUpload />
+          <button
+            class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-200 text-3xl text-neutral-800 dark:bg-neutral-700 dark:text-white"
+            onClick={(e) => {
+              e.preventDefault();
+            }}
+          >
+            <BiRegularPlusCircle />
           </button>
-        </div>
+        </form>
       </div>
     </div>
   );

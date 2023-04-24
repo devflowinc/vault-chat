@@ -1,13 +1,14 @@
-import { createSignal } from "solid-js";
+import { Resource, Show, createSignal } from "solid-js";
 import { isActixApiDefaultError } from "~/types/actix-api";
 import type { Topic } from "~/types/topics";
 import { AfSwitch } from "../Atoms/AfSwitch";
 
 export interface NewTopicFormProps {
+  onSuccessfulTopicCreation: () => void;
   setIsCreatingTopic: (value: boolean) => void;
-  refetchTopics: (
-    info?: unknown,
-  ) => Topic[] | Promise<Topic[] | undefined> | null | undefined;
+  selectedTopic: () => Topic | undefined;
+  setCurrentTopic: (topic: Topic | undefined) => void;
+  topics: Resource<Topic[]>;
 }
 
 export const NewTopicForm = (props: NewTopicFormProps) => {
@@ -27,14 +28,15 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
       });
       return;
     }
-    props.setIsCreatingTopic(false);
-    void props.refetchTopics();
+    props.onSuccessfulTopicCreation();
   };
 
   return (
-    <div class="flex min-h-[90vh] flex-col items-center justify-center bg-neutral-50 px-10 align-middle text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50">
-      <form class="flex flex-col space-y-4">
-        <p class="text-2xl">Create New Topic</p>
+    <div class="flex w-full flex-col px-10 align-middle text-neutral-900 dark:text-neutral-50">
+      <form class="flex w-full flex-col space-y-4">
+        <p class="w-full text-center text-2xl font-semibold">
+          Create New Topic
+        </p>
         <div class="text-center text-red-500">{errorMessage()}</div>
         <label for="topicName"> Topic Name</label>
         <input
@@ -45,41 +47,43 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
           value={topicName()}
           onInput={(e) => setTopicName(e.currentTarget.value)}
         />
-
-        <label for="side">Side</label>
-        <AfSwitch setIsOn={setSide} />
+        <div class="flex flex-col">
+          <label for="side">The Side You Want to Argue</label>
+          <AfSwitch setIsOn={setSide} />
+        </div>
+        <div class="flex w-full space-x-2">
+          <button
+            type="submit"
+            class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+            onClick={(e) => {
+              e.preventDefault();
+              void fetch(`${api_host}/topic`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify({
+                  resolution: topicName(),
+                  side: side(),
+                }),
+              }).then(processResponse);
+            }}
+          >
+            Submit
+          </button>
+          <Show when={props.selectedTopic()}>
+            <button
+              class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+              onClick={() => {
+                props.setIsCreatingTopic(false);
+              }}
+            >
+              Cancel
+            </button>
+          </Show>
+        </div>
       </form>
-
-      <div class="flex space-x-2">
-        <button
-          type="submit"
-          class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
-          onClick={(e) => {
-            e.preventDefault();
-            void fetch(`${api_host}/topic`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-              body: JSON.stringify({
-                resolution: topicName(),
-                side: side(),
-              }),
-            }).then(processResponse);
-          }}
-        >
-          Submit
-        </button>
-        <button
-          class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
-          onClick={() => {
-            props.setIsCreatingTopic(false);
-          }}
-        >
-          Cancel
-        </button>
-      </div>
     </div>
   );
 };

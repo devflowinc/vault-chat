@@ -1,23 +1,15 @@
 import {
   BiRegularCheck,
   BiRegularEditAlt,
-  BiRegularHelpCircle,
-  BiRegularLayerPlus,
   BiRegularLogOut,
+  BiRegularPlus,
   BiRegularTrash,
   BiRegularX,
 } from "solid-icons/bi";
-import {
-  Accessor,
-  createEffect,
-  createSignal,
-  For,
-  Resource,
-  Show,
-} from "solid-js";
+import { Accessor, createSignal, For, Resource } from "solid-js";
 import { PopoverButton } from "solid-headless";
 import type { Topic } from "~/types/topics";
-import { AiOutlineEdit } from "solid-icons/ai";
+import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 
 export interface SidebarProps {
   sidebarOpen: Accessor<boolean>;
@@ -35,24 +27,6 @@ export const Sidebar = (props: SidebarProps) => {
 
   const [editingIndex, setEditingIndex] = createSignal(-1);
   const [editingTopic, setEditingTopic] = createSignal("");
-
-  // eslint-disable-next-line prefer-const
-  let editingText: HTMLInputElement | undefined = undefined;
-
-  createEffect((oldIndex) => {
-    setTimeout(() => {
-      if (oldIndex != editingText && editingText) {
-        editingText.focus();
-        editingText.selectionStart = editingText.selectionEnd;
-        editingText.addEventListener("focusout", () => {
-          setTimeout(() => {
-            setEditingIndex(-1);
-          }, 100);
-        });
-      }
-    }, 100);
-    return editingIndex();
-  }, -1);
 
   const submitEditText = async () => {
     const topics = props.topics();
@@ -119,82 +93,83 @@ export const Sidebar = (props: SidebarProps) => {
   };
 
   return (
-    <Show when={props.sidebarOpen()}>
-      <div class="absolute h-screen w-7/12 rounded-br-md rounded-tr-md bg-neutral-50 dark:bg-neutral-800 dark:text-gray-50 md:relative lg:w-2/12">
-        <div class="flex h-full flex-col">
+    <div class="absolute flex h-screen w-screen flex-row  dark:text-gray-50 md:relative md:block md:w-full">
+      <div class="flex h-full w-2/3 flex-col bg-neutral-50 dark:bg-neutral-800 md:w-full">
+        <div class="flex w-full px-4 py-2 ">
           <PopoverButton
             onClick={() => {
               props.setIsCreatingTopic(true);
+              props.setCurrentTopic(undefined);
             }}
-            class="flex items-center space-x-4 rounded-tr-md border-y border-neutral-400 bg-neutral-200 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-700"
+            class="flex w-full flex-row items-center rounded-md border border-neutral-500 px-3 py-1 hover:bg-neutral-200  dark:border-neutral-400 dark:hover:bg-neutral-700"
           >
-            <div class="text-3xl">
-              <BiRegularLayerPlus />
-            </div>
-            <div>New Topic</div>
+            <button class="flex flex-row items-center space-x-2">
+              <span class="text-xl">
+                <BiRegularPlus />
+              </span>
+              <span>New Topic</span>
+            </button>
           </PopoverButton>
-          <PopoverButton class="overflow-y-scroll scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
-            <For each={props.topics()}>
-              {(topic, index) => (
-                <PopoverButton
-                  disabled={editingIndex() === index()}
-                  as="div"
-                  classList={{
-                    "flex items-center space-x-4 border-y border-neutral-400 px-3 py-1 dark:border-y-neutral-500 dark:bg-neutral-800":
-                      true,
-                    "border-l-4 border-l-green-500 dark:border-l-green-500":
-                      props.currentTopic() === topic,
-                  }}
-                  onClick={() => {
-                    console.log("set current topic");
-                    const topics = props.topics();
-                    const topic = topics ? topics[index()] : undefined;
-                    props.setCurrentTopic(topic);
-                  }}
-                >
-                  <div class="text-3xl">
-                    {topic.side ? <BiRegularCheck /> : <BiRegularX />}
-                  </div>
-                  {editingIndex() === index() && (
-                    <div class="flex flex-1 items-center justify-between">
-                      <input
-                        ref={editingText}
-                        value={editingTopic()}
-                        onInput={(e) => {
-                          setEditingTopic(e.currentTarget.value);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            void submitEditText().then();
-                          }
-                        }}
-                        class="w-full bg-neutral-50 dark:bg-neutral-800 "
-                      />
-                      <div class="mx-1" />
+        </div>
+        <div class="flex w-full flex-col space-y-2 overflow-y-auto px-2 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
+          <For each={props.topics()}>
+            {(topic, index) => (
+              <button
+                classList={{
+                  "flex items-center space-x-4 py-2 w-full rounded-md": true,
+                  "bg-neutral-200 dark:bg-neutral-700":
+                    props.currentTopic() === topic,
+                }}
+                onClick={() => {
+                  const topics = props.topics();
+                  const topic = topics ? topics[index()] : undefined;
+                  props.setCurrentTopic(topic);
+                  topic && props.setIsCreatingTopic(false);
+                }}
+              >
+                {editingIndex() === index() && (
+                  <div class="flex flex-1 items-center justify-between px-2">
+                    <input
+                      value={editingTopic()}
+                      onInput={(e) => {
+                        setEditingTopic(e.currentTarget.value);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          void submitEditText().then();
+                        }
+                      }}
+                      class="w-full rounded-md bg-neutral-50 px-2 py-1 dark:bg-neutral-800"
+                    />
+
+                    <div class="flex flex-row space-x-1 pl-2 text-2xl ">
                       <button
                         onClick={() => {
                           void submitEditText().then();
                         }}
+                        class="hover:text-green-500"
                       >
                         <BiRegularCheck />
                       </button>
-                      <div class="ml-1" />
                       <button
                         onClick={(e) => {
                           e.preventDefault();
                           setEditingIndex(-1);
                         }}
+                        class="hover:text-red-500"
                       >
                         <BiRegularX />
                       </button>
                     </div>
-                  )}
-                  {editingIndex() !== index() && (
-                    <div class="flex flex-1">
-                      <p class="text-left line-clamp-1">{topic.resolution}</p>
-                      <div class="flex-1" />
+                  </div>
+                )}
+                {editingIndex() !== index() && (
+                  <div class="flex flex-1 px-3">
+                    <p class="text-left line-clamp-1">{topic.resolution}</p>
+                    <div class="flex-1" />
+                    <div class="flex flex-row items-center space-x-2">
                       {props.currentTopic() == topic && (
-                        <div class="text-lg">
+                        <div class="text-lg hover:text-purple-500">
                           <BiRegularEditAlt
                             onClick={() => {
                               setEditingIndex(index());
@@ -204,38 +179,42 @@ export const Sidebar = (props: SidebarProps) => {
                         </div>
                       )}
                       {props.currentTopic() == topic && (
-                        <div class="text-lg">
+                        <div class="text-lg hover:text-purple-500">
                           <BiRegularTrash
                             onClick={() => {
-                              deleteSelected();
+                              void deleteSelected();
                             }}
                           />
                         </div>
                       )}
                     </div>
-                  )}
-                </PopoverButton>
-              )}
-            </For>
-          </PopoverButton>
-          <div class="flex-1" />
-          <PopoverButton class="flex items-center space-x-4 border-y border-neutral-400 bg-neutral-200 px-3 py-1 dark:border-neutral-500  dark:bg-neutral-700">
-            <div class="text-3xl">
-              <BiRegularHelpCircle />
-            </div>
-            <div>Help</div>
-          </PopoverButton>
-          <PopoverButton
-            class="flex items-center space-x-4 rounded-br-md border-y border-neutral-400 bg-neutral-200 px-3 py-1 dark:border-neutral-500 dark:bg-neutral-800"
+                  </div>
+                )}
+              </button>
+            )}
+          </For>
+        </div>
+        <div class="flex-1 " />
+        <div class="flex w-full flex-col space-y-1 border-t px-2 py-2 dark:border-neutral-400">
+          <button
+            class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
             onClick={logout}
           >
             <div class="text-3xl">
               <BiRegularLogOut />
             </div>
             <div>Logout</div>
-          </PopoverButton>
+          </button>
+          <div class="flex w-full px-3">
+            <OnScreenThemeModeController />
+          </div>
         </div>
       </div>
-    </Show>
+      <PopoverButton class="w-1/3 flex-col justify-start bg-gray-500/5 backdrop-blur-[3px] md:hidden">
+        <div class="ml-4 text-3xl">
+          <BiRegularX />
+        </div>
+      </PopoverButton>
+    </div>
   );
 };

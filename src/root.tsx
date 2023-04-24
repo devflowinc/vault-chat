@@ -30,7 +30,7 @@ export default function Root() {
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Body>
+      <Body class="bg-neutral-100 dark:bg-neutral-900">
         <Suspense>
           <ErrorBoundary>
             <UserStoreContext>
