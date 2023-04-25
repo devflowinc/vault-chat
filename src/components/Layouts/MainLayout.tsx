@@ -1,4 +1,4 @@
-import { Accessor, For, Show, createSignal, onMount } from "solid-js";
+import { Accessor, For, Show, createEffect, createSignal } from "solid-js";
 import { BiRegularChat, BiRegularPlusCircle } from "solid-icons/bi";
 import { FiRefreshCcw } from "solid-icons/fi";
 import { isMessageArray, type Message } from "~/types/messages";
@@ -9,21 +9,64 @@ export interface LayoutProps {
   selectedTopic: Accessor<Topic | undefined>;
 }
 
+const readChunks = (reader: ReadableStreamDefaultReader) => {
+  return {
+    async *[Symbol.asyncIterator]() {
+      let readResult = await reader.read();
+      console.log(readResult);
+      while (!readResult.done) {
+        yield readResult.value;
+        readResult = await reader.read();
+      }
+    },
+  };
+};
+
 const Layout = (props: LayoutProps) => {
   const api_host = import.meta.env.VITE_API_HOST as unknown as string;
 
   const [loadingMessages, setLoadingMessages] = createSignal<boolean>(true);
   const [messages, setMessages] = createSignal<Message[]>([]);
+  const [newMessageContent, setNewMessageContent] = createSignal<string>("");
 
-  const fetchMessages = async () => {
-    setLoadingMessages(true);
-    const selectedTopic: Topic | undefined = props.selectedTopic();
-    if (!selectedTopic) {
-      setLoadingMessages(false);
+  const fetchCompletion = async ({
+    new_message_content,
+    topic_id,
+  }: {
+    new_message_content: string;
+    topic_id: string;
+  }) => {
+    const res = await fetch(`${api_host}/message`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        new_message_content,
+        topic_id,
+      }),
+    });
+    // get the response as a stream
+    const reader = res.body?.getReader();
+    if (!reader) {
       return;
     }
 
-    const res = await fetch(`${api_host}/messages/${selectedTopic.id}`, {
+    for await (const chunk of readChunks(reader)) {
+      // const decoded_chunk = new TextDecoder("utf-8").decode(
+      //   chunk as unknown as Uint8Array,
+      // );
+      console.log(chunk);
+    }
+  };
+
+  const fetchMessages = async (topicId: string | undefined) => {
+    setLoadingMessages(true);
+    if (!topicId) {
+      return;
+    }
+    const res = await fetch(`${api_host}/messages/${topicId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,8 +80,9 @@ const Layout = (props: LayoutProps) => {
     setLoadingMessages(false);
   };
 
-  onMount(() => {
-    void fetchMessages();
+  createEffect(() => {
+    setMessages([]);
+    void fetchMessages(props.selectedTopic()?.id);
   });
 
   return (
@@ -117,11 +161,24 @@ const Layout = (props: LayoutProps) => {
                 class="h-12 w-full rounded-xl bg-neutral-200 p-4 text-neutral-400 dark:bg-neutral-700 dark:text-neutral-500"
                 type="text"
                 placeholder="Write your argument"
+                value={newMessageContent()}
+                onInput={(e) => {
+                  setNewMessageContent(e.currentTarget.value);
+                }}
               />
               <button
-                class="flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-200 text-3xl text-neutral-800 dark:bg-neutral-700 dark:text-white"
+                type="submit"
+                class="dark:hover-text-purple-500 flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-200 text-3xl text-neutral-800 hover:bg-neutral-100 hover:text-purple-500 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-800"
                 onClick={(e) => {
                   e.preventDefault();
+                  const topic_id = props.selectedTopic()?.id;
+                  if (!topic_id) {
+                    return;
+                  }
+                  void fetchCompletion({
+                    new_message_content: newMessageContent(),
+                    topic_id,
+                  });
                 }}
               >
                 <BiRegularPlusCircle />
