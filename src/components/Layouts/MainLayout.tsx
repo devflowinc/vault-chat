@@ -36,6 +36,7 @@ const Layout = (props: LayoutProps) => {
     new_message_content: string;
     topic_id: string;
   }) => {
+    console.log("sending request");
     const res = await fetch(`${api_host}/message`, {
       method: "POST",
       headers: {
@@ -47,17 +48,23 @@ const Layout = (props: LayoutProps) => {
         topic_id,
       }),
     });
+    console.log("got response back");
     // get the response as a stream
     const reader = res.body?.getReader();
     if (!reader) {
       return;
     }
-
-    for await (const chunk of readChunks(reader)) {
-      // const decoded_chunk = new TextDecoder("utf-8").decode(
-      //   chunk as unknown as Uint8Array,
-      // );
-      console.log(chunk);
+    console.log("got reader");
+    let done = false;
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      done = doneReading;
+      console.log("got value");
+      if (value) {
+        const decoder = new TextDecoder();
+        const chunk = decoder.decode(value);
+        console.log(chunk);
+      }
     }
   };
 
