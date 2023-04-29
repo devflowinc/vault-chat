@@ -48,22 +48,18 @@ const Layout = (props: LayoutProps) => {
         topic_id,
       }),
     });
-    console.log("got response back");
     // get the response as a stream
     const reader = res.body?.getReader();
     if (!reader) {
       return;
     }
-    console.log("got reader");
     let done = false;
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
-      console.log("got value");
       if (value) {
         const decoder = new TextDecoder();
         const chunk = decoder.decode(value);
-        console.log(chunk);
       }
     }
   };
