@@ -35,7 +35,13 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
       },
       credentials: "include",
     }).then((response) => {
-      if (!response.ok && !window.location.pathname.includes("/auth/")) {
+      if (
+        !response.ok &&
+        !(
+          window.location.pathname.includes("/auth/") ||
+          window.location.pathname === "/"
+        )
+      ) {
         window.location.href = "/auth/login";
         return;
       }
