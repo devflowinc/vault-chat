@@ -8,16 +8,16 @@ import {
 export default function Home() {
   return (
     <div class="bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50">
-      <div class="bg-gradient-radial-t from-fuchsia-300 to-neutral-900 p-4">
+      <div class="bg-gradient-radial-t from-magenta-400 p-4">
         <div class="flex items-center justify-between rounded-lg bg-neutral-50 px-4 py-3 shadow-md dark:bg-neutral-800">
           <div class="flex items-center">
-            <img class="w-10" src="/public/logo_transparent.svg" alt="" />
+            <img class="w-10" src="/logo_transparent.svg" alt="" />
             <p class="text-lg">
               <span>Arguflow </span>
-              <span class="text-violet-500">AI</span>
+              <span class="text-magenta">AI</span>
             </p>
           </div>
-          <div class="rounded-lg bg-cyan-500 px-4 py-2 dark:text-neutral-900">
+          <div class="rounded-lg bg-turquoise px-4 py-2 dark:text-neutral-900">
             Start Debating
           </div>
         </div>
@@ -25,23 +25,23 @@ export default function Home() {
         <div class="flex flex-col items-center space-y-8">
           <p class="text-5xl">
             <span>Arguflow </span>
-            <span class="text-violet-500">AI</span>
+            <span class="text-magenta">AI</span>
           </p>
           <p>Your personal AI debate coach.</p>
-          <div class="rounded-lg bg-gradient-to-br from-cyan-900 to-cyan-500 px-4 py-2 text-white shadow-md">
+          <div class="rounded-lg bg-gradient-to-br from-cyan-900 to-turquoise px-4 py-2 text-white shadow-md">
             Start Debating Now
           </div>
         </div>
       </div>
       <div class="py-4" />
       <div class="flex justify-center">
-        <img class="block dark:hidden" src="/public/example-light.png" alt="" />
-        <img class="hidden dark:block" src="/public/example-dark.png" alt="" />
+        <img class="block dark:hidden" src="/example-light.png" alt="" />
+        <img class="hidden dark:block" src="/example-dark.png" alt="" />
       </div>
       <div class="py-6" />
       <div class="px-12">
         <section>
-          <p class="text-violet-500">Product</p>
+          <p class="text-magenta">Product</p>
           <div class="py-1" />
           <p class="text-2xl font-medium">The new artificial face of debate</p>
           <div class="py-2" />
@@ -53,12 +53,12 @@ export default function Home() {
           </p>
         </section>
         <div class="py-6" />
-        <p class="text-violet-500">Features</p>
+        <p class="text-magenta">Features</p>
         <div class="py-1" />
         <p class="text-2xl font-medium">Why choose Arguflow AI?</p>
         <div class="py-2" />
         <section class="flex flex-col">
-          <img class="self-center" src="/public/calendar.svg" alt="" />
+          <img class="self-center" src="/calendar.svg" alt="" />
           <p class="text-2xl">24/7 Availability</p>
           <div class="py-1" />
           <p class="text-xs">
@@ -68,7 +68,7 @@ export default function Home() {
         </section>
         <div class="py-4" />
         <section class="flex flex-col">
-          <img class="self-center" src="/public/feedback.svg" alt="" />
+          <img class="self-center" src="/feedback.svg" alt="" />
           <p class="text-2xl">Instant Feedback</p>
           <div class="py-1" />
           <p class="text-xs">
@@ -78,7 +78,7 @@ export default function Home() {
         </section>
         <div class="py-4" />
         <section class="flex flex-col">
-          <img class="self-center" src="/public/money.svg" alt="" />
+          <img class="self-center" src="/money.svg" alt="" />
           <p class="text-2xl">Affordable Coaching</p>
           <div class="py-1" />
           <p class="text-xs">
@@ -89,7 +89,7 @@ export default function Home() {
           </p>
         </section>
         <div class="py-6" />
-        <p class="text-violet-500">Pricing</p>
+        <p class="text-magenta">Pricing</p>
         <p class="text-2xl">Affordable Plans</p>
         <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
           <div>
@@ -100,24 +100,24 @@ export default function Home() {
               <span class="text-neutral-500">/mo</span>
             </p>
           </div>
-          <div class="w-full rounded-lg bg-cyan-500 py-2 text-center shadow-md">
+          <div class="w-full rounded-lg bg-turquoise py-2 text-center shadow-md dark:text-neutral-900">
             Sign Up Now
           </div>
           <div>
             <ul>
-              <li class="flex items-center text-cyan-500">
+              <li class="flex items-center text-turquoise">
                 <BiRegularCheck size={30} />
                 <p class="text-xs text-neutral-900 dark:text-neutral-50">
                   ChatGPT 3
                 </p>
               </li>
-              <li class="flex items-center text-cyan-500">
+              <li class="flex items-center text-turquoise">
                 <BiRegularCheck size={30} />
                 <p class="text-xs text-neutral-900 dark:text-neutral-50">
                   Unlimitied Topics
                 </p>
               </li>
-              <li class="flex items-center text-cyan-500">
+              <li class="flex items-center text-turquoise">
                 <BiRegularCheck size={30} />
                 <p class="text-xs text-neutral-900 dark:text-neutral-50">
                   Basic Feedback
@@ -136,24 +136,24 @@ export default function Home() {
               <span class="text-neutral-500">/mo</span>
             </p>
           </div>
-          <div class="w-full rounded-lg bg-lime-500 py-2 text-center shadow-md">
+          <div class="w-full rounded-lg bg-acid py-2 text-center shadow-md dark:text-neutral-900">
             Sign Up Now
           </div>
           <div>
             <ul>
-              <li class="flex items-center text-lime-500">
+              <li class="flex items-center text-acid">
                 <BiRegularCheck size={30} />
                 <p class="text-xs text-neutral-900 dark:text-neutral-50">
                   ChatGPT 4
                 </p>
               </li>
-              <li class="flex items-center text-lime-500">
+              <li class="flex items-center text-acid">
                 <BiRegularCheck size={30} />
                 <p class="text-xs text-neutral-900 dark:text-neutral-50">
                   Unlimitied Topics
                 </p>
               </li>
-              <li class="flex items-center text-lime-500">
+              <li class="flex items-center text-acid">
                 <BiRegularCheck size={30} />
                 <p class="text-xs text-neutral-900 dark:text-neutral-50">
                   More Feedback
@@ -163,7 +163,7 @@ export default function Home() {
           </div>
         </div>
         <div class="py-6" />
-        <p class="text-sm text-violet-500">Partners</p>
+        <p class="text-sm text-magenta">Partners</p>
         <div class="py-1" />
         <p class="text-2xl font-medium">Collaboration is Key</p>
         <div class="py-2" />
@@ -174,27 +174,27 @@ export default function Home() {
         </p>
         <div class="py-2" />
         <div class="-ml-3 flex">
-          <img src="/public/Q-partner.png" alt="" />
-          <img src="/public/C-partner.png" alt="" />
-          <img src="/public/Z-partner.png" alt="" />
+          <img src="/Q-partner.png" alt="" />
+          <img src="/C-partner.png" alt="" />
+          <img src="/Z-partner.png" alt="" />
         </div>
         <div class="py-6" />
-        <p class="text-sm text-violet-500">Reviews</p>
+        <p class="text-sm text-magenta">Reviews</p>
         <p class="text-2xl font-medium">What people are saying</p>
         <div class="py-3" />
         <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800">
-          <p class="text-xs text-cyan-500"> Jane Doe </p>
+          <p class="text-xs text-turquoise"> Jane Doe </p>
           <div class="py-1" />
           <p class="text-xs">
             "I've been using Arguflow AI for a few months now, and I'm blown
             away by how effective it is at improving my debating skills.
           </p>
           <div class="pt-3" />
-          <img src="/public/right-quote.svg" alt="" />
+          <img src="/right-quote.svg" alt="" />
         </div>
         <div class="py-2" />
         <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800">
-          <p class="text-xs text-cyan-500"> Jane Doe </p>
+          <p class="text-xs text-turquoise"> Jane Doe </p>
           <div class="py-1" />
           <p class="text-xs">
             "I've been using Arguflow AI for a few months now, and I'm blown
@@ -203,11 +203,11 @@ export default function Home() {
             to get started and customize my experience.
           </p>
           <div class="pt-3" />
-          <img src="/public/right-quote.svg" alt="" />
+          <img src="/right-quote.svg" alt="" />
         </div>
         <div class="py-2" />
         <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800">
-          <p class="text-xs text-cyan-500"> Jane Doe </p>
+          <p class="text-xs text-turquoise"> Jane Doe </p>
           <div class="py-1" />
           <p class="text-xs">
             "I'm blown away by how effective it is at improving my debating
@@ -216,7 +216,7 @@ export default function Home() {
             my business.
           </p>
           <div class="pt-3" />
-          <img src="/public/right-quote.svg" alt="" />
+          <img src="/right-quote.svg" alt="" />
         </div>
         <div class="py-6" />
         <div class="flex flex-col items-center space-y-2 text-center">
@@ -225,18 +225,18 @@ export default function Home() {
             Begin your debate journey today with Arguflow AI, your personal
             debate coach.
           </p>
-          <div class="rounded-lg bg-gradient-to-br from-cyan-900 to-cyan-500 px-4 py-2 text-white shadow-md">
+          <div class="rounded-lg bg-gradient-to-br from-[#235761] to-turquoise px-4 py-2 text-white shadow-md">
             Sign Up
           </div>
         </div>
       </div>
-      <div class="py-20" />
-      <footer class="flex flex-col items-center bg-gradient-radial-b from-fuchsia-300 p-4">
+      <div class="py-10" />
+      <footer class="flex flex-col items-center bg-gradient-radial-b from-magenta p-4 pt-20">
         <div class="flex items-center">
-          <img class="w-14" src="/public/logo_transparent.svg" alt="" />
+          <img class="w-14" src="/logo_transparent.svg" alt="" />
           <p class="text-lg">
             <span>Arguflow </span>
-            <span class="text-violet-500">AI</span>
+            <span class="text-magenta">AI</span>
           </p>
         </div>
         <div class="flex flex-col gap-2">
