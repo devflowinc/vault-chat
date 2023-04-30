@@ -1,12 +1,18 @@
-import { BiRegularCheck, BiSolidQuoteRight } from "solid-icons/bi";
+import {
+  BiLogosTwitch,
+  BiLogosTwitter,
+  BiLogosYoutube,
+  BiRegularCheck,
+} from "solid-icons/bi";
 
 export default function Home() {
   return (
     <div class="bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-white">
       <div class="bg-gradient-radial-t from-fuchsia-300 p-4">
         <div class="flex items-center justify-between rounded-lg bg-neutral-50 px-4 py-3 shadow-md dark:bg-neutral-800">
-          <div>
-            <p>
+          <div class="flex items-center">
+            <img class="w-10" src="/public/logo_transparent.svg" alt="" />
+            <p class="text-lg">
               <span>Arguflow </span>
               <span class="text-violet-500">AI</span>
             </p>
@@ -197,8 +203,38 @@ export default function Home() {
           <div class="pt-3" />
           <img src="/public/right-quote.svg" alt="" />
         </div>
+        <div class="py-6" />
+        <div class="flex flex-col items-center space-y-2 text-center">
+          <p class="text-2xl">Ready to Start Debating?</p>
+          <p class="text-xs">
+            Begin your debate journey today with Arguflow AI, your personal
+            debate coach.
+          </p>
+          <div class="rounded-lg bg-gradient-to-br from-cyan-900 to-cyan-500 px-4 py-2 text-white shadow-md">
+            Sign Up
+          </div>
+        </div>
       </div>
-      <div class="py-96" />
+      <div class="py-20" />
+      <footer class="flex flex-col items-center bg-gradient-radial-b from-fuchsia-300 p-4">
+        <div class="flex items-center">
+          <img class="w-14" src="/public/logo_transparent.svg" alt="" />
+          <p class="text-lg">
+            <span>Arguflow </span>
+            <span class="text-violet-500">AI</span>
+          </p>
+        </div>
+        <div class="flex flex-col gap-2">
+          <a href="">Pricing</a>
+          <a href="">Contact</a>
+        </div>
+        <div class="py-2" />
+        <div class="flex gap-3">
+          <BiLogosTwitter size={30} />
+          <BiLogosTwitch size={30} />
+          <BiLogosYoutube size={30} />
+        </div>
+      </footer>
     </div>
   );
 }
