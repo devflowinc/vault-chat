@@ -72,6 +72,10 @@ const Layout = (props: LayoutProps) => {
     topic_id: string;
   }) => {
     setNewMessageContent("");
+    const newMessageTextarea = document.getElementById(
+      "new-message-content-textarea",
+    ) as HTMLTextAreaElement;
+    resizeTextarea(newMessageTextarea);
     setMessages((prev) => {
       const newMessages = [{ content: new_message_content }];
       if (prev.length === 0) {
@@ -201,10 +205,28 @@ const Layout = (props: LayoutProps) => {
             </Show>
             <form class="relative flex h-fit max-h-[calc(100vh-32rem)] w-full flex-col items-center overflow-y-auto rounded-xl bg-neutral-50 py-1 pl-4 pr-2 text-neutral-800 dark:bg-neutral-700 dark:text-white">
               <textarea
+                id="new-message-content-textarea"
                 class="w-full resize-none whitespace-pre-wrap bg-transparent py-1 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md focus:outline-none dark:bg-neutral-700 dark:text-white dark:scrollbar-track-neutral-700 dark:scrollbar-thumb-neutral-600"
                 placeholder="Write your argument"
                 value={newMessageContent()}
                 onInput={(e) => resizeTextarea(e.target)}
+                onKeyDown={(e) => {
+                  if (e.ctrlKey && e.key === "Enter") {
+                    e.preventDefault();
+                    const new_message_content = newMessageContent();
+                    if (!new_message_content) {
+                      return;
+                    }
+                    const topic_id = props.selectedTopic()?.id;
+                    if (!topic_id) {
+                      return;
+                    }
+                    void fetchCompletion({
+                      new_message_content,
+                      topic_id,
+                    });
+                  }
+                }}
                 rows="1"
               />
               <button
