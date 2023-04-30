@@ -38,7 +38,7 @@ export default function DebateHome() {
   });
 
   return (
-    <div class="relative flex h-screen flex-row bg-neutral-100 dark:bg-zinc-900">
+    <div class="relative flex h-screen flex-row bg-zinc-100 dark:bg-zinc-900">
       <div class="hidden w-1/3 md:block">
         <Sidebar
           currentTopic={selectedTopic}

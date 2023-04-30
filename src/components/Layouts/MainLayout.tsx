@@ -97,8 +97,8 @@ const Layout = (props: LayoutProps) => {
         </Transition>
       </Show>
       <Show when={!loadingMessages()}>
-        <div class="flex flex-col justify-between ">
-          <div class="flex flex-col items-center">
+        <div class="relative flex flex-col justify-between">
+          <div class="flex flex-col items-center pb-32">
             <For each={messages()}>
               {(message, idx) => {
                 return (
@@ -110,17 +110,16 @@ const Layout = (props: LayoutProps) => {
                 );
               }}
             </For>
-            <div class="py-2" />
+          </div>
+
+          <div class="fixed bottom-0 right-0 flex w-3/4 flex-col items-center space-y-4 bg-gradient-to-b from-transparent via-zinc-200 to-zinc-100 p-4 dark:via-zinc-800 dark:to-zinc-900">
             {messages().length > 0 && (
-              <button class="flex w-fit items-center justify-center space-x-4 rounded-xl bg-neutral-200 px-4 py-2 dark:bg-neutral-700 dark:text-neutral-50">
+              <button class="flex w-fit items-center justify-center space-x-4 rounded-xl bg-neutral-50 px-4 py-2 text-sm dark:bg-neutral-700 dark:text-white">
                 <FiRefreshCcw />
                 <p>Regenerate Response</p>
               </button>
             )}
-          </div>
-
-          <div class="p-4">
-            <form class="flex h-11 w-full flex-row items-center rounded-xl bg-neutral-200 p-4 text-neutral-400 dark:bg-neutral-700 dark:text-white">
+            <form class="flex h-11 w-full flex-row items-center rounded-xl bg-neutral-50 p-4 text-neutral-800 dark:bg-neutral-700 dark:text-white">
               <input
                 class="w-full bg-transparent focus:outline-none"
                 type="text"

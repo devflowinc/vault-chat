@@ -10,7 +10,7 @@ export interface NavbarProps {
 
 export const Navbar = (props: NavbarProps) => {
   return (
-    <div class="flex h-11 w-full items-center justify-between border-b border-neutral-200 px-5 py-2 text-xl font-semibold text-neutral-800 dark:border-neutral-800 dark:text-neutral-200">
+    <div class="flex h-11 w-full items-center justify-between border-b border-neutral-200 px-5 py-2 text-xl font-semibold text-neutral-800 dark:border-neutral-800 dark:text-white">
       <div class="md:hidden">
         <BiRegularMenuAltLeft
           onClick={() => props.setSideBarOpen((prev) => !prev)}
