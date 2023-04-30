@@ -1,6 +1,5 @@
 import { Accessor, For, Show, createEffect, createSignal } from "solid-js";
-import { BiRegularSend } from "solid-icons/bi";
-import { FiRefreshCcw } from "solid-icons/fi";
+import { FiRefreshCcw, FiSend } from "solid-icons/fi";
 import {
   isMessageArray,
   messageRoleFromIndex,
@@ -120,34 +119,40 @@ const Layout = (props: LayoutProps) => {
             )}
           </div>
 
-          <form class="flex h-11 w-full space-x-4 px-4">
-            <input
-              class="h-12 w-full rounded-xl bg-neutral-200 p-4 text-neutral-400 dark:bg-neutral-700 dark:text-neutral-500"
-              type="text"
-              placeholder="Write your argument"
-              value={newMessageContent()}
-              onInput={(e) => {
-                setNewMessageContent(e.currentTarget.value);
-              }}
-            />
-            <button
-              type="submit"
-              class="dark:hover-text-purple-500 flex h-12 w-12 items-center justify-center rounded-xl bg-neutral-200 text-3xl text-neutral-800 hover:bg-neutral-100 hover:text-purple-500 dark:bg-neutral-700 dark:text-white dark:hover:bg-neutral-800"
-              onClick={(e) => {
-                e.preventDefault();
-                const topic_id = props.selectedTopic()?.id;
-                if (!topic_id) {
-                  return;
-                }
-                void fetchCompletion({
-                  new_message_content: newMessageContent(),
-                  topic_id,
-                });
-              }}
-            >
-              <BiRegularSend />
-            </button>
-          </form>
+          <div class="p-4">
+            <form class="flex h-11 w-full flex-row items-center rounded-xl bg-neutral-200 p-4 text-neutral-400 dark:bg-neutral-700 dark:text-white">
+              <input
+                class="w-full bg-transparent focus:outline-none"
+                type="text"
+                placeholder="Write your argument"
+                value={newMessageContent()}
+                onInput={(e) => {
+                  setNewMessageContent(e.currentTarget.value);
+                }}
+              />
+              <button
+                type="submit"
+                classList={{
+                  "flex h-12 w-12 items-center justify-center": true,
+                  "text-neutral-400": !newMessageContent(),
+                }}
+                disabled={!newMessageContent()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const topic_id = props.selectedTopic()?.id;
+                  if (!topic_id) {
+                    return;
+                  }
+                  void fetchCompletion({
+                    new_message_content: newMessageContent(),
+                    topic_id,
+                  });
+                }}
+              >
+                <FiSend />
+              </button>
+            </form>
+          </div>
         </div>
       </Show>
     </>

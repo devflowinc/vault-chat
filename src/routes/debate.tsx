@@ -38,7 +38,7 @@ export default function DebateHome() {
   });
 
   return (
-    <div class="relative flex flex-row bg-neutral-100 dark:bg-zinc-900">
+    <div class="relative flex h-screen flex-row bg-neutral-100 dark:bg-zinc-900">
       <div class="hidden w-1/3 md:block">
         <Sidebar
           currentTopic={selectedTopic}
@@ -99,12 +99,14 @@ export default function DebateHome() {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <Navbar
-            selectedTopic={selectedTopic}
-            setSideBarOpen={setSideBarOpen}
-            setIsCreatingTopic={setIsCreatingTopic}
-          />
-          <Layout selectedTopic={selectedTopic} />
+          <div class="overflow-y-auto scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
+            <Navbar
+              selectedTopic={selectedTopic}
+              setSideBarOpen={setSideBarOpen}
+              setIsCreatingTopic={setIsCreatingTopic}
+            />
+            <Layout selectedTopic={selectedTopic} />
+          </div>
         </Transition>
       </Show>
       <Show when={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}>

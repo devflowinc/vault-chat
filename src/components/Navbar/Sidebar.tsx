@@ -91,7 +91,7 @@ export const Sidebar = (props: SidebarProps) => {
   };
 
   return (
-    <div class="absolute flex w-screen flex-row dark:text-gray-50 md:relative md:w-full">
+    <div class="absolute flex h-screen w-screen flex-row dark:text-gray-50 md:relative md:w-full">
       <div class="flex h-full w-2/3 flex-col bg-neutral-50 dark:bg-neutral-800 md:w-full">
         <div class="flex w-full px-4 py-2 ">
           <button
