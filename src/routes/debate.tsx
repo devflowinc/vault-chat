@@ -1,4 +1,4 @@
-import { Popover, Transition } from "solid-headless";
+import { Transition } from "solid-headless";
 import { Show, createResource, createSignal } from "solid-js";
 import { NewTopicForm } from "~/components/Forms/NewTopicForm";
 import Layout from "~/components/Layouts/MainLayout";
@@ -38,115 +38,103 @@ export default function DebateHome() {
   });
 
   return (
-    <Popover defaultOpen={false}>
-      {({ isOpen }) => {
-        return (
-          <div class="relative flex h-screen w-screen flex-row overflow-x-hidden bg-neutral-100 dark:bg-neutral-900">
-            <div class="hidden w-1/3 md:block">
-              <Sidebar
-                currentTopic={selectedTopic}
-                setCurrentTopic={setSelectedTopic}
-                refetchTopics={refetch}
-                sidebarOpen={sidebarOpen}
-                topics={topics}
-                setIsCreatingTopic={setIsCreatingTopic}
-              />
-            </div>
-            <div class="md:hidden">
-              <Sidebar
-                currentTopic={selectedTopic}
-                setCurrentTopic={(topic: Topic | undefined) => {
-                  setIsCreatingTopic(false);
-                  setSelectedTopic(topic);
-                }}
-                refetchTopics={refetch}
-                sidebarOpen={isOpen}
-                topics={topics}
-                setIsCreatingTopic={setIsCreatingTopic}
-              />
-            </div>
-            <Show when={loadingTopic()}>
-              <Transition
-                class="flex h-full w-full flex-col"
-                show={loadingTopic()}
-                enter="transition-opacity duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="transition-opacity duration-300"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <div class="flex h-full w-full flex-col items-center justify-center">
-                  <div class="h-32 w-32 animate-spin rounded-full border-b-2 border-purple-500" />
-                </div>
-              </Transition>
-            </Show>
-            <Show
-              when={
-                !loadingTopic() &&
-                !isCreatingTopic() &&
-                selectedTopic() !== undefined
-              }
-            >
-              <Transition
-                class="flex h-full w-full flex-col"
-                show={
-                  !loadingTopic() &&
-                  !isCreatingTopic() &&
-                  selectedTopic() !== undefined
-                }
-                enter="transition-opacity duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="transition-opacity duration-300"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <Navbar
-                  selectedTopic={selectedTopic}
-                  sidebarOpen={sidebarOpen}
-                  setSideBarOpen={setSideBarOpen}
-                />
-                <div class="flex h-full flex-col justify-end">
-                  <Layout selectedTopic={selectedTopic} />
-                </div>
-              </Transition>
-            </Show>
-            <Show
-              when={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}
-            >
-              <Transition
-                class="flex h-full w-full flex-col justify-center"
-                show={
-                  !loadingTopic() && (isCreatingTopic() || !selectedTopic())
-                }
-                enter="transition-opacity duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="transition-opacity duration-300"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <NewTopicForm
-                  onSuccessfulTopicCreation={() => {
-                    setLoadingTopic(true);
-                    setIsCreatingTopic(false);
-                    void refetch();
-                    setTimeout(() => {
-                      setSelectedTopic(topics()?.[0]);
-                      setLoadingTopic(false);
-                    }, 500);
-                  }}
-                  setIsCreatingTopic={setIsCreatingTopic}
-                  selectedTopic={selectedTopic}
-                  setCurrentTopic={setSelectedTopic}
-                  topics={topics}
-                />
-              </Transition>
-            </Show>
+    <div class="relative flex flex-row bg-neutral-100 dark:bg-zinc-900">
+      <div class="hidden w-1/3 md:block">
+        <Sidebar
+          currentTopic={selectedTopic}
+          setCurrentTopic={setSelectedTopic}
+          refetchTopics={refetch}
+          topics={topics}
+          setIsCreatingTopic={setIsCreatingTopic}
+          setSideBarOpen={setSideBarOpen}
+        />
+      </div>
+      <div class="md:hidden">
+        <Show when={sidebarOpen()}>
+          <Sidebar
+            currentTopic={selectedTopic}
+            setCurrentTopic={(topic: Topic | undefined) => {
+              setIsCreatingTopic(false);
+              setSelectedTopic(topic);
+            }}
+            refetchTopics={refetch}
+            topics={topics}
+            setIsCreatingTopic={setIsCreatingTopic}
+            setSideBarOpen={setSideBarOpen}
+          />
+        </Show>
+      </div>
+      <Show when={loadingTopic()}>
+        <Transition
+          class="flex w-full flex-col"
+          show={loadingTopic()}
+          enter="transition-opacity duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-300"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div class="flex w-full flex-col items-center justify-center">
+            <div class="h-32 w-32 animate-spin rounded-full border-b-2 border-purple-500" />
           </div>
-        );
-      }}
-    </Popover>
+        </Transition>
+      </Show>
+      <Show
+        when={
+          !loadingTopic() && !isCreatingTopic() && selectedTopic() !== undefined
+        }
+      >
+        <Transition
+          class="flex w-full flex-col"
+          show={
+            !loadingTopic() &&
+            !isCreatingTopic() &&
+            selectedTopic() !== undefined
+          }
+          enter="transition-opacity duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-300"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Navbar
+            selectedTopic={selectedTopic}
+            setSideBarOpen={setSideBarOpen}
+            setIsCreatingTopic={setIsCreatingTopic}
+          />
+          <Layout selectedTopic={selectedTopic} />
+        </Transition>
+      </Show>
+      <Show when={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}>
+        <Transition
+          class="flex w-full flex-col justify-center"
+          show={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}
+          enter="transition-opacity duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-300"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <NewTopicForm
+            onSuccessfulTopicCreation={() => {
+              setLoadingTopic(true);
+              setIsCreatingTopic(false);
+              void refetch();
+              setTimeout(() => {
+                setSelectedTopic(topics()?.[0]);
+                setLoadingTopic(false);
+              }, 500);
+            }}
+            setIsCreatingTopic={setIsCreatingTopic}
+            selectedTopic={selectedTopic}
+            setCurrentTopic={setSelectedTopic}
+            topics={topics}
+          />
+        </Transition>
+      </Show>
+    </div>
   );
 }

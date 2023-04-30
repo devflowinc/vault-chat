@@ -1,5 +1,3 @@
-// @refresh reload
-import { Suspense } from "solid-js";
 import {
   Body,
   ErrorBoundary,
@@ -26,20 +24,18 @@ export default function Root() {
   return (
     <Html lang="en" class={theme}>
       <Head>
-        <Title>Devils Advocate</Title>
+        <Title>AI Debate Coach</Title>
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Body class="bg-neutral-100 dark:bg-neutral-900">
-        <Suspense>
-          <ErrorBoundary>
-            <UserStoreContext>
-              <Routes>
-                <FileRoutes />
-              </Routes>
-            </UserStoreContext>
-          </ErrorBoundary>
-        </Suspense>
+      <Body>
+        <ErrorBoundary>
+          <UserStoreContext>
+            <Routes>
+              <FileRoutes />
+            </Routes>
+          </UserStoreContext>
+        </ErrorBoundary>
         <Scripts />
       </Body>
     </Html>

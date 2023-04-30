@@ -6,20 +6,19 @@ import {
   BiRegularTrash,
   BiRegularX,
 } from "solid-icons/bi";
-import { Accessor, createSignal, For, Resource } from "solid-js";
-import { PopoverButton } from "solid-headless";
+import { Accessor, createSignal, For, Resource, Setter } from "solid-js";
 import type { Topic } from "~/types/topics";
 import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 
 export interface SidebarProps {
-  sidebarOpen: Accessor<boolean>;
   topics: Resource<Topic[]>;
   refetchTopics: (
     info?: unknown,
   ) => Topic[] | Promise<Topic[] | undefined> | null | undefined;
-  setIsCreatingTopic: (value: boolean) => void;
+  setIsCreatingTopic: (value: boolean) => boolean;
   currentTopic: Accessor<Topic | undefined>;
   setCurrentTopic: (topic: Topic | undefined) => void;
+  setSideBarOpen: Setter<boolean>;
 }
 
 export const Sidebar = (props: SidebarProps) => {
@@ -33,7 +32,6 @@ export const Sidebar = (props: SidebarProps) => {
     const topic = topics ? topics[editingIndex()] : undefined;
 
     if (!topic) {
-      console.log("No topic");
       return;
     }
 
@@ -93,23 +91,24 @@ export const Sidebar = (props: SidebarProps) => {
   };
 
   return (
-    <div class="absolute flex h-screen w-screen flex-row  dark:text-gray-50 md:relative md:block md:w-full">
+    <div class="absolute flex w-screen flex-row dark:text-gray-50 md:relative md:w-full">
       <div class="flex h-full w-2/3 flex-col bg-neutral-50 dark:bg-neutral-800 md:w-full">
         <div class="flex w-full px-4 py-2 ">
-          <PopoverButton
+          <button
             onClick={() => {
               props.setIsCreatingTopic(true);
               props.setCurrentTopic(undefined);
+              props.setSideBarOpen(false);
             }}
             class="flex w-full flex-row items-center rounded-md border border-neutral-500 px-3 py-1 hover:bg-neutral-200  dark:border-neutral-400 dark:hover:bg-neutral-700"
           >
-            <button class="flex flex-row items-center space-x-2">
+            <div class="flex flex-row items-center space-x-2">
               <span class="text-xl">
                 <BiRegularPlus />
               </span>
               <span>New Topic</span>
-            </button>
-          </PopoverButton>
+            </div>
+          </button>
         </div>
         <div class="flex w-full flex-col space-y-2 overflow-y-auto px-2 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600">
           <For each={props.topics()}>
@@ -123,8 +122,12 @@ export const Sidebar = (props: SidebarProps) => {
                 onClick={() => {
                   const topics = props.topics();
                   const topic = topics ? topics[index()] : undefined;
+                  if (!topic) {
+                    return;
+                  }
                   props.setCurrentTopic(topic);
-                  topic && props.setIsCreatingTopic(false);
+                  props.setIsCreatingTopic(false);
+                  props.setSideBarOpen(false);
                 }}
               >
                 {editingIndex() === index() && (
@@ -210,11 +213,17 @@ export const Sidebar = (props: SidebarProps) => {
           </div>
         </div>
       </div>
-      <PopoverButton class="w-1/3 flex-col justify-start bg-gray-500/5 backdrop-blur-[3px] md:hidden">
+      <button
+        class="w-1/3 flex-col justify-start bg-gray-500/5 backdrop-blur-[3px] md:hidden"
+        onClick={(e) => {
+          e.preventDefault();
+          props.setSideBarOpen((prev) => !prev);
+        }}
+      >
         <div class="ml-4 text-3xl">
           <BiRegularX />
         </div>
-      </PopoverButton>
+      </button>
     </div>
   );
 };

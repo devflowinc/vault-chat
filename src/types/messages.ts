@@ -21,3 +21,13 @@ export const isMessageArray = (data: unknown): data is Message[] => {
     })
   );
 };
+
+export const messageRoleFromIndex = (idx: number) => {
+  if (idx == 0) {
+    return "system";
+  }
+  if (idx % 2 == 0) {
+    return "assistant";
+  }
+  return "user";
+};

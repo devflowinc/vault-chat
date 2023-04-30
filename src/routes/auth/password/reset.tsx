@@ -34,7 +34,7 @@ const ResetPassword = () => {
             <div class="w-full">
               <button
                 type="submit"
-                class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+                class="w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
                 onClick={(e) => {
                   e.preventDefault();
                   setErrorMessage("");
@@ -66,7 +66,7 @@ const ResetPassword = () => {
             </div>
           </form>
           <div class="flex w-full justify-center">
-            <span class="mt-2">
+            <span class="">
               Already have an account? {` `}
               <A
                 href="/auth/login"

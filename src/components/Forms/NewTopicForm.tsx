@@ -54,7 +54,7 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
         <div class="flex w-full space-x-2">
           <button
             type="submit"
-            class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+            class="w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
             onClick={(e) => {
               e.preventDefault();
               void fetch(`${api_host}/topic`, {
@@ -74,7 +74,7 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
           </button>
           <Show when={props.selectedTopic()}>
             <button
-              class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+              class="w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
               onClick={() => {
                 props.setIsCreatingTopic(false);
               }}
