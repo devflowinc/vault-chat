@@ -7,8 +7,8 @@ import {
 
 export default function Home() {
   return (
-    <div class="bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-white">
-      <div class="bg-gradient-radial-t from-fuchsia-300 p-4">
+    <div class="bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50">
+      <div class="bg-gradient-radial-t from-fuchsia-300 to-neutral-900 p-4">
         <div class="flex items-center justify-between rounded-lg bg-neutral-50 px-4 py-3 shadow-md dark:bg-neutral-800">
           <div class="flex items-center">
             <img class="w-10" src="/public/logo_transparent.svg" alt="" />
@@ -17,7 +17,9 @@ export default function Home() {
               <span class="text-violet-500">AI</span>
             </p>
           </div>
-          <div class="rounded-lg bg-cyan-500 px-4 py-2">Start Debating</div>
+          <div class="rounded-lg bg-cyan-500 px-4 py-2 dark:text-neutral-900">
+            Start Debating
+          </div>
         </div>
         <div class="py-4" />
         <div class="flex flex-col items-center space-y-8">
@@ -33,7 +35,8 @@ export default function Home() {
       </div>
       <div class="py-4" />
       <div class="flex justify-center">
-        <img src="/public/example-light.png" alt="" />
+        <img class="block dark:hidden" src="/public/example-light.png" alt="" />
+        <img class="hidden dark:block" src="/public/example-dark.png" alt="" />
       </div>
       <div class="py-6" />
       <div class="px-12">
@@ -88,7 +91,7 @@ export default function Home() {
         <div class="py-6" />
         <p class="text-violet-500">Pricing</p>
         <p class="text-2xl">Affordable Plans</p>
-        <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl">
+        <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
           <div>
             <p>Silver</p>
             <p class="text-xs text-neutral-500">Basic debate functions</p>
@@ -104,21 +107,27 @@ export default function Home() {
             <ul>
               <li class="flex items-center text-cyan-500">
                 <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900">ChatGPT 3</p>
+                <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                  ChatGPT 3
+                </p>
               </li>
               <li class="flex items-center text-cyan-500">
                 <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900"> Unlimitied Topics </p>
+                <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                  Unlimitied Topics
+                </p>
               </li>
               <li class="flex items-center text-cyan-500">
                 <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900"> Basic Feedback </p>
+                <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                  Basic Feedback
+                </p>
               </li>
             </ul>
           </div>
         </div>
         <div class="py-2" />
-        <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl">
+        <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
           <div>
             <p>Silver</p>
             <p class="text-xs text-neutral-500">Basic debate functions</p>
@@ -134,15 +143,21 @@ export default function Home() {
             <ul>
               <li class="flex items-center text-lime-500">
                 <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900">ChatGPT 3</p>
+                <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                  ChatGPT 4
+                </p>
               </li>
               <li class="flex items-center text-lime-500">
                 <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900"> Unlimitied Topics </p>
+                <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                  Unlimitied Topics
+                </p>
               </li>
               <li class="flex items-center text-lime-500">
                 <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900"> Basic Feedback </p>
+                <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                  More Feedback
+                </p>
               </li>
             </ul>
           </div>
@@ -167,7 +182,7 @@ export default function Home() {
         <p class="text-sm text-violet-500">Reviews</p>
         <p class="text-2xl font-medium">What people are saying</p>
         <div class="py-3" />
-        <div class="rounded-lg p-4 shadow-lg">
+        <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800">
           <p class="text-xs text-cyan-500"> Jane Doe </p>
           <div class="py-1" />
           <p class="text-xs">
@@ -178,7 +193,7 @@ export default function Home() {
           <img src="/public/right-quote.svg" alt="" />
         </div>
         <div class="py-2" />
-        <div class="rounded-lg p-4 shadow-lg">
+        <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800">
           <p class="text-xs text-cyan-500"> Jane Doe </p>
           <div class="py-1" />
           <p class="text-xs">
@@ -191,7 +206,7 @@ export default function Home() {
           <img src="/public/right-quote.svg" alt="" />
         </div>
         <div class="py-2" />
-        <div class="rounded-lg p-4 shadow-lg">
+        <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800">
           <p class="text-xs text-cyan-500"> Jane Doe </p>
           <div class="py-1" />
           <p class="text-xs">
