@@ -21,7 +21,9 @@ export const AfMessage = (props: AfMessageProps) => {
       >
         {props.role === "user" ? <BiSolidUserRectangle /> : <AiFillRobot />}
         <div class="px-2" />
-        <p class="text-neutral-800 dark:text-neutral-50">{props.content}</p>
+        <div class="whitespace-pre-line text-neutral-800 dark:text-neutral-50">
+          {props.content}
+        </div>
         <Show when={props.feedback}>
           <div class="ml-4 text-neutral-500 dark:text-neutral-400">
             <div class="flex items-center">
@@ -29,7 +31,7 @@ export const AfMessage = (props: AfMessageProps) => {
               <div class="px-1" />
               <FiRefreshCcw />
             </div>
-            <p> {props.feedback} </p>
+            <div> {props.feedback} </div>
           </div>
         </Show>
       </div>
