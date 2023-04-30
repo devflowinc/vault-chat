@@ -1,3 +1,5 @@
+import { BiRegularCheck } from "solid-icons/bi";
+
 export default function Home() {
   return (
     <div class="bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-white">
@@ -46,8 +48,8 @@ export default function Home() {
         <div class="py-1" />
         <p class="text-2xl font-medium">Why choose Arguflow AI?</p>
         <div class="py-2" />
-        <section>
-          <img src="/public/calendar.svg" alt="" />
+        <section class="flex flex-col">
+          <img class="self-center" src="/public/calendar.svg" alt="" />
           <p class="text-2xl">24/7 Availability</p>
           <div class="py-1" />
           <p class="text-xs">
@@ -56,8 +58,8 @@ export default function Home() {
           </p>
         </section>
         <div class="py-4" />
-        <section>
-          <img src="/public/feedback.svg" alt="" />
+        <section class="flex flex-col">
+          <img class="self-center" src="/public/feedback.svg" alt="" />
           <p class="text-2xl">Instant Feedback</p>
           <div class="py-1" />
           <p class="text-xs">
@@ -66,8 +68,8 @@ export default function Home() {
           </p>
         </section>
         <div class="py-4" />
-        <section>
-          <img src="/public/money.svg" alt="" />
+        <section class="flex flex-col">
+          <img class="self-center" src="/public/money.svg" alt="" />
           <p class="text-2xl">Affordable Coaching</p>
           <div class="py-1" />
           <p class="text-xs">
@@ -77,7 +79,71 @@ export default function Home() {
             debating skills.
           </p>
         </section>
+        <div class="py-6" />
+        <p class="text-violet-500">Pricing</p>
+        <p class="text-2xl">Affordable Plans</p>
+        <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl">
+          <div>
+            <p>Silver</p>
+            <p class="text-xs text-neutral-500">Basic debate functions</p>
+            <p>
+              <span class="text-2xl font-semibold">$15</span>
+              <span class="text-neutral-500">/mo</span>
+            </p>
+          </div>
+          <div class="w-full rounded-lg bg-cyan-500 py-2 text-center shadow-md">
+            Sign Up Now
+          </div>
+          <div>
+            <ul>
+              <li class="flex items-center text-cyan-500">
+                <BiRegularCheck size={30} />
+                <p class="text-xs text-neutral-900">ChatGPT 3</p>
+              </li>
+              <li class="flex items-center text-cyan-500">
+                <BiRegularCheck size={30} />
+                <p class="text-xs text-neutral-900"> Unlimitied Topics </p>
+              </li>
+              <li class="flex items-center text-cyan-500">
+                <BiRegularCheck size={30} />
+                <p class="text-xs text-neutral-900"> Basic Feedback </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="py-2" />
+        <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl">
+          <div>
+            <p>Silver</p>
+            <p class="text-xs text-neutral-500">Basic debate functions</p>
+            <p>
+              <span class="text-2xl font-semibold">$15</span>
+              <span class="text-neutral-500">/mo</span>
+            </p>
+          </div>
+          <div class="w-full rounded-lg bg-lime-500 py-2 text-center shadow-md">
+            Sign Up Now
+          </div>
+          <div>
+            <ul>
+              <li class="flex items-center text-lime-500">
+                <BiRegularCheck size={30} />
+                <p class="text-xs text-neutral-900">ChatGPT 3</p>
+              </li>
+              <li class="flex items-center text-lime-500">
+                <BiRegularCheck size={30} />
+                <p class="text-xs text-neutral-900"> Unlimitied Topics </p>
+              </li>
+              <li class="flex items-center text-lime-500">
+                <BiRegularCheck size={30} />
+                <p class="text-xs text-neutral-900"> Basic Feedback </p>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
+
+      <div class="py-96" />
     </div>
   );
 }
