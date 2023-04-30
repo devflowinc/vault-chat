@@ -141,8 +141,24 @@ export default function Home() {
             </ul>
           </div>
         </div>
+        <div class="py-6" />
+        <p class="text-sm text-violet-500">Partners</p>
+        <div class="py-1" />
+        <p class="text-2xl font-medium">Collaboration is Key</p>
+        <div class="py-2" />
+        <p class="text-xs">
+          We are proud to work with a variety of partners who share our
+          commitment to improving critical thinking and communication skills
+          through innovative technology.
+        </p>
+        <div class="py-2" />
+        <div class="-ml-3 flex">
+          <img src="/public/Q-partner.png" alt="" />
+          <img src="/public/C-partner.png" alt="" />
+          <img src="/public/Z-partner.png" alt="" />
+        </div>
+        <div class="py-6" />
       </div>
-
       <div class="py-96" />
     </div>
   );
