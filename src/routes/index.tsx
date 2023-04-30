@@ -1,4 +1,4 @@
-import { BiRegularCheck } from "solid-icons/bi";
+import { BiRegularCheck, BiSolidQuoteRight } from "solid-icons/bi";
 
 export default function Home() {
   return (
@@ -158,6 +158,45 @@ export default function Home() {
           <img src="/public/Z-partner.png" alt="" />
         </div>
         <div class="py-6" />
+        <p class="text-sm text-violet-500">Reviews</p>
+        <p class="text-2xl font-medium">What people are saying</p>
+        <div class="py-3" />
+        <div class="rounded-lg p-4 shadow-lg">
+          <p class="text-xs text-cyan-500"> Jane Doe </p>
+          <div class="py-1" />
+          <p class="text-xs">
+            "I've been using Arguflow AI for a few months now, and I'm blown
+            away by how effective it is at improving my debating skills.
+          </p>
+          <div class="pt-3" />
+          <img src="/public/right-quote.svg" alt="" />
+        </div>
+        <div class="py-2" />
+        <div class="rounded-lg p-4 shadow-lg">
+          <p class="text-xs text-cyan-500"> Jane Doe </p>
+          <div class="py-1" />
+          <p class="text-xs">
+            "I've been using Arguflow AI for a few months now, and I'm blown
+            away by how effective it is at improving my debating skills. The
+            platform is incredibly intuitive and user-friendly, making it easy
+            to get started and customize my experience.
+          </p>
+          <div class="pt-3" />
+          <img src="/public/right-quote.svg" alt="" />
+        </div>
+        <div class="py-2" />
+        <div class="rounded-lg p-4 shadow-lg">
+          <p class="text-xs text-cyan-500"> Jane Doe </p>
+          <div class="py-1" />
+          <p class="text-xs">
+            "I'm blown away by how effective it is at improving my debating
+            skills. The ability to choose any topic for debate is a
+            game-changer, as I can practice on topics that are relevant to me or
+            my business.
+          </p>
+          <div class="pt-3" />
+          <img src="/public/right-quote.svg" alt="" />
+        </div>
       </div>
       <div class="py-96" />
     </div>
