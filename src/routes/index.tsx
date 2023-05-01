@@ -116,77 +116,80 @@ export default function Home() {
           Pricing
         </p>
         <p class="text-2xl">Affordable Plans</p>
-        <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
-          <div>
-            <p class="md:text-2xl">Silver</p>
-            <p class="text-xs text-neutral-500 md:text-lg">
-              Basic debate functions
-            </p>
-            <p>
-              <span class="text-2xl font-semibold md:text-4xl">$15</span>
-              <span class="text-neutral-500 md:text-2xl">/mo</span>
-            </p>
+        <div class="flex flex-col gap-4 md:flex-row">
+          <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
+            <div>
+              <p class="md:text-2xl">Silver</p>
+              <p class="text-xs text-neutral-500 md:text-lg">
+                Basic debate functions
+              </p>
+              <p>
+                <span class="text-2xl font-semibold md:text-4xl">$15</span>
+                <span class="text-neutral-500 md:text-2xl">/mo</span>
+              </p>
+            </div>
+            <div class="w-full rounded-lg bg-turquoise py-2 text-center shadow-md dark:text-neutral-900">
+              Sign Up Now
+            </div>
+            <div>
+              <ul>
+                <li class="flex items-center text-turquoise">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    ChatGPT 3
+                  </p>
+                </li>
+                <li class="flex items-center text-turquoise">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    Unlimitied Topics
+                  </p>
+                </li>
+                <li class="flex items-center text-turquoise">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    Basic Feedback
+                  </p>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="w-full rounded-lg bg-turquoise py-2 text-center shadow-md dark:text-neutral-900">
-            Sign Up Now
-          </div>
-          <div>
-            <ul>
-              <li class="flex items-center text-turquoise">
-                <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                  ChatGPT 3
-                </p>
-              </li>
-              <li class="flex items-center text-turquoise">
-                <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                  Unlimitied Topics
-                </p>
-              </li>
-              <li class="flex items-center text-turquoise">
-                <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                  Basic Feedback
-                </p>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div class="py-2" />
-        <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
-          <div>
-            <p class="md:text-2xl">Gold</p>
-            <p class="text-xs text-neutral-500 md:text-lg">Advanced debating</p>
-            <p>
-              <span class="text-2xl font-semibold md:text-4xl">$50</span>
-              <span class="text-neutral-500 md:text-2xl">/mo</span>
-            </p>
-          </div>
-          <div class="w-full rounded-lg bg-acid py-2 text-center shadow-md dark:text-neutral-900">
-            Sign Up Now
-          </div>
-          <div>
-            <ul>
-              <li class="flex items-center text-acid">
-                <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                  ChatGPT 4
-                </p>
-              </li>
-              <li class="flex items-center text-acid">
-                <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                  Unlimitied Topics
-                </p>
-              </li>
-              <li class="flex items-center text-acid">
-                <BiRegularCheck size={30} />
-                <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                  More Feedback
-                </p>
-              </li>
-            </ul>
+          <div class="w-full space-y-4 bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
+            <div>
+              <p class="md:text-2xl">Gold</p>
+              <p class="text-xs text-neutral-500 md:text-lg">
+                Advanced debating
+              </p>
+              <p>
+                <span class="text-2xl font-semibold md:text-4xl">$50</span>
+                <span class="text-neutral-500 md:text-2xl">/mo</span>
+              </p>
+            </div>
+            <div class="w-full rounded-lg bg-acid py-2 text-center shadow-md dark:text-neutral-900">
+              Sign Up Now
+            </div>
+            <div>
+              <ul>
+                <li class="flex items-center text-acid">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    ChatGPT 4
+                  </p>
+                </li>
+                <li class="flex items-center text-acid">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    Unlimitied Topics
+                  </p>
+                </li>
+                <li class="flex items-center text-acid">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    More Feedback
+                  </p>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="py-6" />
