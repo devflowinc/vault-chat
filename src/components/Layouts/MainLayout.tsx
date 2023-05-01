@@ -19,8 +19,7 @@ const scrollToBottomOfMessages = () => {
     console.error("Could not find element with id 'topic-messages'");
     return;
   }
-  console.log("scrolling to bottom");
-  element.scrollIntoView({ behavior: "smooth", block: "end" });
+  element.scrollIntoView({ block: "end" });
 };
 
 const Layout = (props: LayoutProps) => {
@@ -49,7 +48,6 @@ const Layout = (props: LayoutProps) => {
     );
 
     element.addEventListener("scroll", () => {
-      console.log("scrolling");
       setAtMessageBottom(
         element.scrollHeight - element.scrollTop === element.clientHeight,
       );
@@ -79,7 +77,7 @@ const Layout = (props: LayoutProps) => {
     setMessages((prev) => {
       const newMessages = [{ content: new_message_content }];
       if (prev.length === 0) {
-        newMessages.unshift({ content: "" });
+        newMessages.unshift(...[{ content: "" }, { content: "" }]);
       }
       return [...prev, ...newMessages];
     });
@@ -100,16 +98,53 @@ const Layout = (props: LayoutProps) => {
       return;
     }
     let done = false;
-    setMessages((prev) => [...prev, { content: "" }]);
+    let finished_feedback = false;
+    let current_content = "";
+    setMessages((prev) => [...prev, { content: "", feedback: "" }]);
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       if (value) {
         const decoder = new TextDecoder();
         const chunk = decoder.decode(value);
+
+        if (!finished_feedback) {
+          current_content += chunk;
+
+          if (current_content.length < 8) {
+            continue;
+          }
+
+          if (!current_content.startsWith("feedback")) {
+            finished_feedback = true;
+            setMessages((prev) => {
+              const newMessage = {
+                content: current_content,
+              };
+              return [...prev.slice(0, prev.length - 1), newMessage];
+            });
+            continue;
+          }
+
+          if (current_content.endsWith("\n")) {
+            finished_feedback = true;
+            current_content = current_content.slice(0, -2);
+          }
+          setMessages((prev) => {
+            const lastMessage = prev[prev.length - 1];
+            const newMessage = {
+              content: lastMessage.content,
+              feedback: current_content,
+            };
+            return [...prev.slice(0, prev.length - 1), newMessage];
+          });
+          continue;
+        }
+
         setMessages((prev) => {
           const lastMessage = prev[prev.length - 1];
           const newMessage = {
+            feedback: lastMessage.feedback,
             content: lastMessage.content + chunk,
           };
           return [...prev.slice(0, prev.length - 1), newMessage];
