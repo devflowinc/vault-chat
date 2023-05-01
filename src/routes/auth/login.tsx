@@ -50,7 +50,7 @@ const login = () => {
           <div class="w-full">
             <button
               type="submit"
-              class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+              class="w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
               onClick={(e) => {
                 e.preventDefault();
                 void fetch(`${api_host}/auth`, {
@@ -81,7 +81,7 @@ const login = () => {
           </div>
         </form>
         <div class="flex w-full justify-center">
-          <span class="mt-2">
+          <span class="">
             Don't have an account? {` `}
             <A
               href="/auth/register"

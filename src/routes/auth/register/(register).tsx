@@ -34,7 +34,7 @@ const Register = () => {
             <div class="w-full">
               <button
                 type="submit"
-                class="mt-2 w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+                class="w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
                 onClick={(e) => {
                   e.preventDefault();
                   setErrorMessage("");
@@ -65,7 +65,7 @@ const Register = () => {
             </div>
           </form>
           <div class="flex w-full justify-center">
-            <span class="mt-2">
+            <span class="">
               Already have an account? {` `}
               <A href="/auth/login" class="text-blue-500 hover:text-blue-600">
                 Login
@@ -79,7 +79,7 @@ const Register = () => {
               <span class="py-2">Check your email to finish registration</span>
             </div>
             <div class="flex w-full justify-center">
-              <span class="mt-2">
+              <span class="">
                 Already have an account? {` `}
                 <A
                   href="/auth/login"

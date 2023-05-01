@@ -32,58 +32,56 @@ export const OnScreenThemeModeController = () => {
 
   return (
     <div class="flex items-center space-x-1 text-3xl text-neutral-200 dark:text-neutral-700">
-      <BiRegularMoon
+      <button
         onClick={() => {
           setThemeMode("dark");
           setMode("dark");
         }}
-        class="block dark:hidden"
-      />
+      >
+        <BiRegularMoon class="block dark:hidden" />
+      </button>
 
-      <div
+      <button
         classList={{
           "text-violet-600": mode() == "dark",
         }}
+        onClick={() => {
+          if (mode() === "dark") {
+            clearThemeMode();
+            setMode("system");
+          } else {
+            setThemeMode("dark");
+            setMode("dark");
+          }
+        }}
       >
-        <BiSolidMoon
-          onClick={() => {
-            if (mode() === "dark") {
-              clearThemeMode();
-              setMode("system");
-            } else {
-              setThemeMode("dark");
-              setMode("dark");
-            }
-          }}
-          class="hidden dark:block"
-        />
-      </div>
+        <BiSolidMoon class="hidden dark:block" />
+      </button>
       <div class="h-4 border-r" />
-      <div
+      <button
         classList={{
           "text-amber-600": mode() === "light",
         }}
+        onClick={() => {
+          if (mode() === "light") {
+            clearThemeMode();
+            setMode("system");
+          } else {
+            setThemeMode("light");
+            setMode("light");
+          }
+        }}
       >
-        <BiSolidSun
-          onClick={() => {
-            if (mode() === "light") {
-              clearThemeMode();
-              setMode("system");
-            } else {
-              setThemeMode("light");
-              setMode("light");
-            }
-          }}
-          class="block dark:hidden"
-        />
-      </div>
-      <BiRegularSun
+        <BiSolidSun class="block dark:hidden" />
+      </button>
+      <button
         onClick={() => {
           setThemeMode("light");
           setMode("light");
         }}
-        class="hidden dark:block"
-      />
+      >
+        <BiRegularSun class="hidden dark:block" />
+      </button>
     </div>
   );
 };

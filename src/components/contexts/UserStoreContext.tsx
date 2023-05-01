@@ -45,9 +45,6 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
         window.location.href = "/auth/login";
         return;
       }
-      void response.json().then((data) => {
-        console.log("user response", data);
-      });
       setIsLogin(response.ok);
     });
   });

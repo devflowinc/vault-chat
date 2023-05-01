@@ -36,7 +36,7 @@ const ThemeModeController = () => {
 
   return (
     <div class="flex w-fit items-center justify-center">
-      <Popover defaultOpen={false} class="relative flex h-full items-center">
+      <Popover defaultOpen={false} class="relative flex items-center">
         {({ isOpen }) => (
           <>
             <PopoverButton
