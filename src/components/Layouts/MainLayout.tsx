@@ -185,7 +185,10 @@ const Layout = (props: LayoutProps) => {
     }
   };
 
-  const fetchMessages = async (topicId: string | undefined) => {
+  const fetchMessages = async (
+    topicId: string | undefined,
+    abortController: AbortController,
+  ) => {
     setLoadingMessages(true);
     if (!topicId) {
       return;
@@ -196,6 +199,7 @@ const Layout = (props: LayoutProps) => {
         "Content-Type": "application/json",
       },
       credentials: "include",
+      signal: abortController.signal,
     });
     const data: unknown = await res.json();
     if (data && isMessageArray(data)) {
@@ -207,7 +211,12 @@ const Layout = (props: LayoutProps) => {
 
   createEffect(() => {
     setMessages([]);
-    void fetchMessages(props.selectedTopic()?.id);
+    const fetchMessagesAbortController = new AbortController();
+    void fetchMessages(props.selectedTopic()?.id, fetchMessagesAbortController);
+
+    return () => {
+      fetchMessagesAbortController.abort();
+    };
   });
 
   const submitNewMessage = () => {
