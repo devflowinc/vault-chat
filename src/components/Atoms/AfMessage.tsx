@@ -27,7 +27,10 @@ export const AfMessage = (props: AfMessageProps) => {
     const split_content = props.content.split("\n");
     let feedback = "";
     let content = props.content;
-    if (split_content.length == 3 && split_content[0].startsWith("feedback")) {
+    if (
+      split_content.length == 3 &&
+      split_content[0].toLowerCase().startsWith("feedback")
+    ) {
       feedback = split_content[0];
       content = split_content[2];
     }

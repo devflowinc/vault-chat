@@ -143,7 +143,7 @@ const Layout = (props: LayoutProps) => {
               continue;
             }
 
-            if (!current_content.startsWith("feedback")) {
+            if (!current_content.toLowerCase().startsWith("feedback")) {
               finished_feedback = true;
               setMessages((prev) => {
                 const newMessage = {
