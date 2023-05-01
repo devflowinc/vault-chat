@@ -14,7 +14,7 @@ export interface GlobalStoreProviderType {
 export const GlobalStoreContext = createContext<GlobalStoreProviderType>({
   isLogin: null,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  setIsLogin: (isLogin: boolean) => { },
+  setIsLogin: (isLogin: boolean) => {},
 });
 
 export interface GlobalStoreProviderProps {
@@ -27,7 +27,6 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
   const [isLogin, setIsLogin] = createSignal<boolean>(false);
 
   createEffect(() => {
-    console.log(`getting ${api_host}/auth`);
     if (window.location.pathname !== "/") {
       // Don't check auth if we're on the home page
       return;
@@ -46,7 +45,6 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
           window.location.pathname === "/"
         )
       ) {
-        console.log("rerouting");
         window.location.href = "/auth/login";
         return;
       }
