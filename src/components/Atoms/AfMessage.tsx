@@ -54,11 +54,9 @@ export const AfMessage = (props: AfMessageProps) => {
             "grid grid-cols-3 gap-4": !!displayMessage().feedback,
           }}
         >
-          <Show when={displayMessage().content}>
-            <div class="col-span-2 whitespace-pre-line text-neutral-800 dark:text-neutral-50">
-              {displayMessage().content}
-            </div>
-          </Show>
+          <div class="col-span-2 whitespace-pre-line text-neutral-800 dark:text-neutral-50">
+            {displayMessage().content}
+          </div>
           <Show when={displayMessage().feedback}>
             <div class="justify-self-end text-neutral-500 dark:text-neutral-400">
               <div> {displayMessage().feedback} </div>

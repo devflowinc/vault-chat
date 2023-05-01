@@ -96,7 +96,7 @@ const Layout = (props: LayoutProps) => {
       resizeTextarea(newMessageTextarea);
 
       setMessages((prev) => {
-        const newMessages = [{ content: new_message_content }];
+        const newMessages = [{ content: new_message_content }, { content: "" }];
         if (prev.length === 0) {
           newMessages.unshift(...[{ content: "" }, { content: "" }]);
         }
