@@ -1,6 +1,5 @@
 import {
   BiRegularCheck,
-  BiRegularEditAlt,
   BiRegularLogOut,
   BiRegularPlus,
   BiRegularTrash,
@@ -139,7 +138,7 @@ export const Sidebar = (props: SidebarProps) => {
                       }}
                       onKeyDown={(e) => {
                         if (e.key === "Enter") {
-                          void submitEditText().then();
+                          void submitEditText();
                         }
                       }}
                       class="w-full rounded-md bg-neutral-50 px-2 py-1 dark:bg-neutral-800"
@@ -148,7 +147,7 @@ export const Sidebar = (props: SidebarProps) => {
                     <div class="flex flex-row space-x-1 pl-2 text-2xl ">
                       <button
                         onClick={() => {
-                          void submitEditText().then();
+                          void submitEditText();
                         }}
                         class="hover:text-green-500"
                       >
@@ -171,7 +170,7 @@ export const Sidebar = (props: SidebarProps) => {
                     <p class="text-left line-clamp-1">{topic.resolution}</p>
                     <div class="flex-1" />
                     <div class="flex flex-row items-center space-x-2">
-                      {props.currentTopic() == topic && (
+                      {/* {props.currentTopic() == topic && (
                         <div class="text-lg hover:text-purple-500">
                           <BiRegularEditAlt
                             onClick={() => {
@@ -180,7 +179,7 @@ export const Sidebar = (props: SidebarProps) => {
                             }}
                           />
                         </div>
-                      )}
+                      )} */}
                       {props.currentTopic() == topic && (
                         <div class="text-lg hover:text-purple-500">
                           <BiRegularTrash
