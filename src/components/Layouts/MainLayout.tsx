@@ -1,5 +1,10 @@
 import { Accessor, For, Show, createEffect, createSignal } from "solid-js";
-import { FiArrowDown, FiRefreshCcw, FiSend } from "solid-icons/fi";
+import {
+  FiArrowDown,
+  FiRefreshCcw,
+  FiSend,
+  FiStopCircle,
+} from "solid-icons/fi";
 import {
   isMessageArray,
   messageRoleFromIndex,
@@ -24,6 +29,7 @@ const scrollToBottomOfMessages = () => {
 
 const Layout = (props: LayoutProps) => {
   const api_host = import.meta.env.VITE_API_HOST as unknown as string;
+  const completionAbortController = new AbortController();
 
   const resizeTextarea = (textarea: HTMLTextAreaElement) => {
     textarea.style.height = "auto";
@@ -35,6 +41,8 @@ const Layout = (props: LayoutProps) => {
   const [messages, setMessages] = createSignal<Message[]>([]);
   const [newMessageContent, setNewMessageContent] = createSignal<string>("");
   const [atMessageBottom, setAtMessageBottom] = createSignal<boolean>(true);
+  const [streamingCompletion, setStreamingCompletion] =
+    createSignal<boolean>(false);
 
   createEffect(() => {
     const element = document.getElementById("topic-layout");
@@ -81,6 +89,7 @@ const Layout = (props: LayoutProps) => {
       }
       return [...prev, ...newMessages];
     });
+
     const res = await fetch(`${api_host}/message`, {
       method: "POST",
       headers: {
@@ -91,19 +100,24 @@ const Layout = (props: LayoutProps) => {
         new_message_content,
         topic_id,
       }),
+      signal: completionAbortController.signal,
     });
     // get the response as a stream
     const reader = res.body?.getReader();
     if (!reader) {
       return;
     }
+    setStreamingCompletion(true);
     let done = false;
     let finished_feedback = false;
     let current_content = "";
     setMessages((prev) => [...prev, { content: "", feedback: "" }]);
     while (!done) {
       const { value, done: doneReading } = await reader.read();
-      done = doneReading;
+      if (doneReading) {
+        done = doneReading;
+        setStreamingCompletion(false);
+      }
       if (value) {
         const decoder = new TextDecoder();
         const chunk = decoder.decode(value);
@@ -179,6 +193,17 @@ const Layout = (props: LayoutProps) => {
     void fetchMessages(props.selectedTopic()?.id);
   });
 
+  const submitNewMessage = () => {
+    const topic_id = props.selectedTopic()?.id;
+    if (!topic_id || !newMessageContent() || streamingCompletion()) {
+      return;
+    }
+    void fetchCompletion({
+      new_message_content: newMessageContent(),
+      topic_id,
+    });
+  };
+
   return (
     <>
       <Show when={loadingMessages()}>
@@ -216,16 +241,34 @@ const Layout = (props: LayoutProps) => {
           <div class="fixed bottom-0 right-0 flex w-full flex-col items-center space-y-4 bg-gradient-to-b from-transparent via-zinc-200 to-zinc-100 p-4 dark:via-zinc-800 dark:to-zinc-900 md:w-3/4">
             <Show when={messages().length > 0}>
               <div class="flex w-full justify-center">
-                <button
-                  classList={{
-                    "flex w-fit items-center justify-center space-x-4 rounded-xl bg-neutral-50 px-4 py-2 text-sm dark:bg-neutral-700 dark:text-white":
-                      true,
-                    "ml-auto": !atMessageBottom(),
-                  }}
-                >
-                  <FiRefreshCcw />
-                  <p>Regenerate Response</p>
-                </button>
+                <Show when={!streamingCompletion()}>
+                  <button
+                    classList={{
+                      "flex w-fit items-center justify-center space-x-4 rounded-xl bg-neutral-50 px-4 py-2 text-sm dark:bg-neutral-700 dark:text-white":
+                        true,
+                      "ml-auto": !atMessageBottom(),
+                    }}
+                  >
+                    <FiRefreshCcw />
+                    <p>Regenerate Response</p>
+                  </button>
+                </Show>
+                <Show when={streamingCompletion()}>
+                  <button
+                    classList={{
+                      "flex w-fit items-center justify-center space-x-4 rounded-xl bg-neutral-50 px-4 py-2 text-sm dark:bg-neutral-700 dark:text-white":
+                        true,
+                      "ml-auto": !atMessageBottom(),
+                    }}
+                    onClick={() => {
+                      completionAbortController.abort();
+                      setStreamingCompletion(false);
+                    }}
+                  >
+                    <FiStopCircle class="h-5 w-5" />
+                    <p>Stop Generating</p>
+                  </button>
+                </Show>
                 <Show when={!atMessageBottom()}>
                   <button
                     class="ml-auto flex w-fit items-center justify-center space-x-4 rounded-full bg-neutral-50 p-2 text-sm dark:bg-neutral-700 dark:text-white"
@@ -244,6 +287,7 @@ const Layout = (props: LayoutProps) => {
                 class="w-full resize-none whitespace-pre-wrap bg-transparent py-1 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md focus:outline-none dark:bg-neutral-700 dark:text-white dark:scrollbar-track-neutral-700 dark:scrollbar-thumb-neutral-600"
                 placeholder="Write your argument"
                 value={newMessageContent()}
+                disabled={streamingCompletion()}
                 onInput={(e) => resizeTextarea(e.target)}
                 onKeyDown={(e) => {
                   if (e.ctrlKey && e.key === "Enter") {
@@ -260,6 +304,11 @@ const Layout = (props: LayoutProps) => {
                       new_message_content,
                       topic_id,
                     });
+                    return;
+                  }
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    submitNewMessage();
                   }
                 }}
                 rows="1"
@@ -271,17 +320,10 @@ const Layout = (props: LayoutProps) => {
                     true,
                   "text-neutral-400": !newMessageContent(),
                 }}
-                disabled={!newMessageContent()}
+                disabled={!newMessageContent() || streamingCompletion()}
                 onClick={(e) => {
                   e.preventDefault();
-                  const topic_id = props.selectedTopic()?.id;
-                  if (!topic_id) {
-                    return;
-                  }
-                  void fetchCompletion({
-                    new_message_content: newMessageContent(),
-                    topic_id,
-                  });
+                  submitNewMessage();
                 }}
               >
                 <FiSend />
