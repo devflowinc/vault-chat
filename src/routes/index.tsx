@@ -54,7 +54,7 @@ export default function Home() {
         <img class="hidden dark:block" src="/example-dark.png" alt="" />
       </div>
       <div class="py-6" />
-      <div class="m-auto mx-auto flex max-w-5xl flex-col justify-center px-12">
+      <div class="m-auto mx-auto flex max-w-5xl flex-col justify-center px-12 md:px-24">
         <section>
           <p id="product" class="text-magenta md:text-xl">
             Product
@@ -72,38 +72,44 @@ export default function Home() {
         <div class="py-6" />
         <p class="text-magenta md:text-xl">Features</p>
         <div class="py-1" />
-        <p class="text-2xl font-medium">Why choose Arguflow AI?</p>
-        <div class="py-2" />
-        <section class="flex flex-col">
-          <img class="self-center" src="/calendar.svg" alt="" />
-          <p class="text-2xl md:text-3xl">24/7 Availability</p>
-          <div class="py-1" />
-          <p class="text-xs md:text-lg">
-            Practice your debating skills at your own pace and on your own
-            schedule.
-          </p>
+        <p class="text-2xl font-medium md:text-4xl">Why choose Arguflow AI?</p>
+        <div class="py-2 md:py-6" />
+        <section class="flex flex-col md:flex-row md:gap-10">
+          <img class="self-center md:w-2/4" src="/calendar.svg" alt="" />
+          <div class="flex flex-col justify-center">
+            <p class="text-2xl md:text-3xl">24/7 Availability</p>
+            <div class="py-1" />
+            <p class="text-xs md:text-lg">
+              Practice your debating skills at your own pace and on your own
+              schedule.
+            </p>
+          </div>
         </section>
-        <div class="py-4" />
-        <section class="flex flex-col">
-          <img class="self-center" src="/feedback.svg" alt="" />
-          <p class="text-2xl md:text-3xl">Instant Feedback</p>
-          <div class="py-1" />
-          <p class="text-xs md:text-lg">
-            Starting with your first response, ChatGPT will provide feedback in
-            real-time, including your strengths and areas of improvement.
-          </p>
+        <div class="py-4 md:py-5" />
+        <section class="flex flex-col md:flex-row-reverse md:items-center md:gap-10">
+          <img class="self-center md:w-full" src="/feedback.svg" alt="" />
+          <div>
+            <p class="text-2xl md:text-3xl">Instant Feedback</p>
+            <div class="py-1" />
+            <p class="text-xs md:text-lg">
+              Starting with your first response, ChatGPT will provide feedback
+              in real-time, including your strengths and areas of improvement.
+            </p>
+          </div>
         </section>
-        <div class="py-4" />
-        <section class="flex flex-col">
-          <img class="self-center" src="/money.svg" alt="" />
-          <p class="text-2xl md:text-3xl">Affordable Coaching</p>
-          <div class="py-1" />
-          <p class="text-xs md:text-lg">
-            Compared to private debate coaching companies, this platform is much
-            more accessible and affordable, making it an ideal solution for
-            businesses, schools, and individuals looking to improve their
-            debating skills.
-          </p>
+        <div class="py-4 md:py-5" />
+        <section class="flex flex-col md:flex-row md:items-center md:gap-10">
+          <img class="self-center md:w-full" src="/money.svg" alt="" />
+          <div>
+            <p class="text-2xl md:text-3xl">Affordable Coaching</p>
+            <div class="py-1" />
+            <p class="text-xs md:text-lg">
+              Compared to private debate coaching companies, this platform is
+              much more accessible and affordable, making it an ideal solution
+              for businesses, schools, and individuals looking to improve their
+              debating skills.
+            </p>
+          </div>
         </section>
         <div class="py-6" />
         <p id="pricing" class="text-magenta md:text-xl">
