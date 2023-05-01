@@ -28,6 +28,10 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
 
   createEffect(() => {
     console.log(`getting ${api_host}/auth`);
+    if (window.location.pathname !== "/") {
+      // Don't check auth if we're on the home page
+      return;
+    }
     void fetch(`${api_host}/auth`, {
       method: "GET",
       headers: {
