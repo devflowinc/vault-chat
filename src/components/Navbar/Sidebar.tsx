@@ -167,7 +167,7 @@ export const Sidebar = (props: SidebarProps) => {
                 )}
                 {editingIndex() !== index() && (
                   <div class="flex flex-1 px-3">
-                    <p class="text-left line-clamp-1">{topic.resolution}</p>
+                    <p class="line-clamp-1 text-left">{topic.resolution}</p>
                     <div class="flex-1" />
                     <div class="flex flex-row items-center space-x-2">
                       {/* {props.currentTopic() == topic && (
