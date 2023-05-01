@@ -29,7 +29,6 @@ const scrollToBottomOfMessages = () => {
 
 const Layout = (props: LayoutProps) => {
   const api_host = import.meta.env.VITE_API_HOST as unknown as string;
-  const completionAbortController = new AbortController();
 
   const resizeTextarea = (textarea: HTMLTextAreaElement) => {
     textarea.style.height = "auto";
@@ -43,6 +42,8 @@ const Layout = (props: LayoutProps) => {
   const [atMessageBottom, setAtMessageBottom] = createSignal<boolean>(true);
   const [streamingCompletion, setStreamingCompletion] =
     createSignal<boolean>(false);
+  const [completionAbortController, setCompletionAbortController] =
+    createSignal<AbortController>(new AbortController());
 
   createEffect(() => {
     const element = document.getElementById("topic-layout");
@@ -73,98 +74,114 @@ const Layout = (props: LayoutProps) => {
   const fetchCompletion = async ({
     new_message_content,
     topic_id,
+    regenerateLastMessage,
   }: {
     new_message_content: string;
     topic_id: string;
+    regenerateLastMessage?: boolean;
   }) => {
-    setNewMessageContent("");
-    const newMessageTextarea = document.getElementById(
-      "new-message-content-textarea",
-    ) as HTMLTextAreaElement;
-    resizeTextarea(newMessageTextarea);
-    setMessages((prev) => {
-      const newMessages = [{ content: new_message_content }];
-      if (prev.length === 0) {
-        newMessages.unshift(...[{ content: "" }, { content: "" }]);
-      }
-      return [...prev, ...newMessages];
-    });
+    let requestMethod = "POST";
 
-    const res = await fetch(`${api_host}/message`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        new_message_content,
-        topic_id,
-      }),
-      signal: completionAbortController.signal,
-    });
-    // get the response as a stream
-    const reader = res.body?.getReader();
-    if (!reader) {
-      return;
+    if (regenerateLastMessage) {
+      requestMethod = "DELETE";
+      setMessages((prev) => {
+        const newMessages = [{ content: "" }];
+        return [...prev.slice(0, prev.length - 1), ...newMessages];
+      });
+    } else {
+      setNewMessageContent("");
+      const newMessageTextarea = document.getElementById(
+        "new-message-content-textarea",
+      ) as HTMLTextAreaElement;
+      resizeTextarea(newMessageTextarea);
+
+      setMessages((prev) => {
+        const newMessages = [{ content: new_message_content }];
+        if (prev.length === 0) {
+          newMessages.unshift(...[{ content: "" }, { content: "" }]);
+        }
+        return [...prev, ...newMessages];
+      });
     }
-    setStreamingCompletion(true);
-    let done = false;
-    let finished_feedback = false;
-    let current_content = "";
-    setMessages((prev) => [...prev, { content: "", feedback: "" }]);
-    while (!done) {
-      const { value, done: doneReading } = await reader.read();
-      if (doneReading) {
-        done = doneReading;
-        setStreamingCompletion(false);
+
+    try {
+      const res = await fetch(`${api_host}/message`, {
+        method: requestMethod,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          new_message_content,
+          topic_id,
+        }),
+        signal: completionAbortController().signal,
+      });
+      // get the response as a stream
+      const reader = res.body?.getReader();
+      if (!reader) {
+        return;
       }
-      if (value) {
-        const decoder = new TextDecoder();
-        const chunk = decoder.decode(value);
+      setStreamingCompletion(true);
+      let done = false;
+      let finished_feedback = false;
+      let current_content = "";
+      while (!done) {
+        const { value, done: doneReading } = await reader.read();
+        if (doneReading) {
+          done = doneReading;
+          setStreamingCompletion(false);
+        }
+        if (value) {
+          const decoder = new TextDecoder();
+          const chunk = decoder.decode(value);
 
-        if (!finished_feedback) {
-          current_content += chunk;
+          if (!finished_feedback) {
+            current_content += chunk;
 
-          if (current_content.length < 8) {
-            continue;
-          }
+            if (current_content.length < 8) {
+              continue;
+            }
 
-          if (!current_content.startsWith("feedback")) {
-            finished_feedback = true;
+            if (!current_content.startsWith("feedback")) {
+              finished_feedback = true;
+              setMessages((prev) => {
+                const newMessage = {
+                  content: current_content,
+                };
+                return [...prev.slice(0, prev.length - 1), newMessage];
+              });
+              continue;
+            }
+
+            if (current_content.endsWith("\n")) {
+              finished_feedback = true;
+              current_content = current_content.slice(0, -2);
+            }
             setMessages((prev) => {
+              const lastMessage = prev[prev.length - 1];
               const newMessage = {
-                content: current_content,
+                content: lastMessage.content,
+                feedback: current_content,
               };
               return [...prev.slice(0, prev.length - 1), newMessage];
             });
             continue;
           }
 
-          if (current_content.endsWith("\n")) {
-            finished_feedback = true;
-            current_content = current_content.slice(0, -2);
-          }
           setMessages((prev) => {
             const lastMessage = prev[prev.length - 1];
             const newMessage = {
-              content: lastMessage.content,
-              feedback: current_content,
+              feedback: lastMessage.feedback,
+              content: lastMessage.content + chunk,
             };
             return [...prev.slice(0, prev.length - 1), newMessage];
           });
-          continue;
+          scrollToBottomOfMessages();
         }
-
-        setMessages((prev) => {
-          const lastMessage = prev[prev.length - 1];
-          const newMessage = {
-            feedback: lastMessage.feedback,
-            content: lastMessage.content + chunk,
-          };
-          return [...prev.slice(0, prev.length - 1), newMessage];
-        });
-        scrollToBottomOfMessages();
       }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -239,7 +256,7 @@ const Layout = (props: LayoutProps) => {
           </div>
 
           <div class="fixed bottom-0 right-0 flex w-full flex-col items-center space-y-4 bg-gradient-to-b from-transparent via-zinc-200 to-zinc-100 p-4 dark:via-zinc-800 dark:to-zinc-900 md:w-3/4">
-            <Show when={messages().length > 0}>
+            <Show when={messages().length > 2}>
               <div class="flex w-full justify-center">
                 <Show when={!streamingCompletion()}>
                   <button
@@ -247,6 +264,18 @@ const Layout = (props: LayoutProps) => {
                       "flex w-fit items-center justify-center space-x-4 rounded-xl bg-neutral-50 px-4 py-2 text-sm dark:bg-neutral-700 dark:text-white":
                         true,
                       "ml-auto": !atMessageBottom(),
+                    }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      const topic_id = props.selectedTopic()?.id;
+                      if (!topic_id) {
+                        return;
+                      }
+                      void fetchCompletion({
+                        new_message_content: "",
+                        topic_id,
+                        regenerateLastMessage: true,
+                      });
                     }}
                   >
                     <FiRefreshCcw />
@@ -261,7 +290,8 @@ const Layout = (props: LayoutProps) => {
                       "ml-auto": !atMessageBottom(),
                     }}
                     onClick={() => {
-                      completionAbortController.abort();
+                      completionAbortController().abort();
+                      setCompletionAbortController(new AbortController());
                       setStreamingCompletion(false);
                     }}
                   >
