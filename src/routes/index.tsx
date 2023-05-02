@@ -142,7 +142,7 @@ export default function Home() {
                 <li class="flex items-center text-turquoise">
                   <BiRegularCheck size={30} />
                   <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    Unlimitied Topics
+                    Unlimited Topics
                   </p>
                 </li>
                 <li class="flex items-center text-turquoise">
@@ -179,7 +179,7 @@ export default function Home() {
                 <li class="flex items-center text-acid">
                   <BiRegularCheck size={30} />
                   <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    Unlimitied Topics
+                    Unlimited Topics
                   </p>
                 </li>
                 <li class="flex items-center text-acid">
