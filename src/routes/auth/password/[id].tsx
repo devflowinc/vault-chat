@@ -1,9 +1,12 @@
 import { createSignal } from "solid-js";
-import { useParams } from "solid-start";
+import { useParams, useSearchParams } from "solid-start";
 import { A } from "solid-start";
-import { isActixApiDefaultError } from "~/types/actix-api";
+import { detectReferralToken, isActixApiDefaultError } from "~/types/actix-api";
 
 const FinishPasswordReset = () => {
+  const [searchParams] = useSearchParams();
+  detectReferralToken(searchParams.t);
+
   const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
 
   const params = useParams();

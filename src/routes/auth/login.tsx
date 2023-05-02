@@ -1,8 +1,11 @@
 import { Show, createSignal } from "solid-js";
-import { A } from "solid-start";
-import { isActixApiDefaultError } from "~/types/actix-api";
+import { A, useSearchParams } from "solid-start";
+import { detectReferralToken, isActixApiDefaultError } from "~/types/actix-api";
 
 const login = () => {
+  const [searchParams] = useSearchParams();
+  detectReferralToken(searchParams.t);
+
   const [getEmail, setEmail] = createSignal("");
   const [getPassword, setPassword] = createSignal("");
   const [getErrorMessage, setErrorMessage] = createSignal("");

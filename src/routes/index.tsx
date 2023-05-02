@@ -4,8 +4,13 @@ import {
   BiLogosYoutube,
   BiRegularCheck,
 } from "solid-icons/bi";
+import { useSearchParams } from "solid-start";
+import { detectReferralToken } from "~/types/actix-api";
 
 export default function Home() {
+  const [searchParams] = useSearchParams();
+  detectReferralToken(searchParams.t);
+
   return (
     <div class="bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50">
       <div class="bg-gradient-radial-t from-magenta-400 p-4">

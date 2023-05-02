@@ -27,3 +27,35 @@ export const isTopic = (data: unknown): data is Topic => {
     typeof (data as Topic).id === "string"
   );
 };
+
+export const detectReferralToken = (queryParamT: string | undefined) => {
+  if (queryParamT) {
+    let previousTokens: string[] = [];
+    const previousReferralToken = window.localStorage.getItem("referralToken");
+    if (previousReferralToken) {
+      const previousReferralTokenArray: string[] = JSON.parse(
+        previousReferralToken,
+      ) as unknown as string[];
+      previousTokens = previousReferralTokenArray;
+      if (previousTokens.find((val) => val === queryParamT)) {
+        return;
+      }
+    }
+    previousTokens.push(queryParamT);
+    window.localStorage.setItem(
+      "referralToken",
+      JSON.stringify(previousTokens),
+    );
+  }
+};
+
+export const getReferralTokenArray = (): string[] => {
+  const previousReferralToken = window.localStorage.getItem("referralToken");
+  if (previousReferralToken) {
+    const previousReferralTokenArray: string[] = JSON.parse(
+      previousReferralToken,
+    ) as unknown as string[];
+    return previousReferralTokenArray;
+  }
+  return [];
+};

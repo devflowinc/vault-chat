@@ -1,13 +1,17 @@
 import { Transition } from "solid-headless";
 import { Show, createResource, createSignal } from "solid-js";
+import { useSearchParams } from "solid-start";
 import { NewTopicForm } from "~/components/Forms/NewTopicForm";
 import Layout from "~/components/Layouts/MainLayout";
 import { Navbar } from "~/components/Navbar/Navbar";
 import { Sidebar } from "~/components/Navbar/Sidebar";
-import { isTopic } from "~/types/actix-api";
+import { detectReferralToken, isTopic } from "~/types/actix-api";
 import { Topic } from "~/types/topics";
 
 export default function DebateHome() {
+  const [searchParams] = useSearchParams();
+  detectReferralToken(searchParams.t);
+
   const [selectedTopic, setSelectedTopic] = createSignal<Topic | undefined>(
     undefined,
   );
