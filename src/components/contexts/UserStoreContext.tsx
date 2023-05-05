@@ -27,25 +27,27 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
   const [isLogin, setIsLogin] = createSignal<boolean>(false);
 
   createEffect(() => {
-    void fetch(`${api_host}/auth`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    }).then((response) => {
-      setIsLogin(response.ok);
-      if (
-        !response.ok &&
-        !(
-          window.location.pathname.includes("/auth/") ||
-          window.location.pathname === "/"
-        )
-      ) {
-        window.location.href = "/auth/login";
-        return;
-      }
-    });
+    if (!isLogin()) {
+      void fetch(`${api_host}/auth`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }).then((response) => {
+        setIsLogin(response.ok);
+        if (
+          !response.ok &&
+          !(
+            window.location.pathname.includes("/auth/") ||
+            window.location.pathname === "/"
+          )
+        ) {
+          window.location.href = "/auth/login";
+          return;
+        }
+      });
+    }
   });
 
   const GlobalStoreProvider = {
