@@ -221,7 +221,7 @@ export default function Home() {
         <div class="py-3" />
         <div class="flex flex-col gap-4 md:flex-row md:items-start">
           <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800 md:basis-1/3">
-            <p class="text-xs text-turquoise md:text-lg"> Jane Doe </p>
+            <p class="text-xs text-turquoise md:text-lg"> Mohammad Khan </p>
             <div class="py-1" />
             <p class="text-xs md:text-lg">
               "I've been using Arguflow AI for a few months now, and I'm blown
@@ -231,7 +231,7 @@ export default function Home() {
             <img src="/right-quote.svg" alt="" />
           </div>
           <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800 md:basis-1/3">
-            <p class="text-xs text-turquoise md:text-lg"> Jane Doe </p>
+            <p class="text-xs text-turquoise md:text-lg"> Juanita Rodriguez </p>
             <div class="py-1" />
             <p class="text-xs md:text-lg">
               "I've been using Arguflow AI for a few months now, and I'm blown
@@ -243,7 +243,7 @@ export default function Home() {
             <img src="/right-quote.svg" alt="" />
           </div>
           <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800 md:basis-1/3">
-            <p class="text-xs text-turquoise md:text-lg"> Jane Doe </p>
+            <p class="text-xs text-turquoise md:text-lg"> Sarah Davis </p>
             <div class="py-1" />
             <p class="text-xs md:text-lg">
               "I'm blown away by how effective it is at improving my debating
