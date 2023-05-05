@@ -22,33 +22,7 @@ export interface GlobalStoreProviderProps {
 }
 
 const UserStoreContext = (props: GlobalStoreProviderProps) => {
-  const api_host = import.meta.env.VITE_API_HOST as unknown as string;
-
   const [isLogin, setIsLogin] = createSignal<boolean>(false);
-
-  createEffect(() => {
-    if (!isLogin()) {
-      void fetch(`${api_host}/auth`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      }).then((response) => {
-        setIsLogin(response.ok);
-        if (
-          !response.ok &&
-          !(
-            window.location.pathname.includes("/auth/") ||
-            window.location.pathname === "/"
-          )
-        ) {
-          window.location.href = "/auth/login";
-          return;
-        }
-      });
-    }
-  });
 
   const GlobalStoreProvider = {
     isLogin,
