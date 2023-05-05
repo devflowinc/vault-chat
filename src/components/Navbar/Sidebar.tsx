@@ -5,15 +5,13 @@ import {
   BiRegularTrash,
   BiRegularX,
 } from "solid-icons/bi";
-import { Accessor, createSignal, For, Resource, Setter } from "solid-js";
+import { Accessor, createSignal, For, Setter } from "solid-js";
 import type { Topic } from "~/types/topics";
 import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 
 export interface SidebarProps {
-  topics: Resource<Topic[]>;
-  refetchTopics: (
-    info?: unknown,
-  ) => Topic[] | Promise<Topic[] | undefined> | null | undefined;
+  topics: Accessor<Topic[]>;
+  refetchTopics: () => Promise<void>;
   setIsCreatingTopic: (value: boolean) => boolean;
   currentTopic: Accessor<Topic | undefined>;
   setCurrentTopic: (topic: Topic | undefined) => void;
@@ -28,11 +26,7 @@ export const Sidebar = (props: SidebarProps) => {
 
   const submitEditText = async () => {
     const topics = props.topics();
-    const topic = topics ? topics[editingIndex()] : undefined;
-
-    if (!topic) {
-      return;
-    }
+    const topic = topics[editingIndex()];
 
     const res = await fetch(`${api_host}/topic`, {
       method: "PUT",
@@ -120,10 +114,8 @@ export const Sidebar = (props: SidebarProps) => {
                 }}
                 onClick={() => {
                   const topics = props.topics();
-                  const topic = topics ? topics[index()] : undefined;
-                  if (!topic) {
-                    return;
-                  }
+                  const topic = topics[index()];
+
                   props.setCurrentTopic(topic);
                   props.setIsCreatingTopic(false);
                   props.setSideBarOpen(false);

@@ -38,31 +38,56 @@ export const debate = () => {
     }
   });
 
-  const [topics, { refetch }] = createResource(async (): Promise<Topic[]> => {
-    try {
-      const response = await fetch(`${api_host}/topic`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
+  const [topics, setTopics] = createSignal<Topic[]>([]);
 
-      if (!response.ok) return [];
+  const refetchTopics = async () => {
+    const response = await fetch(`${api_host}/topic`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+    if (!response.ok) return;
 
-      const data: unknown = await response.json();
-
-      if (data !== null && typeof data === "object" && Array.isArray(data)) {
-        return data.filter((topic: unknown) => {
-          return isTopic(topic);
-        }) as Topic[];
-      }
-      return [];
-    } catch (e) {
-      console.error(e);
-      return [];
+    const data: unknown = await response.json();
+    if (data !== null && typeof data === "object" && Array.isArray(data)) {
+      const _topics = data.filter((topic: unknown) => {
+        return isTopic(topic);
+      }) as Topic[];
+      setTopics(_topics);
     }
+  };
+
+  createEffect(() => {
+    void refetchTopics();
   });
+
+  // const [topics, { refetch }] = createResource(async (): Promise<Topic[]> => {
+  //   try {
+  //     const response = await fetch(`${api_host}/topic`, {
+  //       method: "GET",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       credentials: "include",
+  //     });
+  //
+  //     if (!response.ok) return [];
+  //
+  //     const data: unknown = await response.json();
+  //
+  //     if (data !== null && typeof data === "object" && Array.isArray(data)) {
+  //       return data.filter((topic: unknown) => {
+  //         return isTopic(topic);
+  //       }) as Topic[];
+  //     }
+  //     return [];
+  //   } catch (e) {
+  //     console.error(e);
+  //     return [];
+  //   }
+  // });
 
   return (
     <Show when={userStoreContext.isLogin?.()}>
@@ -71,7 +96,7 @@ export const debate = () => {
           <Sidebar
             currentTopic={selectedTopic}
             setCurrentTopic={setSelectedTopic}
-            refetchTopics={refetch}
+            refetchTopics={refetchTopics}
             topics={topics}
             setIsCreatingTopic={setIsCreatingTopic}
             setSideBarOpen={setSideBarOpen}
@@ -85,7 +110,7 @@ export const debate = () => {
                 setIsCreatingTopic(false);
                 setSelectedTopic(topic);
               }}
-              refetchTopics={refetch}
+              refetchTopics={refetchTopics}
               topics={topics}
               setIsCreatingTopic={setIsCreatingTopic}
               setSideBarOpen={setSideBarOpen}
@@ -157,9 +182,9 @@ export const debate = () => {
               onSuccessfulTopicCreation={() => {
                 setLoadingTopic(true);
                 setIsCreatingTopic(false);
-                void refetch();
+                void refetchTopics();
                 setTimeout(() => {
-                  setSelectedTopic(topics()?.[0]);
+                  setSelectedTopic(topics()[0]);
                   setLoadingTopic(false);
                 }, 500);
               }}
