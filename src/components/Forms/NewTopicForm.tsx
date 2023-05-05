@@ -1,4 +1,4 @@
-import { Resource, Show, createSignal } from "solid-js";
+import { Show, createSignal, Accessor } from "solid-js";
 import { isActixApiDefaultError } from "~/types/actix-api";
 import type { Topic } from "~/types/topics";
 import { AfSwitch } from "../Atoms/AfSwitch";
@@ -8,7 +8,7 @@ export interface NewTopicFormProps {
   setIsCreatingTopic: (value: boolean) => void;
   selectedTopic: () => Topic | undefined;
   setCurrentTopic: (topic: Topic | undefined) => void;
-  topics: Resource<Topic[]>;
+  topics: Accessor<Topic[]>;
 }
 
 export const NewTopicForm = (props: NewTopicFormProps) => {
