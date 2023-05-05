@@ -10,14 +10,14 @@ export interface NavbarProps {
 
 export const Navbar = (props: NavbarProps) => {
   return (
-    <div class="flex h-11 w-full items-center justify-between border-b border-neutral-200 px-5 py-2 text-xl font-semibold text-neutral-800 dark:border-neutral-800 dark:text-white">
+    <div class="flex w-full items-center justify-between border-b border-neutral-200 px-5 py-2 font-semibold text-neutral-800 dark:border-neutral-800 dark:text-white md:text-xl">
       <div class="md:hidden">
         <BiRegularMenuAltLeft
           onClick={() => props.setSideBarOpen((prev) => !prev)}
           class="text-4xl"
         />
       </div>
-      <div class="flex w-full items-center justify-center">
+      <div class="flex w-full items-center justify-center px-2 text-center">
         <p>{props.selectedTopic()?.resolution ?? "New Topic"}</p>
       </div>
       <div class="md:hidden">
