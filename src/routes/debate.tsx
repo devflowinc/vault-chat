@@ -27,15 +27,30 @@ export const debate = () => {
   const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   const [isCreatingTopic, setIsCreatingTopic] = createSignal<boolean>(false);
   const [loadingTopic, setLoadingTopic] = createSignal<boolean>(false);
+  const [isLogin, setIsLogin] = createSignal<boolean>(false);
 
   detectReferralToken(searchParams.t);
 
   createEffect(() => {
-    console.log("isLogin", userStoreContext.isLogin?.());
-
-    if (!userStoreContext.isLogin?.()) {
-      window.location.href = "/auth/login";
-    }
+    void fetch(`${api_host}/auth`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }).then((response) => {
+      setIsLogin(response.ok);
+      if (
+        !response.ok &&
+        !(
+          window.location.pathname.includes("/auth/") ||
+          window.location.pathname === "/"
+        )
+      ) {
+        window.location.href = "/auth/login";
+        return;
+      }
+    });
   });
 
   const [topics, setTopics] = createSignal<Topic[]>([]);
@@ -90,7 +105,7 @@ export const debate = () => {
   // });
 
   return (
-    <Show when={userStoreContext.isLogin?.()}>
+    <Show when={isLogin()}>
       <div class="relative flex h-screen flex-row bg-zinc-100 dark:bg-zinc-900">
         <div class="hidden w-1/3 md:block">
           <Sidebar
