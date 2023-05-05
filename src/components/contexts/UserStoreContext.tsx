@@ -13,8 +13,8 @@ export interface GlobalStoreProviderType {
 
 export const GlobalStoreContext = createContext<GlobalStoreProviderType>({
   isLogin: null,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-empty-function
-  setIsLogin: (isLogin: boolean) => {},
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setIsLogin: (isLogin: boolean) => void 0,
 });
 
 export interface GlobalStoreProviderProps {
@@ -27,10 +27,6 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
   const [isLogin, setIsLogin] = createSignal<boolean>(false);
 
   createEffect(() => {
-    if (window.location.pathname !== "/") {
-      // Don't check auth if we're on the home page
-      return;
-    }
     void fetch(`${api_host}/auth`, {
       method: "GET",
       headers: {
@@ -38,6 +34,7 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
       },
       credentials: "include",
     }).then((response) => {
+      setIsLogin(response.ok);
       if (
         !response.ok &&
         !(
@@ -48,7 +45,6 @@ const UserStoreContext = (props: GlobalStoreProviderProps) => {
         window.location.href = "/auth/login";
         return;
       }
-      setIsLogin(response.ok);
     });
   });
 

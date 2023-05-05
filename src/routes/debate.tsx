@@ -1,17 +1,26 @@
 import { Transition } from "solid-headless";
-import { Show, createResource, createSignal } from "solid-js";
+import {
+  Show,
+  createEffect,
+  createResource,
+  createSignal,
+  useContext,
+} from "solid-js";
 import { useSearchParams } from "solid-start";
 import { NewTopicForm } from "~/components/Forms/NewTopicForm";
 import Layout from "~/components/Layouts/MainLayout";
 import { Navbar } from "~/components/Navbar/Navbar";
 import { Sidebar } from "~/components/Navbar/Sidebar";
+import { GlobalStoreContext } from "~/components/contexts/UserStoreContext";
 import { detectReferralToken, isTopic } from "~/types/actix-api";
 import { Topic } from "~/types/topics";
 
-export default function DebateHome() {
-  const [searchParams] = useSearchParams();
-  detectReferralToken(searchParams.t);
+export const debate = () => {
+  const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
 
+  const userStoreContext = useContext(GlobalStoreContext);
+
+  const [searchParams] = useSearchParams();
   const [selectedTopic, setSelectedTopic] = createSignal<Topic | undefined>(
     undefined,
   );
@@ -19,131 +28,151 @@ export default function DebateHome() {
   const [isCreatingTopic, setIsCreatingTopic] = createSignal<boolean>(false);
   const [loadingTopic, setLoadingTopic] = createSignal<boolean>(false);
 
-  const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
+  detectReferralToken(searchParams.t);
+
+  createEffect(() => {
+    console.log("isLogin", userStoreContext.isLogin?.());
+
+    if (!userStoreContext.isLogin?.()) {
+      window.location.href = "/auth/login";
+    }
+  });
 
   const [topics, { refetch }] = createResource(async (): Promise<Topic[]> => {
-    const response = await fetch(`${api_host}/topic`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    });
-    if (!response.ok) return [];
+    try {
+      const response = await fetch(`${api_host}/topic`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
 
-    const data: unknown = await response.json();
+      if (!response.ok) return [];
 
-    if (data !== null && typeof data === "object" && Array.isArray(data)) {
-      return data.filter((topic: unknown) => {
-        return isTopic(topic);
-      }) as Topic[];
+      const data: unknown = await response.json();
+
+      if (data !== null && typeof data === "object" && Array.isArray(data)) {
+        return data.filter((topic: unknown) => {
+          return isTopic(topic);
+        }) as Topic[];
+      }
+      return [];
+    } catch (e) {
+      console.error(e);
+      return [];
     }
-    return [];
   });
 
   return (
-    <div class="relative flex h-screen flex-row bg-zinc-100 dark:bg-zinc-900">
-      <div class="hidden w-1/3 md:block">
-        <Sidebar
-          currentTopic={selectedTopic}
-          setCurrentTopic={setSelectedTopic}
-          refetchTopics={refetch}
-          topics={topics}
-          setIsCreatingTopic={setIsCreatingTopic}
-          setSideBarOpen={setSideBarOpen}
-        />
-      </div>
-      <div class="md:hidden">
-        <Show when={sidebarOpen()}>
+    <Show when={userStoreContext.isLogin?.()}>
+      <div class="relative flex h-screen flex-row bg-zinc-100 dark:bg-zinc-900">
+        <div class="hidden w-1/3 md:block">
           <Sidebar
             currentTopic={selectedTopic}
-            setCurrentTopic={(topic: Topic | undefined) => {
-              setIsCreatingTopic(false);
-              setSelectedTopic(topic);
-            }}
+            setCurrentTopic={setSelectedTopic}
             refetchTopics={refetch}
             topics={topics}
             setIsCreatingTopic={setIsCreatingTopic}
             setSideBarOpen={setSideBarOpen}
           />
+        </div>
+        <div class="md:hidden">
+          <Show when={sidebarOpen()}>
+            <Sidebar
+              currentTopic={selectedTopic}
+              setCurrentTopic={(topic: Topic | undefined) => {
+                setIsCreatingTopic(false);
+                setSelectedTopic(topic);
+              }}
+              refetchTopics={refetch}
+              topics={topics}
+              setIsCreatingTopic={setIsCreatingTopic}
+              setSideBarOpen={setSideBarOpen}
+            />
+          </Show>
+        </div>
+        <Show when={loadingTopic()}>
+          <Transition
+            class="flex w-full flex-col"
+            show={loadingTopic()}
+            enter="transition-opacity duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div class="flex w-full flex-col items-center justify-center">
+              <div class="h-32 w-32 animate-spin rounded-full border-b-2 border-purple-500" />
+            </div>
+          </Transition>
         </Show>
-      </div>
-      <Show when={loadingTopic()}>
-        <Transition
-          class="flex w-full flex-col"
-          show={loadingTopic()}
-          enter="transition-opacity duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div class="flex w-full flex-col items-center justify-center">
-            <div class="h-32 w-32 animate-spin rounded-full border-b-2 border-purple-500" />
-          </div>
-        </Transition>
-      </Show>
-      <Show
-        when={
-          !loadingTopic() && !isCreatingTopic() && selectedTopic() !== undefined
-        }
-      >
-        <Transition
-          class="flex w-full flex-col"
-          show={
+        <Show
+          when={
             !loadingTopic() &&
             !isCreatingTopic() &&
             selectedTopic() !== undefined
           }
-          enter="transition-opacity duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
         >
-          <div
-            id="topic-layout"
-            class="overflow-y-auto scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600"
+          <Transition
+            class="flex w-full flex-col"
+            show={
+              !loadingTopic() &&
+              !isCreatingTopic() &&
+              selectedTopic() !== undefined
+            }
+            enter="transition-opacity duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
           >
-            <Navbar
-              selectedTopic={selectedTopic}
-              setSideBarOpen={setSideBarOpen}
+            <div
+              id="topic-layout"
+              class="overflow-y-auto scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md dark:scrollbar-track-neutral-800 dark:scrollbar-thumb-neutral-600"
+            >
+              <Navbar
+                selectedTopic={selectedTopic}
+                setSideBarOpen={setSideBarOpen}
+                setIsCreatingTopic={setIsCreatingTopic}
+              />
+              <Layout selectedTopic={selectedTopic} />
+            </div>
+          </Transition>
+        </Show>
+        <Show when={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}>
+          <Transition
+            class="flex w-full flex-col justify-center"
+            show={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}
+            enter="transition-opacity duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="transition-opacity duration-300"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <NewTopicForm
+              onSuccessfulTopicCreation={() => {
+                setLoadingTopic(true);
+                setIsCreatingTopic(false);
+                void refetch();
+                setTimeout(() => {
+                  setSelectedTopic(topics()?.[0]);
+                  setLoadingTopic(false);
+                }, 500);
+              }}
               setIsCreatingTopic={setIsCreatingTopic}
+              selectedTopic={selectedTopic}
+              setCurrentTopic={setSelectedTopic}
+              topics={topics}
             />
-            <Layout selectedTopic={selectedTopic} />
-          </div>
-        </Transition>
-      </Show>
-      <Show when={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}>
-        <Transition
-          class="flex w-full flex-col justify-center"
-          show={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}
-          enter="transition-opacity duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <NewTopicForm
-            onSuccessfulTopicCreation={() => {
-              setLoadingTopic(true);
-              setIsCreatingTopic(false);
-              void refetch();
-              setTimeout(() => {
-                setSelectedTopic(topics()?.[0]);
-                setLoadingTopic(false);
-              }, 500);
-            }}
-            setIsCreatingTopic={setIsCreatingTopic}
-            selectedTopic={selectedTopic}
-            setCurrentTopic={setSelectedTopic}
-            topics={topics}
-          />
-        </Transition>
-      </Show>
-    </div>
+          </Transition>
+        </Show>
+      </div>
+    </Show>
   );
-}
+};
+
+export default debate;
