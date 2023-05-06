@@ -1,24 +1,15 @@
 import { Transition } from "solid-headless";
-import {
-  Show,
-  createEffect,
-  createResource,
-  createSignal,
-  useContext,
-} from "solid-js";
+import { Show, createEffect, createSignal } from "solid-js";
 import { useSearchParams } from "solid-start";
 import { NewTopicForm } from "~/components/Forms/NewTopicForm";
 import Layout from "~/components/Layouts/MainLayout";
 import { Navbar } from "~/components/Navbar/Navbar";
 import { Sidebar } from "~/components/Navbar/Sidebar";
-import { GlobalStoreContext } from "~/components/contexts/UserStoreContext";
 import { detectReferralToken, isTopic } from "~/types/actix-api";
 import { Topic } from "~/types/topics";
 
 export const debate = () => {
   const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
-
-  const userStoreContext = useContext(GlobalStoreContext);
 
   const [searchParams] = useSearchParams();
   const [selectedTopic, setSelectedTopic] = createSignal<Topic | undefined>(
@@ -77,32 +68,6 @@ export const debate = () => {
   createEffect(() => {
     void refetchTopics();
   });
-
-  // const [topics, { refetch }] = createResource(async (): Promise<Topic[]> => {
-  //   try {
-  //     const response = await fetch(`${api_host}/topic`, {
-  //       method: "GET",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       credentials: "include",
-  //     });
-  //
-  //     if (!response.ok) return [];
-  //
-  //     const data: unknown = await response.json();
-  //
-  //     if (data !== null && typeof data === "object" && Array.isArray(data)) {
-  //       return data.filter((topic: unknown) => {
-  //         return isTopic(topic);
-  //       }) as Topic[];
-  //     }
-  //     return [];
-  //   } catch (e) {
-  //     console.error(e);
-  //     return [];
-  //   }
-  // });
 
   return (
     <Show when={isLogin()}>
@@ -184,7 +149,7 @@ export const debate = () => {
         </Show>
         <Show when={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}>
           <Transition
-            class="flex w-full flex-col justify-center"
+            class="flex w-full flex-col space-y-16"
             show={!loadingTopic() && (isCreatingTopic() || !selectedTopic())}
             enter="transition-opacity duration-300"
             enterFrom="opacity-0"
@@ -193,6 +158,11 @@ export const debate = () => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
+            <Navbar
+              selectedTopic={selectedTopic}
+              setSideBarOpen={setSideBarOpen}
+              setIsCreatingTopic={setIsCreatingTopic}
+            />
             <NewTopicForm
               onSuccessfulTopicCreation={() => {
                 setLoadingTopic(true);
