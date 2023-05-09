@@ -1,30 +1,11 @@
-# SolidStart
+# Arguflow AI
 
-Everything you need to build a Solid project, powered by [`solid-start`](https://start.solidjs.com);
+[`Arguflow AI`](https://arguflow.com) is your own personal debate coach. Powered by ['SolidJS'](https://solidjs.com), Arguflow AI utilizes AI software to debate against users and provide feedback on how to improve argument skills.
 
-## Creating a project
+## How to use Arguflow AI
 
-```bash
-# create a new project in the current directory
-npm init solid@latest
+click "Start Debating Now" from the main menu and create an account.
 
-# create a new project in my-app
-npm init solid@latest my-app
-```
+Once registered, users can select topics, decide whether they are for or against said topic, and begin inputting arguments for their side of the debate. 
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-Solid apps are built with _adapters_, which optimise your project for deployment to different environments.
-
-By default, `npm run build` will generate a Node app that you can run with `npm start`. To use a different adapter, add it to the `devDependencies` in `package.json` and specify in your `vite.config.js`.
+Arguflow will generate counterarguments as well as feedback on how arguments could be better phrased and improved overall.
