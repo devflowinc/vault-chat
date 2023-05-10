@@ -24,7 +24,7 @@ Arguflow will generate counterarguments as well as feedback on how arguments cou
 
 create a .env file in the root directory of the project. This .env file will require the following url's and API keys.
 
-'''javascript
+'''bash
 DATABASE_URL
 REDIS_URL
 SENDGRID_API_KEY
