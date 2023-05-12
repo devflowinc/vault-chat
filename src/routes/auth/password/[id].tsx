@@ -17,6 +17,9 @@ const FinishPasswordReset = () => {
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-neutral-50 px-10 dark:bg-neutral-800">
       <div class="flex w-full max-w-sm flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
+        <a href="/" class="flex flex-col items-center">
+          <img src="/Logo.png" alt="Arguflow Logo" class="mx-auto my-2" />
+        </a>
         <div class="text-center text-2xl font-bold">
           <span class="py-2">
             Finish Resetting Your Password for Arguflow AI Coach
