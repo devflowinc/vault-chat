@@ -15,6 +15,9 @@ const login = () => {
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-neutral-50 px-10 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50">
       <div class="flex w-full max-w-sm flex-col space-y-2 ">
+        <a href="/" class="flex flex-col items-center">
+          <img src="/Logo.png" alt="Arguflow Logo" class="mx-auto my-2" />
+        </a>
         <div class="text-center text-2xl font-bold">
           <span class="py-2">Login to Arguflow AI Coach</span>
         </div>
