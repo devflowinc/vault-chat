@@ -4,7 +4,7 @@
 
 ## How to use Arguflow AI
 
-click "Start Debating Now" from the main menu and create an account.
+Click "Start Debating Now" from the main menu and create an account.
 
 Once registered, users can select topics, decide whether they are for or against said topic, and begin inputting arguments for their side of the debate. 
 
@@ -22,12 +22,12 @@ Arguflow will generate counterarguments as well as feedback on how arguments cou
 
 ## Storing environment variables in .env file
 
-create a .env file in the root directory of the project. This .env file will require the following url's and API keys.
+Create a .env file in the root directory of the project. This .env file will require the following url's and API keys.
 
-'''bash
-DATABASE_URL
-REDIS_URL
-SENDGRID_API_KEY
-OPENAI_API_KEY
-STRIPE_API_SECRET_KEY
+'''
+DATABASE_URL = [url]
+REDIS_URL = [url]
+SENDGRID_API_KEY = [API key]
+OPENAI_API_KEY = [API key]
+STRIPE_API_SECRET_KEY = [API key]
 '''
