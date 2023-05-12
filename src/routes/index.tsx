@@ -120,7 +120,7 @@ export default function Home() {
         />
         <img
           class="hidden dark:block"
-          src="/example-darkdesktop.png"
+          src="/example-dark-desktop.png"
           alt=""
           elementtiming={""}
           fetchpriority={"auto"}
