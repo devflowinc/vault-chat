@@ -4,6 +4,10 @@ export interface ActixApiDefaultError {
   message: string;
 }
 
+export interface StripeCheckoutSessionResponse {
+  checkout_session_url: string;
+}
+
 export const isActixApiDefaultError = (
   data: unknown,
 ): data is ActixApiDefaultError => {
@@ -58,4 +62,19 @@ export const getReferralTokenArray = (): string[] => {
     return previousReferralTokenArray;
   }
   return [];
+};
+
+export const isStripeCheckoutSessionResponse = (
+  data: unknown,
+): data is StripeCheckoutSessionResponse => {
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    "checkout_session_url" in data &&
+    typeof (data as StripeCheckoutSessionResponse).checkout_session_url ===
+      "string"
+  ) {
+    return true;
+  }
+  return false;
 };
