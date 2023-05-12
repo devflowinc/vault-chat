@@ -4,16 +4,64 @@ import {
   BiLogosYoutube,
   BiRegularCheck,
 } from "solid-icons/bi";
-import { useContext } from "solid-js";
+import { Setter, createEffect, createSignal, useContext } from "solid-js";
 import { A, useSearchParams } from "solid-start";
 import { GlobalStoreContext } from "~/components/contexts/UserStoreContext";
-import { detectReferralToken } from "~/types/actix-api";
+import {
+  detectReferralToken,
+  isStripeCheckoutSessionResponse,
+} from "~/types/actix-api";
 
 export default function Home() {
+  const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
+  const silver_plan_id: string = import.meta.env
+    .VITE_STRIPE_SILVER_PLAN_ID as unknown as string;
+  const gold_plan_id: string = import.meta.env
+    .VITE_STRIPE_GOLD_PLAN_ID as unknown as string;
+
   const userStoreContext = useContext(GlobalStoreContext);
   const [searchParams] = useSearchParams();
+  const [silverPlanUrl, setSilverPlanUrl] = createSignal<string>("");
+  const [goldPlanUrl, setGoldPlanUrl] = createSignal<string>("");
 
   detectReferralToken(searchParams.t);
+
+  createEffect(() => {
+    const silver_plan_abort_controller = new AbortController();
+    const gold_plan_abort_controller = new AbortController();
+
+    const getPlanUrl = (
+      plan_id: string,
+      setPlanUrl: Setter<string>,
+      abortController: AbortController,
+    ) => {
+      void fetch(`${api_host}/stripe/${plan_id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        signal: abortController.signal,
+      }).then(async (response) => {
+        if (!response.ok) {
+          return;
+        }
+        const response_json = (await response.json()) as unknown;
+        if (!isStripeCheckoutSessionResponse(response_json)) {
+          return;
+        }
+        setPlanUrl(response_json.checkout_session_url);
+      });
+    };
+
+    getPlanUrl(silver_plan_id, setSilverPlanUrl, silver_plan_abort_controller);
+    getPlanUrl(gold_plan_id, setGoldPlanUrl, gold_plan_abort_controller);
+
+    return () => {
+      silver_plan_abort_controller.abort();
+      gold_plan_abort_controller.abort();
+    };
+  });
 
   return (
     <div class="bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50">
@@ -40,7 +88,7 @@ export default function Home() {
             </div>
             <A
               class="rounded-lg bg-turquoise px-4 py-2 dark:text-neutral-900"
-              href={userStoreContext.isLogin ? "/debate" : "/register"}
+              href={userStoreContext.isLogin?.() ? "/debate" : "/register"}
             >
               Start Debating
             </A>
@@ -55,7 +103,7 @@ export default function Home() {
           <p class="md:text-lg">Your personal AI debate coach.</p>
           <A
             class="rounded-lg bg-gradient-to-br from-cyan-900 to-turquoise px-4 py-2 text-white shadow-md"
-            href={userStoreContext.isLogin ? "/debate" : "/register"}
+            href={userStoreContext.isLogin?.() ? "/debate" : "/register"}
           >
             Start Debating Now
           </A>
@@ -178,18 +226,58 @@ export default function Home() {
         <div class="flex flex-col gap-4 md:flex-row">
           <div class="w-full space-y-4 rounded-md bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
             <div>
+              <p class="md:text-2xl">Bronze</p>
+              <p class="text-xs text-neutral-500 md:text-lg">
+                Preview of functionality
+              </p>
+              <p>
+                <span class="text-2xl font-semibold md:text-4xl">Free</span>
+              </p>
+            </div>
+            <A href={userStoreContext.isLogin?.() ? "/debate" : "/register"}>
+              <div class="my-2 w-full rounded-lg bg-fuchsia-500 py-2 text-center shadow-md dark:text-neutral-900">
+                Get Started
+              </div>
+            </A>
+            <div>
+              <ul>
+                <li class="flex items-center text-fuchsia-500">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    ChatGPT 3
+                  </p>
+                </li>
+                <li class="flex items-center text-fuchsia-500">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    1 Topic + 20 Messages
+                  </p>
+                </li>
+                <li class="flex items-center text-fuchsia-500">
+                  <BiRegularCheck size={30} />
+                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                    Basic Feedback
+                  </p>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="w-full space-y-4 rounded-md bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
+            <div>
               <p class="md:text-2xl">Silver</p>
               <p class="text-xs text-neutral-500 md:text-lg">
                 Basic debate functions
               </p>
               <p>
-                <span class="text-2xl font-semibold md:text-4xl">$15</span>
+                <span class="text-2xl font-semibold md:text-4xl">$10</span>
                 <span class="text-neutral-500 md:text-2xl">/mo</span>
               </p>
             </div>
-            <div class="w-full rounded-lg bg-turquoise py-2 text-center shadow-md dark:text-neutral-900">
-              Sign Up Now
-            </div>
+            <A href={silverPlanUrl()}>
+              <div class="my-2 w-full rounded-lg bg-turquoise py-2 text-center shadow-md dark:text-neutral-900">
+                Sign Up Now
+              </div>
+            </A>
             <div>
               <ul>
                 <li class="flex items-center text-turquoise">
@@ -224,9 +312,11 @@ export default function Home() {
                 <span class="text-neutral-500 md:text-2xl">/mo</span>
               </p>
             </div>
-            <div class="w-full rounded-lg bg-acid py-2 text-center shadow-md dark:text-neutral-900">
-              Sign Up Now
-            </div>
+            <A href={goldPlanUrl()}>
+              <div class="my-2 w-full rounded-lg bg-acid py-2 text-center shadow-md dark:text-neutral-900">
+                Sign Up Now
+              </div>
+            </A>
             <div>
               <ul>
                 <li class="flex items-center text-acid">
@@ -348,7 +438,7 @@ export default function Home() {
           </p>
           <A
             class="rounded-lg bg-gradient-to-br from-[#235761] to-turquoise px-4 py-2 text-white shadow-md"
-            href={userStoreContext.isLogin ? "/debate" : "/register"}
+            href={userStoreContext.isLogin?.() ? "/debate" : "/register"}
           >
             Sign Up
           </A>
