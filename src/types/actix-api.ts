@@ -78,3 +78,34 @@ export const isStripeCheckoutSessionResponse = (
   }
   return false;
 };
+
+export interface UserPlan {
+  id: string;
+  stripe_customer_id: string;
+  stripe_subscription_id: string;
+  plan: "silver" | "gold";
+  created_at: string;
+  updated_at: string;
+}
+
+export const isUserPlan = (data: unknown): data is UserPlan => {
+  if (
+    typeof data === "object" &&
+    data !== null &&
+    "id" in data &&
+    "stripe_customer_id" in data &&
+    "stripe_subscription_id" in data &&
+    "plan" in data &&
+    "created_at" in data &&
+    "updated_at" in data &&
+    typeof (data as UserPlan).id === "string" &&
+    typeof (data as UserPlan).stripe_customer_id === "string" &&
+    typeof (data as UserPlan).stripe_subscription_id === "string" &&
+    typeof (data as UserPlan).plan === "string" &&
+    typeof (data as UserPlan).created_at === "string" &&
+    typeof (data as UserPlan).updated_at === "string"
+  ) {
+    return true;
+  }
+  return false;
+};
