@@ -5,12 +5,20 @@ import {
   BiRegularTrash,
   BiRegularX,
 } from "solid-icons/bi";
-import { Accessor, createSignal, For, Setter, Show } from "solid-js";
+import {
+  Accessor,
+  createEffect,
+  createSignal,
+  For,
+  Setter,
+  Show,
+} from "solid-js";
 import type { Topic } from "~/types/topics";
 import { FiSettings } from "solid-icons/fi";
 import { FullScreenModal } from "../Atoms/FullScreenModal";
 import { IoSparklesOutline } from "solid-icons/io";
 import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
+import { isStripeCheckoutSessionResponse, isUserPlan } from "~/types/actix-api";
 
 export interface SidebarProps {
   topics: Accessor<Topic[]>;
@@ -23,10 +31,20 @@ export interface SidebarProps {
 
 export const Sidebar = (props: SidebarProps) => {
   const api_host = import.meta.env.VITE_API_HOST as unknown as string;
+  const silver_plan_id: string = import.meta.env
+    .VITE_STRIPE_SILVER_PLAN_ID as unknown as string;
+  const gold_plan_id: string = import.meta.env
+    .VITE_STRIPE_GOLD_PLAN_ID as unknown as string;
 
   const [editingIndex, setEditingIndex] = createSignal(-1);
   const [editingTopic, setEditingTopic] = createSignal("");
   const [settingsModalOpen, setSettingsModalOpen] = createSignal(false);
+  const [currentPlan, setCurrentPlan] = createSignal<
+    "free" | "silver" | "gold"
+  >("free");
+  const [silverPlanUrl, setSilverPlanUrl] = createSignal<string>("");
+  const [goldPlanUrl, setGoldPlanUrl] = createSignal<string>("");
+  const [planStatus, setPlanStatus] = createSignal<string>("");
 
   const submitEditText = async () => {
     const topics = props.topics();
@@ -86,6 +104,87 @@ export const Sidebar = (props: SidebarProps) => {
       window.location.href = "/auth/login";
     });
   };
+
+  const cancelPlan = () => {
+    void fetch(`${api_host}/stripe/plan`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }).then((response) => {
+      if (!response.ok) {
+        return;
+      }
+      setCurrentPlan("free");
+      setPlanStatus("cancelled");
+    });
+  };
+
+  createEffect(() => {
+    const silver_plan_abort_controller = new AbortController();
+    const gold_plan_abort_controller = new AbortController();
+
+    const getPlanUrl = (
+      plan_id: string,
+      setPlanUrl: Setter<string>,
+      abortController: AbortController,
+    ) => {
+      void fetch(`${api_host}/stripe/${plan_id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        signal: abortController.signal,
+      }).then(async (response) => {
+        if (!response.ok) {
+          return;
+        }
+        const response_json = (await response.json()) as unknown;
+        if (!isStripeCheckoutSessionResponse(response_json)) {
+          return;
+        }
+        setPlanUrl(response_json.checkout_session_url);
+        // setPlanStatus(response_json.status);
+      });
+    };
+
+    getPlanUrl(silver_plan_id, setSilverPlanUrl, silver_plan_abort_controller);
+    getPlanUrl(gold_plan_id, setGoldPlanUrl, gold_plan_abort_controller);
+
+    return () => {
+      silver_plan_abort_controller.abort();
+      gold_plan_abort_controller.abort();
+    };
+  });
+
+  createEffect(() => {
+    const get_stripe_plan_abort_controller = new AbortController();
+
+    void fetch(`${api_host}/stripe/plan`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      signal: get_stripe_plan_abort_controller.signal,
+    }).then((response) => {
+      if (!response.ok) {
+        return;
+      }
+      void response.json().then((data) => {
+        if (!isUserPlan(data)) {
+          return;
+        }
+        setCurrentPlan(data.plan);
+      });
+    });
+
+    return () => {
+      get_stripe_plan_abort_controller.abort();
+    };
+  });
 
   return (
     <div class="absolute z-50 flex h-screen w-screen flex-row dark:text-gray-50 md:relative md:w-full">
@@ -166,16 +265,6 @@ export const Sidebar = (props: SidebarProps) => {
                     <p class="line-clamp-1 text-left">{topic.resolution}</p>
                     <div class="flex-1" />
                     <div class="flex flex-row items-center space-x-2">
-                      {/* {props.currentTopic() == topic && (
-                        <div class="text-lg hover:text-purple-500">
-                          <BiRegularEditAlt
-                            onClick={() => {
-                              setEditingIndex(index());
-                              setEditingTopic(topic.resolution);
-                            }}
-                          />
-                        </div>
-                      )} */}
                       {props.currentTopic() == topic && (
                         <div class="text-lg hover:text-purple-500">
                           <BiRegularTrash
@@ -240,29 +329,49 @@ export const Sidebar = (props: SidebarProps) => {
               <div class="text-lg font-bold">Subscription Details</div>
               <div class="flex w-full items-center justify-between space-x-4">
                 <div>Tier:</div>
-                <div class="">Silver</div>
+                <div>Silver</div>
               </div>
               <div class="flex w-full items-center justify-between space-x-4">
                 <div>Price:</div>
-                <div class="">$10/month</div>
+                <div>$10/month</div>
               </div>
               <div class="flex w-full items-center justify-between space-x-4">
-                <div>Charge Date:</div>
-                <div class="">12/12/2021</div>
+                <div>Status:</div>
+                <div class="text-right">
+                  {planStatus() === "cancelled"
+                    ? "Cancelled (you will not be charged at the end of current billing cycle)"
+                    : "Active"}
+                </div>
               </div>
             </div>
             <div class="flex flex-col space-y-2">
-              <button class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white">
+              <a
+                class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
+                href={currentPlan() === "gold" ? "" : silverPlanUrl()}
+              >
                 <IoSparklesOutline class="mr-2" />
-                Upgrade To Silver Tier ($50/month) (GPT4)
-              </button>
-              <button class="flex w-full items-center justify-center rounded-md bg-amber-500 px-4 py-2 font-bold text-white">
-                <IoSparklesOutline class="mr-2" />
-                Upgrade To Gold Tier ($50/month) (GPT4)
-              </button>
-              <button class="flex w-full items-center justify-center rounded-md bg-stone-500 px-4 py-2 text-white">
-                Cancel Subscription
-              </button>
+                {currentPlan() === "gold" ? "Downgrade" : "Upgrade"} To Silver
+                ($9.99/month)
+              </a>
+              <Show when={currentPlan() !== "gold"}>
+                <a
+                  class="flex w-full items-center justify-center rounded-md bg-amber-500 px-4 py-2 font-bold text-white"
+                  href={goldPlanUrl()}
+                >
+                  <IoSparklesOutline class="mr-2" />
+                  Upgrade To Gold ($49.99/month) (GPT4)
+                </a>
+              </Show>
+              <Show when={currentPlan() !== "free"}>
+                <button
+                  class="flex w-full items-center justify-center rounded-md bg-stone-500 px-4 py-2 text-white"
+                  onClick={() => {
+                    cancelPlan();
+                  }}
+                >
+                  Cancel Subscription
+                </button>
+              </Show>
             </div>
           </div>
         </FullScreenModal>
