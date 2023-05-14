@@ -4,12 +4,13 @@ import {
   BiLogosYoutube,
   BiRegularCheck,
 } from "solid-icons/bi";
-import { Setter, createEffect, createSignal, useContext } from "solid-js";
+import { Setter, Show, createEffect, createSignal, useContext } from "solid-js";
 import { A, useSearchParams } from "solid-start";
 import { GlobalStoreContext } from "~/components/contexts/UserStoreContext";
 import {
   detectReferralToken,
   isStripeCheckoutSessionResponse,
+  isUserPlan,
 } from "~/types/actix-api";
 
 export default function Home() {
@@ -23,6 +24,9 @@ export default function Home() {
   const [searchParams] = useSearchParams();
   const [silverPlanUrl, setSilverPlanUrl] = createSignal<string>("");
   const [goldPlanUrl, setGoldPlanUrl] = createSignal<string>("");
+  const [currentPlan, setCurrentPlan] = createSignal<
+    "free" | "silver" | "gold"
+  >("free");
 
   detectReferralToken(searchParams.t);
 
@@ -60,6 +64,33 @@ export default function Home() {
     return () => {
       silver_plan_abort_controller.abort();
       gold_plan_abort_controller.abort();
+    };
+  });
+
+  createEffect(() => {
+    const get_stripe_plan_abort_controller = new AbortController();
+
+    void fetch(`${api_host}/stripe/plan`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      signal: get_stripe_plan_abort_controller.signal,
+    }).then((response) => {
+      if (!response.ok) {
+        return;
+      }
+      void response.json().then((data) => {
+        if (!isUserPlan(data)) {
+          return;
+        }
+        setCurrentPlan(data.plan);
+      });
+    });
+
+    return () => {
+      get_stripe_plan_abort_controller.abort();
     };
   });
 
@@ -218,139 +249,147 @@ export default function Home() {
             </p>
           </div>
         </section>
-        <div class="py-6" />
-        <p id="pricing" class="text-magenta md:text-xl">
-          Pricing
-        </p>
-        <p class="mb-3 text-2xl">Affordable Plans</p>
-        <div class="flex flex-col gap-4 md:flex-row">
-          <div class="w-full space-y-4 rounded-md bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
-            <div>
-              <p class="md:text-2xl">Bronze</p>
-              <p class="text-xs text-neutral-500 md:text-lg">
-                Preview of functionality
-              </p>
-              <p>
-                <span class="text-2xl font-semibold md:text-4xl">Free</span>
-              </p>
-            </div>
-            <A href={userStoreContext.isLogin?.() ? "/debate" : "/register"}>
-              <div class="my-2 w-full rounded-lg bg-fuchsia-500 py-2 text-center shadow-md dark:text-neutral-900">
-                Get Started
+        <Show when={currentPlan() === "free"}>
+          <div class="py-6" />
+          <p id="pricing" class="text-magenta md:text-xl">
+            Pricing
+          </p>
+          <p class="mb-3 text-2xl">Affordable Plans</p>
+          <div class="flex flex-col gap-4 md:flex-row">
+            <div class="w-full space-y-4 rounded-md bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
+              <div>
+                <p class="md:text-2xl">Bronze</p>
+                <p class="text-xs text-neutral-500 md:text-lg">
+                  Preview of functionality
+                </p>
+                <p>
+                  <span class="text-2xl font-semibold md:text-4xl">Free</span>
+                </p>
               </div>
-            </A>
-            <div>
-              <ul>
-                <li class="flex items-center text-fuchsia-500">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    ChatGPT 3
-                  </p>
-                </li>
-                <li class="flex items-center text-fuchsia-500">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    1 Topic + 20 Messages
-                  </p>
-                </li>
-                <li class="flex items-center text-fuchsia-500">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    Basic Feedback
-                  </p>
-                </li>
-              </ul>
+              <A href={userStoreContext.isLogin?.() ? "/debate" : "/register"}>
+                <div class="mb-2 w-full rounded-lg bg-fuchsia-500 py-2 text-center shadow-md dark:text-neutral-900 sm:mt-10">
+                  Get Started
+                </div>
+              </A>
+              <div>
+                <ul>
+                  <li class="flex items-center text-fuchsia-500">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      ChatGPT 3
+                    </p>
+                  </li>
+                  <li class="flex items-center text-fuchsia-500">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      1 Topic + 20 Messages
+                    </p>
+                  </li>
+                  <li class="flex items-center text-fuchsia-500">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      Basic Feedback
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="w-full space-y-4 rounded-md bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
+              <div>
+                <p class="md:text-2xl">Silver</p>
+                <p class="text-xs text-neutral-500 md:text-lg">
+                  Basic debate functions
+                </p>
+                <span class="text-2xl font-semibold text-neutral-400 line-through md:text-2xl">
+                  $14.99
+                </span>
+                <p>
+                  <span class="text-2xl font-semibold md:text-4xl">$9.99</span>
+                  <span class="text-neutral-500 md:text-2xl">/mo</span>
+                </p>
+              </div>
+              <A
+                href={
+                  silverPlanUrl() ||
+                  (userStoreContext.isLogin?.() ? "/debate" : "/register")
+                }
+              >
+                <div class="my-2 w-full rounded-lg bg-turquoise py-2 text-center shadow-md dark:text-neutral-900">
+                  Sign Up Now
+                </div>
+              </A>
+              <div>
+                <ul>
+                  <li class="flex items-center text-turquoise">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      ChatGPT 3
+                    </p>
+                  </li>
+                  <li class="flex items-center text-turquoise">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      Unlimited Topics
+                    </p>
+                  </li>
+                  <li class="flex items-center text-turquoise">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      Basic Feedback
+                    </p>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="w-full space-y-4 rounded-md bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
+              <div>
+                <p class="md:text-2xl">Gold</p>
+                <p class="text-xs text-neutral-500 md:text-lg">
+                  Advanced debating
+                </p>
+                <span class="text-2xl font-semibold text-neutral-400 line-through md:text-2xl">
+                  $74.99
+                </span>
+                <p>
+                  <span class="text-2xl font-semibold md:text-4xl">$49.99</span>
+                  <span class="text-neutral-500 md:text-2xl">/mo</span>
+                </p>
+              </div>
+              <A
+                href={
+                  goldPlanUrl() ||
+                  (userStoreContext.isLogin?.() ? "/debate" : "/register")
+                }
+              >
+                <div class="my-2 w-full rounded-lg bg-acid py-2 text-center shadow-md dark:text-neutral-900">
+                  Sign Up Now
+                </div>
+              </A>
+              <div>
+                <ul>
+                  <li class="flex items-center text-acid">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      ChatGPT 4
+                    </p>
+                  </li>
+                  <li class="flex items-center text-acid">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      Unlimited Topics
+                    </p>
+                  </li>
+                  <li class="flex items-center text-acid">
+                    <BiRegularCheck size={30} />
+                    <p class="text-xs text-neutral-900 dark:text-neutral-50">
+                      More Feedback
+                    </p>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-          <div class="w-full space-y-4 rounded-md bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
-            <div>
-              <p class="md:text-2xl">Silver</p>
-              <p class="text-xs text-neutral-500 md:text-lg">
-                Basic debate functions
-              </p>
-              <p>
-                <span class="text-2xl font-semibold md:text-4xl">$10</span>
-                <span class="text-neutral-500 md:text-2xl">/mo</span>
-              </p>
-            </div>
-            <A
-              href={
-                silverPlanUrl() ||
-                (userStoreContext.isLogin?.() ? "/debate" : "/register")
-              }
-            >
-              <div class="my-2 w-full rounded-lg bg-turquoise py-2 text-center shadow-md dark:text-neutral-900">
-                Sign Up Now
-              </div>
-            </A>
-            <div>
-              <ul>
-                <li class="flex items-center text-turquoise">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    ChatGPT 3
-                  </p>
-                </li>
-                <li class="flex items-center text-turquoise">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    Unlimited Topics
-                  </p>
-                </li>
-                <li class="flex items-center text-turquoise">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    Basic Feedback
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div class="w-full space-y-4 rounded-md bg-neutral-50 p-6 shadow-xl dark:bg-neutral-800 dark:text-neutral-50">
-            <div>
-              <p class="md:text-2xl">Gold</p>
-              <p class="text-xs text-neutral-500 md:text-lg">
-                Advanced debating
-              </p>
-              <p>
-                <span class="text-2xl font-semibold md:text-4xl">$50</span>
-                <span class="text-neutral-500 md:text-2xl">/mo</span>
-              </p>
-            </div>
-            <A
-              href={
-                goldPlanUrl() ||
-                (userStoreContext.isLogin?.() ? "/debate" : "/register")
-              }
-            >
-              <div class="my-2 w-full rounded-lg bg-acid py-2 text-center shadow-md dark:text-neutral-900">
-                Sign Up Now
-              </div>
-            </A>
-            <div>
-              <ul>
-                <li class="flex items-center text-acid">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    ChatGPT 4
-                  </p>
-                </li>
-                <li class="flex items-center text-acid">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    Unlimited Topics
-                  </p>
-                </li>
-                <li class="flex items-center text-acid">
-                  <BiRegularCheck size={30} />
-                  <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                    More Feedback
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        </Show>
         <div class="py-6" />
         <p class="text-magenta md:text-xl">Partners</p>
         <div class="py-1" />

@@ -116,8 +116,27 @@ export const Sidebar = (props: SidebarProps) => {
       if (!response.ok) {
         return;
       }
-      setCurrentPlan("free");
-      setPlanStatus("cancelled");
+      setPlanStatus("canceled");
+    });
+  };
+
+  const putToPlan = (plan_id: string) => {
+    void fetch(`${api_host}/stripe/plan`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({
+        plan_id: plan_id,
+      }),
+    }).then((response) => {
+      if (!response.ok) {
+        return;
+      }
+      const newPlanType = plan_id === silver_plan_id ? "silver" : "gold";
+      setCurrentPlan(newPlanType);
+      setPlanStatus("active");
     });
   };
 
@@ -146,7 +165,6 @@ export const Sidebar = (props: SidebarProps) => {
           return;
         }
         setPlanUrl(response_json.checkout_session_url);
-        // setPlanStatus(response_json.status);
       });
     };
 
@@ -178,6 +196,7 @@ export const Sidebar = (props: SidebarProps) => {
           return;
         }
         setCurrentPlan(data.plan);
+        setPlanStatus(data.status);
       });
     });
 
@@ -283,6 +302,26 @@ export const Sidebar = (props: SidebarProps) => {
         </div>
         <div class="flex-1 " />
         <div class="flex w-full flex-col space-y-1 border-t px-2 py-2 dark:border-neutral-400">
+          <Show when={currentPlan() == "free"}>
+            <a
+              class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
+              href={silverPlanUrl()}
+            >
+              <IoSparklesOutline class="mr-2" />
+              Upgrade To Silver ($9.99/month)
+            </a>
+          </Show>
+          <Show when={currentPlan() !== "free" && planStatus() == "canceled"}>
+            <button
+              class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
+              onClick={() => {
+                putToPlan(silver_plan_id);
+              }}
+            >
+              <IoSparklesOutline class="mr-2" />
+              Upgrade To Silver ($9.99/month)
+            </button>
+          </Show>
           <button
             class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
             onClick={logout}
@@ -329,40 +368,74 @@ export const Sidebar = (props: SidebarProps) => {
               <div class="text-lg font-bold">Subscription Details</div>
               <div class="flex w-full items-center justify-between space-x-4">
                 <div>Tier:</div>
-                <div>Silver</div>
+                <div>{currentPlan()}</div>
               </div>
-              <div class="flex w-full items-center justify-between space-x-4">
-                <div>Price:</div>
-                <div>$10/month</div>
-              </div>
-              <div class="flex w-full items-center justify-between space-x-4">
-                <div>Status:</div>
-                <div class="text-right">
-                  {planStatus() === "cancelled"
-                    ? "Cancelled (you will not be charged at the end of current billing cycle)"
-                    : "Active"}
+              <Show when={currentPlan() !== "free"}>
+                <div class="flex w-full items-center justify-between space-x-4">
+                  <div>Price:</div>
+                  <div>$10/month</div>
                 </div>
-              </div>
+                <div class="flex w-full items-center justify-between space-x-4">
+                  <div>Status:</div>
+                  <div class="text-right">
+                    {planStatus() === "canceled"
+                      ? "canceled (you will not be charged at the end of current billing cycle)"
+                      : "active"}
+                  </div>
+                </div>
+              </Show>
             </div>
             <div class="flex flex-col space-y-2">
-              <a
-                class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
-                href={currentPlan() === "gold" ? "" : silverPlanUrl()}
-              >
-                <IoSparklesOutline class="mr-2" />
-                {currentPlan() === "gold" ? "Downgrade" : "Upgrade"} To Silver
-                ($9.99/month)
-              </a>
-              <Show when={currentPlan() !== "gold"}>
+              <Show when={currentPlan() === "free"}>
                 <a
-                  class="flex w-full items-center justify-center rounded-md bg-amber-500 px-4 py-2 font-bold text-white"
-                  href={goldPlanUrl()}
+                  class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
+                  href={silverPlanUrl()}
                 >
                   <IoSparklesOutline class="mr-2" />
-                  Upgrade To Gold ($49.99/month) (GPT4)
+                  Upgrade To Silver ($9.99/month)
                 </a>
+                <Show when={currentPlan() !== "gold"}>
+                  <a
+                    class="flex w-full items-center justify-center rounded-md bg-amber-500 px-4 py-2 font-bold text-white"
+                    href={goldPlanUrl()}
+                  >
+                    <IoSparklesOutline class="mr-2" />
+                    Upgrade To Gold ($49.99/month) (GPT4)
+                  </a>
+                </Show>
               </Show>
               <Show when={currentPlan() !== "free"}>
+                <Show
+                  when={
+                    currentPlan() !== "silver" || planStatus() == "canceled"
+                  }
+                >
+                  <button
+                    class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
+                    onClick={() => {
+                      putToPlan(silver_plan_id);
+                    }}
+                  >
+                    <IoSparklesOutline class="mr-2" />
+                    {currentPlan() === "gold" && planStatus() !== "canceled"
+                      ? "Downgrade"
+                      : "Upgrade"}{" "}
+                    To Silver ($9.99/month)
+                  </button>
+                </Show>
+                <Show
+                  when={currentPlan() !== "gold" || planStatus() == "canceled"}
+                >
+                  <button
+                    class="flex w-full items-center justify-center rounded-md bg-amber-500 px-4 py-2 font-bold text-white"
+                    onClick={() => {
+                      putToPlan(gold_plan_id);
+                    }}
+                  >
+                    <IoSparklesOutline class="mr-2" />
+                    Upgrade To Gold ($49.99/month) (GPT4)
+                  </button>
+                </Show>
                 <button
                   class="flex w-full items-center justify-center rounded-md bg-stone-500 px-4 py-2 text-white"
                   onClick={() => {
