@@ -329,7 +329,7 @@ export default function Home() {
                   <li class="flex items-center text-turquoise">
                     <BiRegularCheck size={30} />
                     <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                      Unlimited Topics
+                      Unlimited Topics + 1000 Messages
                     </p>
                   </li>
                   <li class="flex items-center text-turquoise">
@@ -370,13 +370,13 @@ export default function Home() {
                   <li class="flex items-center text-acid">
                     <BiRegularCheck size={30} />
                     <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                      ChatGPT 4
+                      ChatGPT 4 (Coming Soon)
                     </p>
                   </li>
                   <li class="flex items-center text-acid">
                     <BiRegularCheck size={30} />
                     <p class="text-xs text-neutral-900 dark:text-neutral-50">
-                      Unlimited Topics
+                      Unlimited Topics + Unlimited Messages
                     </p>
                   </li>
                   <li class="flex items-center text-acid">

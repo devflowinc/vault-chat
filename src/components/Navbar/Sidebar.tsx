@@ -45,6 +45,7 @@ export const Sidebar = (props: SidebarProps) => {
   const [silverPlanUrl, setSilverPlanUrl] = createSignal<string>("");
   const [goldPlanUrl, setGoldPlanUrl] = createSignal<string>("");
   const [planStatus, setPlanStatus] = createSignal<string>("");
+  const [planPrice, setPlanPrice] = createSignal<string>("");
 
   const submitEditText = async () => {
     const topics = props.topics();
@@ -137,6 +138,7 @@ export const Sidebar = (props: SidebarProps) => {
       const newPlanType = plan_id === silver_plan_id ? "silver" : "gold";
       setCurrentPlan(newPlanType);
       setPlanStatus("active");
+      setPlanPrice(plan_id === silver_plan_id ? "$9.99" : "$49.99");
     });
   };
 
@@ -197,6 +199,7 @@ export const Sidebar = (props: SidebarProps) => {
         }
         setCurrentPlan(data.plan);
         setPlanStatus(data.status);
+        setPlanPrice(data.plan === "silver" ? "$9.99" : "$49.99");
       });
     });
 
@@ -373,7 +376,7 @@ export const Sidebar = (props: SidebarProps) => {
               <Show when={currentPlan() !== "free"}>
                 <div class="flex w-full items-center justify-between space-x-4">
                   <div>Price:</div>
-                  <div>$10/month</div>
+                  <div>{planPrice()}/month</div>
                 </div>
                 <div class="flex w-full items-center justify-between space-x-4">
                   <div>Status:</div>
