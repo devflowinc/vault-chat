@@ -84,6 +84,7 @@ export interface UserPlan {
   stripe_customer_id: string;
   stripe_subscription_id: string;
   plan: "silver" | "gold";
+  status: string;
   created_at: string;
   updated_at: string;
 }
@@ -101,6 +102,7 @@ export const isUserPlan = (data: unknown): data is UserPlan => {
     typeof (data as UserPlan).id === "string" &&
     typeof (data as UserPlan).stripe_customer_id === "string" &&
     typeof (data as UserPlan).stripe_subscription_id === "string" &&
+    typeof (data as UserPlan).status === "string" &&
     typeof (data as UserPlan).plan === "string" &&
     typeof (data as UserPlan).created_at === "string" &&
     typeof (data as UserPlan).updated_at === "string"
