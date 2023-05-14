@@ -68,7 +68,13 @@ export default function Home() {
       <div class="bg-gradient-radial-t from-magenta-400 p-4">
         <div class="flex items-center justify-between rounded-lg bg-neutral-50 px-4 py-3 shadow-md dark:bg-neutral-800 lg:m-auto lg:max-w-5xl">
           <div class="flex items-center">
-            <img class="w-10" src="/logo_transparent.svg" alt="Logo" />
+            <img
+              class="w-10"
+              src="/logo_transparent.svg"
+              alt="Logo"
+              elementtiming={""}
+              fetchpriority={"high"}
+            />
             <p class="text-lg">
               <span>Arguflow </span>
               <span class="text-magenta">AI</span>
@@ -109,12 +115,32 @@ export default function Home() {
           class="block dark:hidden"
           src="/example-light-desktop.png"
           alt=""
+          elementtiming={""}
+          fetchpriority={"high"}
         />
-        <img class="hidden dark:block" src="/example-dark-desktop.png" alt="" />
+        <img
+          class="hidden dark:block"
+          src="/example-dark-desktop.png"
+          alt=""
+          elementtiming={""}
+          fetchpriority={"high"}
+        />
       </div>
       <div class="flex justify-center md:hidden">
-        <img class="block dark:hidden" src="/example-light.png" alt="" />
-        <img class="hidden dark:block" src="/example-dark.png" alt="" />
+        <img
+          class="block dark:hidden"
+          src="/example-light.png"
+          alt=""
+          elementtiming={""}
+          fetchpriority={"high"}
+        />
+        <img
+          class="hidden dark:block"
+          src="/example-dark.png"
+          alt=""
+          elementtiming={""}
+          fetchpriority={"high"}
+        />
       </div>
       <div class="py-6" />
       <div class="m-auto mx-auto flex max-w-5xl flex-col justify-center px-12 md:px-24">
@@ -138,7 +164,13 @@ export default function Home() {
         <p class="text-2xl font-medium md:text-4xl">Why choose Arguflow AI?</p>
         <div class="py-2 md:py-6" />
         <section class="flex flex-col md:flex-row md:gap-10">
-          <img class="self-center md:w-2/4" src="/calendar.svg" alt="" />
+          <img
+            class="self-center md:w-2/4"
+            src="/calendar.svg"
+            alt=""
+            elementtiming={""}
+            fetchpriority={"high"}
+          />
           <div class="flex flex-col justify-center">
             <p class="text-2xl md:text-3xl">24/7 Availability</p>
             <div class="py-1" />
@@ -150,7 +182,13 @@ export default function Home() {
         </section>
         <div class="py-4 md:py-5" />
         <section class="flex flex-col md:flex-row-reverse md:items-center md:gap-10">
-          <img class="self-center md:w-full" src="/feedback.svg" alt="" />
+          <img
+            class="self-center md:w-full"
+            src="/feedback.svg"
+            alt=""
+            elementtiming={""}
+            fetchpriority={"high"}
+          />
           <div>
             <p class="text-2xl md:text-3xl">Instant Feedback</p>
             <div class="py-1" />
@@ -162,7 +200,13 @@ export default function Home() {
         </section>
         <div class="py-4 md:py-5" />
         <section class="flex flex-col md:flex-row md:items-center md:gap-10">
-          <img class="self-center md:w-full" src="/money.svg" alt="" />
+          <img
+            class="self-center md:w-full"
+            src="/money.svg"
+            alt=""
+            elementtiming={""}
+            fetchpriority={"high"}
+          />
           <div>
             <p class="text-2xl md:text-3xl">Affordable Coaching</p>
             <div class="py-1" />
@@ -319,9 +363,24 @@ export default function Home() {
         </p>
         <div class="py-2" />
         <div class="-ml-3 flex">
-          <img src="/Q-partner.png" alt="" />
-          <img src="/C-partner.png" alt="" />
-          <img src="/Z-partner.png" alt="" />
+          <img
+            src="/Q-partner.png"
+            alt=""
+            elementtiming={""}
+            fetchpriority={"high"}
+          />
+          <img
+            src="/C-partner.png"
+            alt=""
+            elementtiming={""}
+            fetchpriority={"high"}
+          />
+          <img
+            src="/Z-partner.png"
+            alt=""
+            elementtiming={""}
+            fetchpriority={"high"}
+          />
         </div>
         <div class="py-6 md:py-16" />
         <p id="reviews" class="text-magenta md:text-xl">
@@ -338,7 +397,12 @@ export default function Home() {
               away by how effective it is at improving my debating skills.
             </p>
             <div class="pt-3" />
-            <img src="/right-quote.svg" alt="" />
+            <img
+              src="/right-quote.svg"
+              alt=""
+              elementtiming={""}
+              fetchpriority={"high"}
+            />
           </div>
           <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800 md:basis-1/3">
             <p class="text-xs text-turquoise md:text-lg"> Juanita Rodriguez </p>
@@ -350,7 +414,12 @@ export default function Home() {
               to get started and customize my experience.
             </p>
             <div class="pt-3" />
-            <img src="/right-quote.svg" alt="" />
+            <img
+              src="/right-quote.svg"
+              alt=""
+              elementtiming={""}
+              fetchpriority={"high"}
+            />
           </div>
           <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800 md:basis-1/3">
             <p class="text-xs text-turquoise md:text-lg"> Sarah Davis </p>
@@ -362,7 +431,12 @@ export default function Home() {
               or my business.
             </p>
             <div class="pt-3" />
-            <img src="/right-quote.svg" alt="" />
+            <img
+              src="/right-quote.svg"
+              alt=""
+              elementtiming={""}
+              fetchpriority={"high"}
+            />
           </div>
         </div>
         <div class="py-6 md:py-16" />
@@ -382,7 +456,13 @@ export default function Home() {
       </div>
       <footer class="mt-14 flex flex-col items-center bg-gradient-radial-b from-magenta pb-4 pt-20">
         <div class="flex items-center">
-          <img class="w-14" src="/logo_transparent.svg" alt="" />
+          <img
+            class="w-14"
+            src="/logo_transparent.svg"
+            alt=""
+            elementtiming={""}
+            fetchpriority={"high"}
+          />
           <p class="text-lg">
             <span>Arguflow </span>
             <span class="text-magenta">AI</span>

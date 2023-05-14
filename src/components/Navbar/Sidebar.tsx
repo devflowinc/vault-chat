@@ -5,8 +5,11 @@ import {
   BiRegularTrash,
   BiRegularX,
 } from "solid-icons/bi";
-import { Accessor, createSignal, For, Setter } from "solid-js";
+import { Accessor, createSignal, For, Setter, Show } from "solid-js";
 import type { Topic } from "~/types/topics";
+import { FiSettings } from "solid-icons/fi";
+import { FullScreenModal } from "../Atoms/FullScreenModal";
+import { IoSparklesOutline } from "solid-icons/io";
 import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 
 export interface SidebarProps {
@@ -23,6 +26,7 @@ export const Sidebar = (props: SidebarProps) => {
 
   const [editingIndex, setEditingIndex] = createSignal(-1);
   const [editingTopic, setEditingTopic] = createSignal("");
+  const [settingsModalOpen, setSettingsModalOpen] = createSignal(false);
 
   const submitEditText = async () => {
     const topics = props.topics();
@@ -199,9 +203,15 @@ export const Sidebar = (props: SidebarProps) => {
             </div>
             <div>Logout</div>
           </button>
-          <div class="flex w-full px-3">
-            <OnScreenThemeModeController />
-          </div>
+          <button
+            class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
+            onClick={() => setSettingsModalOpen(true)}
+          >
+            <div class="pl-1 text-2xl">
+              <FiSettings />
+            </div>
+            <div>Settings</div>
+          </button>
         </div>
       </div>
       <button
@@ -215,6 +225,48 @@ export const Sidebar = (props: SidebarProps) => {
           <BiRegularX />
         </div>
       </button>
+      <Show when={settingsModalOpen()}>
+        <FullScreenModal
+          isOpen={settingsModalOpen}
+          setIsOpen={setSettingsModalOpen}
+        >
+          <div class="min-w-[250px] sm:min-w-[300px]">
+            <div class="mb-4 text-xl font-bold">Settings</div>
+            <div class="mb-6 flex flex-col space-y-2">
+              <div class="flex w-full items-center justify-between space-x-4">
+                <div>Theme:</div>
+                <OnScreenThemeModeController />
+              </div>
+              <div class="text-lg font-bold">Subscription Details</div>
+              <div class="flex w-full items-center justify-between space-x-4">
+                <div>Tier:</div>
+                <div class="">Silver</div>
+              </div>
+              <div class="flex w-full items-center justify-between space-x-4">
+                <div>Price:</div>
+                <div class="">$10/month</div>
+              </div>
+              <div class="flex w-full items-center justify-between space-x-4">
+                <div>Charge Date:</div>
+                <div class="">12/12/2021</div>
+              </div>
+            </div>
+            <div class="flex flex-col space-y-2">
+              <button class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white">
+                <IoSparklesOutline class="mr-2" />
+                Upgrade To Silver Tier ($50/month) (GPT4)
+              </button>
+              <button class="flex w-full items-center justify-center rounded-md bg-amber-500 px-4 py-2 font-bold text-white">
+                <IoSparklesOutline class="mr-2" />
+                Upgrade To Gold Tier ($50/month) (GPT4)
+              </button>
+              <button class="flex w-full items-center justify-center rounded-md bg-stone-500 px-4 py-2 text-white">
+                Cancel Subscription
+              </button>
+            </div>
+          </div>
+        </FullScreenModal>
+      </Show>
     </div>
   );
 };
