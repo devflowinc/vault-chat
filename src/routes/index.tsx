@@ -1,4 +1,5 @@
 import {
+  BiLogosGithub,
   BiLogosTwitch,
   BiLogosTwitter,
   BiLogosYoutube,
@@ -513,9 +514,21 @@ export default function Home() {
         </div>
         <div class="py-2" />
         <div class="flex gap-3">
-          <BiLogosTwitter size={30} />
-          <BiLogosTwitch size={30} />
-          <BiLogosYoutube size={30} />
+          <a href="https://twitter.com/arguflowai" target="_blank">
+            <BiLogosTwitter size={30} />
+          </a>
+          <a href="https://twitch.tv/arguflow" target="_blank">
+            <BiLogosTwitch size={30} />
+          </a>
+          <a href="https://www.youtube.com/@arguflow">
+            <BiLogosYoutube size={30} />
+          </a>
+          <a
+            href="https://github.com/orgs/arguflow/repositories"
+            target="_blank"
+          >
+            <BiLogosGithub size={30} />
+          </a>
         </div>
       </footer>
     </div>
