@@ -139,6 +139,7 @@ export default function Home() {
               <a href="#product">Product</a>
               <a href="#reviews">Reviews</a>
               <a href="#pricing">Pricing</a>
+              <a href="https://blog.arguflow.com/">Blog</a>
             </div>
             <A
               class="rounded-lg bg-turquoise px-4 py-2 dark:text-neutral-900"
