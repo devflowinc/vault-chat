@@ -1,6 +1,6 @@
 # Arguflow AI
 
-[`Arguflow AI`](https://arguflow.com) is your own personal debate coach. Powered by the ['SolidJS'](https://solidjs.com) framwork, Arguflow AI utilizes AI software to debate against users and provide feedback on how to improve argument skills.
+[Arguflow AI](https://arguflow.com) is your own personal debate coach. Powered by the [SolidJS](https://solidjs.com) framwork, Arguflow AI utilizes AI software to debate against users and provide feedback on how to improve argument skills.
 
 ## How to use Arguflow AI
 
@@ -24,10 +24,10 @@ Arguflow will generate counterarguments as well as feedback on how arguments cou
 
 Create a .env file in the root directory of the project. This .env file will require the following url's and API keys.
 
-'''
+```
 DATABASE_URL = [url]
 REDIS_URL = [url]
 SENDGRID_API_KEY = [API key]
 OPENAI_API_KEY = [API key]
 STRIPE_API_SECRET_KEY = [API key]
-'''
+```
