@@ -5,9 +5,8 @@ import {
   BiLogosYoutube,
   BiRegularCheck,
 } from "solid-icons/bi";
-import { Setter, Show, createEffect, createSignal, useContext } from "solid-js";
+import { Setter, Show, createEffect, createSignal } from "solid-js";
 import { A, useSearchParams } from "solid-start";
-import { GlobalStoreContext } from "~/components/contexts/UserStoreContext";
 import {
   detectReferralToken,
   isStripeCheckoutSessionResponse,
@@ -21,8 +20,8 @@ export default function Home() {
   const gold_plan_id: string = import.meta.env
     .VITE_STRIPE_GOLD_PLAN_ID as unknown as string;
 
-  const userStoreContext = useContext(GlobalStoreContext);
   const [searchParams] = useSearchParams();
+  const [isLogin, setIsLogin] = createSignal<boolean>(false);
   const [silverPlanUrl, setSilverPlanUrl] = createSignal<string>("");
   const [goldPlanUrl, setGoldPlanUrl] = createSignal<string>("");
   const [currentPlan, setCurrentPlan] = createSignal<
@@ -30,6 +29,29 @@ export default function Home() {
   >("free");
 
   detectReferralToken(searchParams.t);
+
+  createEffect(() => {
+    const abort_controller = new AbortController();
+
+    void fetch(`${api_host}/auth`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      signal: abort_controller.signal,
+    }).then((response) => {
+      if (!response.ok) {
+        setIsLogin(false);
+        return;
+      }
+      setIsLogin(true);
+    });
+
+    return () => {
+      abort_controller.abort();
+    };
+  });
 
   createEffect(() => {
     const silver_plan_abort_controller = new AbortController();
@@ -120,7 +142,7 @@ export default function Home() {
             </div>
             <A
               class="rounded-lg bg-turquoise px-4 py-2 dark:text-neutral-900"
-              href={userStoreContext.isLogin?.() ? "/debate" : "/register"}
+              href={isLogin() ? "/debate" : "/register"}
             >
               Start Debating
             </A>
@@ -135,7 +157,7 @@ export default function Home() {
           <p class="md:text-lg">Your personal AI debate coach.</p>
           <A
             class="rounded-lg bg-gradient-to-br from-cyan-900 to-turquoise px-4 py-2 text-white shadow-md"
-            href={userStoreContext.isLogin?.() ? "/debate" : "/register"}
+            href={isLogin() ? "/debate" : "/register"}
           >
             Start Debating Now
           </A>
@@ -267,7 +289,7 @@ export default function Home() {
                   <span class="text-2xl font-semibold md:text-4xl">Free</span>
                 </p>
               </div>
-              <A href={userStoreContext.isLogin?.() ? "/debate" : "/register"}>
+              <A href={isLogin() ? "/debate" : "/register"}>
                 <div class="mb-2 w-full rounded-lg bg-fuchsia-500 py-2 text-center shadow-md dark:text-neutral-900 sm:mt-10">
                   Get Started
                 </div>
@@ -310,10 +332,7 @@ export default function Home() {
                 </p>
               </div>
               <A
-                href={
-                  silverPlanUrl() ||
-                  (userStoreContext.isLogin?.() ? "/debate" : "/register")
-                }
+                href={silverPlanUrl() || (isLogin() ? "/debate" : "/register")}
               >
                 <div class="my-2 w-full rounded-lg bg-turquoise py-2 text-center shadow-md dark:text-neutral-900">
                   Sign Up Now
@@ -356,12 +375,7 @@ export default function Home() {
                   <span class="text-neutral-500 md:text-2xl">/mo</span>
                 </p>
               </div>
-              <A
-                href={
-                  goldPlanUrl() ||
-                  (userStoreContext.isLogin?.() ? "/debate" : "/register")
-                }
-              >
+              <A href={goldPlanUrl() || (isLogin() ? "/debate" : "/register")}>
                 <div class="my-2 w-full rounded-lg bg-acid py-2 text-center shadow-md dark:text-neutral-900">
                   Sign Up Now
                 </div>
@@ -488,7 +502,7 @@ export default function Home() {
           </p>
           <A
             class="rounded-lg bg-gradient-to-br from-[#235761] to-turquoise px-4 py-2 text-white shadow-md"
-            href={userStoreContext.isLogin?.() ? "/debate" : "/register"}
+            href={isLogin() ? "/debate" : "/register"}
           >
             Sign Up
           </A>
