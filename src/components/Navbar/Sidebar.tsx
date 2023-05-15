@@ -1,10 +1,12 @@
 import {
+  BiRegularChat,
   BiRegularCheck,
   BiRegularLogOut,
   BiRegularPlus,
   BiRegularTrash,
   BiRegularX,
 } from "solid-icons/bi";
+import { TbGavel } from "solid-icons/tb";
 import {
   Accessor,
   createEffect,
@@ -27,6 +29,7 @@ export interface SidebarProps {
   currentTopic: Accessor<Topic | undefined>;
   setCurrentTopic: (topic: Topic | undefined) => void;
   setSideBarOpen: Setter<boolean>;
+  setIsCreatingNormalTopic: Setter<boolean>;
 }
 
 export const Sidebar = (props: SidebarProps) => {
@@ -211,9 +214,10 @@ export const Sidebar = (props: SidebarProps) => {
   return (
     <div class="absolute z-50 flex h-screen w-screen flex-row dark:text-gray-50 md:relative md:w-full">
       <div class="flex h-full w-2/3 flex-col bg-neutral-50 dark:bg-neutral-800 md:w-full">
-        <div class="flex w-full px-4 py-2 ">
+        <div class="flex w-full flex-col space-y-2 px-4 py-2 ">
           <button
             onClick={() => {
+              props.setIsCreatingNormalTopic(false);
               props.setIsCreatingTopic(true);
               props.setCurrentTopic(undefined);
               props.setSideBarOpen(false);
@@ -224,7 +228,23 @@ export const Sidebar = (props: SidebarProps) => {
               <span class="text-xl">
                 <BiRegularPlus />
               </span>
-              <span>New Topic</span>
+              <span>New Debate Topic</span>
+            </div>
+          </button>
+          <button
+            onClick={() => {
+              props.setIsCreatingTopic(false);
+              props.setIsCreatingNormalTopic(true);
+              props.setCurrentTopic(undefined);
+              props.setSideBarOpen(false);
+            }}
+            class="flex w-full flex-row items-center rounded-md border border-neutral-500 px-3 py-1 hover:bg-neutral-200  dark:border-neutral-400 dark:hover:bg-neutral-700"
+          >
+            <div class="flex flex-row items-center space-x-2">
+              <span class="text-xl">
+                <BiRegularPlus />
+              </span>
+              <span>New Regular Chat</span>
             </div>
           </button>
         </div>
@@ -243,6 +263,7 @@ export const Sidebar = (props: SidebarProps) => {
 
                   props.setCurrentTopic(topic);
                   props.setIsCreatingTopic(false);
+                  props.setIsCreatingNormalTopic(false);
                   props.setSideBarOpen(false);
                 }}
               >
@@ -283,7 +304,13 @@ export const Sidebar = (props: SidebarProps) => {
                   </div>
                 )}
                 {editingIndex() !== index() && (
-                  <div class="flex flex-1 px-3">
+                  <div class="flex flex-1 items-center px-3">
+                    <Show when={topic.normal_chat}>
+                      <BiRegularChat class="mr-2" />
+                    </Show>
+                    <Show when={!topic.normal_chat}>
+                      <TbGavel class="mr-2" />
+                    </Show>
                     <p class="line-clamp-1 text-left">{topic.resolution}</p>
                     <div class="flex-1" />
                     <div class="flex flex-row items-center space-x-2">

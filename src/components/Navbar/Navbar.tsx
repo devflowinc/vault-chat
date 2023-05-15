@@ -6,6 +6,7 @@ export interface NavbarProps {
   setSideBarOpen: Setter<boolean>;
   selectedTopic: () => Topic | undefined;
   setIsCreatingTopic: Setter<boolean>;
+  setIsCreatingNormalTopic: Setter<boolean>;
 }
 
 export const Navbar = (props: NavbarProps) => {
@@ -25,6 +26,7 @@ export const Navbar = (props: NavbarProps) => {
           onClick={() => {
             props.setSideBarOpen(false);
             props.setIsCreatingTopic(true);
+            props.setIsCreatingNormalTopic(false);
           }}
           class="text-4xl"
         />

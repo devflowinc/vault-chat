@@ -17,6 +17,8 @@ export const debate = () => {
   );
   const [sidebarOpen, setSideBarOpen] = createSignal<boolean>(true);
   const [isCreatingTopic, setIsCreatingTopic] = createSignal<boolean>(false);
+  const [isCreatingNormalTopic, setIsCreatingNormalTopic] =
+    createSignal<boolean>(false);
   const [loadingTopic, setLoadingTopic] = createSignal<boolean>(false);
   const [isLogin, setIsLogin] = createSignal<boolean>(false);
 
@@ -80,6 +82,7 @@ export const debate = () => {
             topics={topics}
             setIsCreatingTopic={setIsCreatingTopic}
             setSideBarOpen={setSideBarOpen}
+            setIsCreatingNormalTopic={setIsCreatingNormalTopic}
           />
         </div>
         <div class="md:hidden">
@@ -94,6 +97,7 @@ export const debate = () => {
               topics={topics}
               setIsCreatingTopic={setIsCreatingTopic}
               setSideBarOpen={setSideBarOpen}
+              setIsCreatingNormalTopic={setIsCreatingNormalTopic}
             />
           </Show>
         </div>
@@ -142,6 +146,7 @@ export const debate = () => {
                 selectedTopic={selectedTopic}
                 setSideBarOpen={setSideBarOpen}
                 setIsCreatingTopic={setIsCreatingTopic}
+                setIsCreatingNormalTopic={setIsCreatingNormalTopic}
               />
               <Layout selectedTopic={selectedTopic} />
             </div>
@@ -162,6 +167,7 @@ export const debate = () => {
               selectedTopic={selectedTopic}
               setSideBarOpen={setSideBarOpen}
               setIsCreatingTopic={setIsCreatingTopic}
+              setIsCreatingNormalTopic={setIsCreatingNormalTopic}
             />
             <NewTopicForm
               onSuccessfulTopicCreation={() => {
@@ -177,6 +183,8 @@ export const debate = () => {
               selectedTopic={selectedTopic}
               setCurrentTopic={setSelectedTopic}
               topics={topics}
+              isCreatingNormalTopic={isCreatingNormalTopic}
+              setIsCreatingNormalTopic={setIsCreatingNormalTopic}
             />
           </Transition>
         </Show>

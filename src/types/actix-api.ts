@@ -28,7 +28,9 @@ export const isTopic = (data: unknown): data is Topic => {
     "id" in data &&
     typeof (data as Topic).resolution === "string" &&
     typeof (data as Topic).side === "boolean" &&
-    typeof (data as Topic).id === "string"
+    typeof (data as Topic).id === "string" &&
+    (typeof (data as Topic).normal_chat === "undefined" ||
+      typeof (data as Topic).normal_chat === "boolean")
   );
 };
 

@@ -1,4 +1,4 @@
-import { Show, createSignal, Accessor } from "solid-js";
+import { Show, createSignal, Accessor, Setter } from "solid-js";
 import { isActixApiDefaultError } from "~/types/actix-api";
 import type { Topic } from "~/types/topics";
 import { AfSwitch } from "../Atoms/AfSwitch";
@@ -9,6 +9,8 @@ export interface NewTopicFormProps {
   selectedTopic: () => Topic | undefined;
   setCurrentTopic: (topic: Topic | undefined) => void;
   topics: Accessor<Topic[]>;
+  isCreatingNormalTopic: Accessor<boolean>;
+  setIsCreatingNormalTopic: Setter<boolean>;
 }
 
 export const NewTopicForm = (props: NewTopicFormProps) => {
@@ -35,7 +37,8 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
     <div class="flex w-full flex-col px-10 align-middle text-neutral-900 dark:text-neutral-50">
       <form class="flex w-full flex-col space-y-4">
         <p class="w-full text-center text-2xl font-semibold">
-          Create New Topic
+          Create New{" "}
+          {props.isCreatingNormalTopic() ? "Regular Chat" : "Debate Topic"}
         </p>
         <div class="text-center text-red-500">{errorMessage()}</div>
         <label for="topicName"> Topic Name</label>
@@ -47,26 +50,41 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
           value={topicName()}
           onInput={(e) => setTopicName(e.currentTarget.value)}
         />
-        <div class="flex flex-col">
-          <label for="side">The Side You Want to Argue</label>
-          <AfSwitch setIsOn={setSide} />
-        </div>
+        <Show when={!props.isCreatingNormalTopic()}>
+          <div class="flex flex-col">
+            <label for="side">The Side You Want to Argue</label>
+            <AfSwitch setIsOn={setSide} />
+          </div>
+        </Show>
         <div class="flex w-full space-x-2">
           <button
             type="submit"
             class="w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
             onClick={(e) => {
               e.preventDefault();
+
+              const isNormalTopic = props.isCreatingNormalTopic();
+
+              let body: object = {
+                resolution: topicName(),
+                side: side(),
+              };
+
+              if (isNormalTopic) {
+                body = {
+                  resolution: topicName(),
+                  side: side(),
+                  normal_chat: true,
+                };
+              }
+
               void fetch(`${api_host}/topic`, {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",
                 },
                 credentials: "include",
-                body: JSON.stringify({
-                  resolution: topicName(),
-                  side: side(),
-                }),
+                body: JSON.stringify(body),
               }).then(processResponse);
             }}
           >
