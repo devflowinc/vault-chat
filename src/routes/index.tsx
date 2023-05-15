@@ -164,37 +164,16 @@ export default function Home() {
         </div>
       </div>
       <div class="py-4" />
-      <div class="hidden justify-center md:flex">
-        <img
-          class="block dark:hidden"
-          src="/example-light-desktop.png"
-          alt=""
-          elementtiming={""}
-          fetchpriority={"high"}
-        />
-        <img
-          class="hidden dark:block"
-          src="/example-dark-desktop.png"
-          alt=""
-          elementtiming={""}
-          fetchpriority={"high"}
-        />
-      </div>
-      <div class="flex justify-center md:hidden">
-        <img
-          class="block dark:hidden"
-          src="/example-light.png"
-          alt=""
-          elementtiming={""}
-          fetchpriority={"high"}
-        />
-        <img
-          class="hidden dark:block"
-          src="/example-dark.png"
-          alt=""
-          elementtiming={""}
-          fetchpriority={"high"}
-        />
+      <div class="flex w-full justify-center">
+        <div class="w-fit px-4">
+          <iframe
+            class="h-[169px] w-[300px] md:h-[315px] md:w-[560px]"
+            src="https://www.youtube.com/embed/dI2TfkghWhA"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          />
+        </div>
       </div>
       <div class="py-6" />
       <div class="m-auto mx-auto flex max-w-5xl flex-col justify-center px-12 md:px-24">
