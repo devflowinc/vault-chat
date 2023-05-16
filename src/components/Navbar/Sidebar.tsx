@@ -332,7 +332,7 @@ export const Sidebar = (props: SidebarProps) => {
         </div>
         <div class="flex-1 " />
         <div class="flex w-full flex-col space-y-1 border-t px-2 py-2 dark:border-neutral-400">
-          <Show when={currentPlan() == "free"}>
+          {/* <Show when={currentPlan() == "free"}>
             <a
               class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
               href={silverPlanUrl()}
@@ -351,7 +351,7 @@ export const Sidebar = (props: SidebarProps) => {
               <IoSparklesOutline class="mr-2" />
               Upgrade To Silver ($9.99/month)
             </button>
-          </Show>
+          </Show> */}
           <button
             class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
             onClick={logout}
@@ -416,7 +416,7 @@ export const Sidebar = (props: SidebarProps) => {
               </Show>
             </div>
             <div class="flex flex-col space-y-2">
-              <Show when={currentPlan() === "free"}>
+              {/* <Show when={currentPlan() === "free"}>
                 <a
                   class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
                   href={silverPlanUrl()}
@@ -433,7 +433,7 @@ export const Sidebar = (props: SidebarProps) => {
                     Upgrade To Gold ($49.99/month) (GPT4)
                   </a>
                 </Show>
-              </Show>
+              </Show> */}
               <Show when={currentPlan() !== "free"}>
                 <Show
                   when={
