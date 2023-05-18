@@ -21,6 +21,8 @@ import { FullScreenModal } from "../Atoms/FullScreenModal";
 import { IoSparklesOutline } from "solid-icons/io";
 import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 import { isStripeCheckoutSessionResponse, isUserPlan } from "~/types/actix-api";
+import { BsQuestionCircle } from "solid-icons/bs";
+import { FaSolidCircle } from "solid-icons/fa";
 
 export interface SidebarProps {
   topics: Accessor<Topic[]>;
@@ -32,6 +34,11 @@ export interface SidebarProps {
   setIsCreatingNormalTopic: Setter<boolean>;
 }
 
+const HelpTips: string[] = [
+  "Only enter one argument/contention at a time. Refrain from including multiple arguments at once.",
+  "Press shift+enter to create a new line in the enter your argument input box.",
+];
+
 export const Sidebar = (props: SidebarProps) => {
   const api_host = import.meta.env.VITE_API_HOST as unknown as string;
   const silver_plan_id: string = import.meta.env
@@ -42,6 +49,7 @@ export const Sidebar = (props: SidebarProps) => {
   const [editingIndex, setEditingIndex] = createSignal(-1);
   const [editingTopic, setEditingTopic] = createSignal("");
   const [settingsModalOpen, setSettingsModalOpen] = createSignal(false);
+  const [helpModalOpen, setHelpModalOpen] = createSignal(false);
   const [currentPlan, setCurrentPlan] = createSignal<
     "free" | "silver" | "gold"
   >("free");
@@ -214,7 +222,7 @@ export const Sidebar = (props: SidebarProps) => {
   return (
     <div class="absolute z-50 flex h-screen w-screen flex-row dark:text-gray-50 md:relative md:w-full">
       <div class="flex h-full w-2/3 flex-col bg-neutral-50 dark:bg-neutral-800 md:w-full">
-        <div class="flex w-full flex-col space-y-2 px-4 py-2 ">
+        <div class="flex w-full flex-col space-y-2 px-2 py-2 ">
           <button
             onClick={() => {
               props.setIsCreatingNormalTopic(false);
@@ -370,6 +378,15 @@ export const Sidebar = (props: SidebarProps) => {
             </div>
             <div>Settings</div>
           </button>
+          <button
+            class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
+            onClick={() => setHelpModalOpen(true)}
+          >
+            <div class="pl-1 text-2xl">
+              <BsQuestionCircle />
+            </div>
+            <div>Help</div>
+          </button>
         </div>
       </div>
       <button
@@ -383,6 +400,24 @@ export const Sidebar = (props: SidebarProps) => {
           <BiRegularX />
         </div>
       </button>
+      <Show when={helpModalOpen()}>
+        <FullScreenModal isOpen={helpModalOpen} setIsOpen={setHelpModalOpen}>
+          <div class="min-w-[250px] sm:min-w-[300px]">
+            <div class="mb-4 text-xl font-bold">Tips and Tricks</div>
+            <div class="flex flex-col space-y-3">
+              <For each={HelpTips}>
+                {(tip) => (
+                  <div class="flex flex-row items-center space-x-4">
+                    <FaSolidCircle class="h-2 w-2" />
+                    <div>{tip}</div>
+                  </div>
+                )}
+              </For>
+            </div>
+          </div>
+        </FullScreenModal>
+      </Show>
+
       <Show when={settingsModalOpen()}>
         <FullScreenModal
           isOpen={settingsModalOpen}

@@ -1,7 +1,6 @@
 import { Show, createSignal, Accessor, Setter } from "solid-js";
 import { isActixApiDefaultError } from "~/types/actix-api";
 import type { Topic } from "~/types/topics";
-import { AfSwitch } from "../Atoms/AfSwitch";
 
 export interface NewTopicFormProps {
   onSuccessfulTopicCreation: () => void;
@@ -14,7 +13,6 @@ export interface NewTopicFormProps {
 }
 
 export const NewTopicForm = (props: NewTopicFormProps) => {
-  const [side, setSide] = createSignal(true);
   const [topicName, setTopicName] = createSignal("");
 
   const [errorMessage, setErrorMessage] = createSignal("");
@@ -50,12 +48,6 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
           value={topicName()}
           onInput={(e) => setTopicName(e.currentTarget.value)}
         />
-        <Show when={!props.isCreatingNormalTopic()}>
-          <div class="flex flex-col">
-            <label for="side">The Side You Want to Argue</label>
-            <AfSwitch setIsOn={setSide} />
-          </div>
-        </Show>
         <div class="flex w-full space-x-2">
           <button
             type="submit"
@@ -67,13 +59,11 @@ export const NewTopicForm = (props: NewTopicFormProps) => {
 
               let body: object = {
                 resolution: topicName(),
-                side: side(),
               };
 
               if (isNormalTopic) {
                 body = {
                   resolution: topicName(),
-                  side: side(),
                   normal_chat: true,
                 };
               }
