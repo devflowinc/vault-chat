@@ -8,6 +8,7 @@ import {
 import { Setter, createEffect, createSignal } from "solid-js";
 import { A, useSearchParams } from "solid-start";
 import { Survey } from "~/components/Forms/Survey";
+import ThemeModeController from "~/components/Navbar/ThemeModeController";
 import {
   detectReferralToken,
   isStripeCheckoutSessionResponse,
@@ -142,6 +143,7 @@ export default function Home() {
               <a href="#pricing">Pricing</a>
               <a href="https://blog.arguflow.com/">Blog</a>
             </div>
+            <ThemeModeController />
             <A
               class="rounded-lg bg-turquoise px-4 py-2 dark:text-neutral-900"
               href={isLogin() ? "/debate" : "/register"}

@@ -1,6 +1,7 @@
 import { Transition } from "solid-headless";
 import { Accessor, createEffect, createSignal, For, onCleanup } from "solid-js";
 import { CgChevronDoubleRight } from "solid-icons/cg";
+import { getThemeMode } from "../Atoms/OnScreenThemeModeController";
 
 const question = "What feature do you want most?";
 
@@ -42,7 +43,15 @@ const answers = [
 ];
 
 const getGradientStyle = (percentage: number) => {
-  const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const theme = getThemeMode();
+  let isDarkMode = false;
+  if (theme === "dark") {
+    isDarkMode = true;
+  } else if (theme === "light") {
+    isDarkMode = false;
+  } else {
+    isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
   const baseColor = isDarkMode ? "#3C3C3C" : "#DCDCDC";
   const secondaryColor = isDarkMode ? "#505050" : "#F8F8F8";
   return `linear-gradient(90deg, ${baseColor} 0%, ${baseColor} ${percentage}%, ${secondaryColor} ${percentage}%, ${secondaryColor} 100%)`;
