@@ -5,14 +5,24 @@ import {
   FiSend,
   FiStopCircle,
 } from "solid-icons/fi";
+import { FaSolidScaleUnbalanced } from "solid-icons/fa";
+import { RiOthersBoxingLine } from "solid-icons/ri";
 import {
   isMessageArray,
   messageRoleFromIndex,
   type Message,
 } from "~/types/messages";
 import { Topic } from "~/types/topics";
-import { Transition } from "solid-headless";
+import {
+  Menu,
+  MenuItem,
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  Transition,
+} from "solid-headless";
 import { AfMessage } from "../Atoms/AfMessage";
+import { IoFunnelOutline, IoOptions } from "solid-icons/io";
 
 export interface LayoutProps {
   selectedTopic: Accessor<Topic | undefined>;
@@ -320,54 +330,151 @@ const Layout = (props: LayoutProps) => {
                 </Show>
               </div>
             </Show>
-            <form class="relative flex h-fit max-h-[calc(100vh-32rem)] w-full flex-col items-center overflow-y-auto rounded-xl bg-neutral-50 py-1 pl-4 pr-2 text-neutral-800 dark:bg-neutral-700 dark:text-white">
-              <textarea
-                id="new-message-content-textarea"
-                class="w-full resize-none whitespace-pre-wrap bg-transparent py-1 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md focus:outline-none dark:bg-neutral-700 dark:text-white dark:scrollbar-track-neutral-700 dark:scrollbar-thumb-neutral-600"
-                placeholder="Write your argument"
-                value={newMessageContent()}
-                disabled={streamingCompletion()}
-                onInput={(e) => resizeTextarea(e.target)}
-                onKeyDown={(e) => {
-                  if (e.ctrlKey && e.key === "Enter") {
-                    e.preventDefault();
-                    const new_message_content = newMessageContent();
-                    if (!new_message_content) {
+            <div class="flex w-full flex-row space-x-2">
+              <form class="relative mr-12 flex h-fit max-h-[calc(100vh-32rem)] w-full flex-col items-center overflow-y-auto rounded-xl bg-neutral-50 py-1 pl-4 pr-6 text-neutral-800 dark:bg-neutral-700 dark:text-white">
+                <textarea
+                  id="new-message-content-textarea"
+                  class="w-full resize-none whitespace-pre-wrap bg-transparent py-1 scrollbar-thin scrollbar-track-neutral-200 scrollbar-thumb-neutral-400 scrollbar-track-rounded-md scrollbar-thumb-rounded-md focus:outline-none dark:bg-neutral-700 dark:text-white dark:scrollbar-track-neutral-700 dark:scrollbar-thumb-neutral-600"
+                  placeholder="Write your argument"
+                  value={newMessageContent()}
+                  disabled={streamingCompletion()}
+                  onInput={(e) => resizeTextarea(e.target)}
+                  onKeyDown={(e) => {
+                    if (e.ctrlKey && e.key === "Enter") {
+                      e.preventDefault();
+                      const new_message_content = newMessageContent();
+                      if (!new_message_content) {
+                        return;
+                      }
+                      const topic_id = props.selectedTopic()?.id;
+                      if (!topic_id) {
+                        return;
+                      }
+                      void fetchCompletion({
+                        new_message_content,
+                        topic_id,
+                      });
                       return;
                     }
-                    const topic_id = props.selectedTopic()?.id;
-                    if (!topic_id) {
-                      return;
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      submitNewMessage();
                     }
-                    void fetchCompletion({
-                      new_message_content,
-                      topic_id,
-                    });
-                    return;
-                  }
-                  if (e.key === "Enter") {
+                  }}
+                  rows="1"
+                />
+                <button
+                  type="submit"
+                  classList={{
+                    "flex h-10 w-10 items-center justify-center absolute right-[0px] bottom-0":
+                      true,
+                    "text-neutral-400": !newMessageContent(),
+                  }}
+                  disabled={!newMessageContent() || streamingCompletion()}
+                  onClick={(e) => {
                     e.preventDefault();
                     submitNewMessage();
-                  }
-                }}
-                rows="1"
-              />
-              <button
-                type="submit"
-                classList={{
-                  "flex h-10 w-10 items-center justify-center absolute right-2.5 bottom-0":
-                    true,
-                  "text-neutral-400": !newMessageContent(),
-                }}
-                disabled={!newMessageContent() || streamingCompletion()}
-                onClick={(e) => {
-                  e.preventDefault();
-                  submitNewMessage();
-                }}
-              >
-                <FiSend />
-              </button>
-            </form>
+                  }}
+                >
+                  <FiSend />
+                </button>
+              </form>
+              <div class="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center dark:text-white">
+                <Popover defaultOpen={false} class="relative flex items-center">
+                  {({ isOpen }) => (
+                    <>
+                      <PopoverButton aria-label="Toggle theme mode">
+                        <IoOptions class="h-5 w-5" />
+                      </PopoverButton>
+                      <Transition
+                        show={isOpen()}
+                        enter="transition duration-200"
+                        enterFrom="opacity-0 -translate-y-1 scale-50"
+                        enterTo="opacity-100 translate-y-0 scale-100"
+                        leave="transition duration-150"
+                        leaveFrom="opacity-100 translate-y-0 scale-100"
+                        leaveTo="opacity-0 -translate-y-1 scale-50"
+                      >
+                        <PopoverPanel
+                          unmount={true}
+                          class="absolute -right-2 -top-[185px] z-50 w-fit transform"
+                        >
+                          <Menu class="flex flex-col space-y-1 overflow-hidden rounded-lg border border-neutral-400 bg-neutral-50 p-1 shadow-lg drop-shadow-lg dark:border-slate-900 dark:bg-neutral-700 dark:text-white">
+                            <MenuItem as="button" aria-label="Empty" />
+                            <MenuItem
+                              as="button"
+                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 focus:bg-neutral-200 focus:outline-none hover:cursor-pointer dark:border-neutral-600 dark:focus:bg-neutral-600"
+                              onClick={() => {
+                                setNewMessageContent(
+                                  "Judge the round and tell me who won",
+                                );
+                              }}
+                            >
+                              <div>
+                                <FaSolidScaleUnbalanced class="h-6 w-6" />
+                              </div>
+                              <div>
+                                <div
+                                  classList={{
+                                    "text-md font-medium": true,
+                                  }}
+                                >
+                                  Judge
+                                </div>
+                              </div>
+                            </MenuItem>
+                            <MenuItem
+                              as="button"
+                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 focus:bg-neutral-200 focus:outline-none hover:cursor-pointer dark:border-neutral-600 dark:focus:bg-neutral-600"
+                            >
+                              <div>
+                                <RiOthersBoxingLine class="h-6 w-6" />
+                              </div>
+                              <div>
+                                <div
+                                  classList={{
+                                    "text-md font-medium": true,
+                                  }}
+                                  onClick={() => {
+                                    setNewMessageContent(
+                                      "Summarize the points of contention in this round",
+                                    );
+                                  }}
+                                >
+                                  Summarize Clash
+                                </div>
+                              </div>
+                            </MenuItem>
+                            <MenuItem
+                              as="button"
+                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 focus:bg-neutral-200 focus:outline-none hover:cursor-pointer dark:border-neutral-600 dark:focus:bg-neutral-600"
+                            >
+                              <div>
+                                <IoFunnelOutline class="h-6 w-6" />
+                              </div>
+                              <div>
+                                <div
+                                  classList={{
+                                    "text-md font-medium": true,
+                                  }}
+                                  onClick={() => {
+                                    setNewMessageContent(
+                                      "Summarize the themes of our debate thus far",
+                                    );
+                                  }}
+                                >
+                                  Summarize Themes
+                                </div>
+                              </div>
+                            </MenuItem>
+                          </Menu>
+                        </PopoverPanel>
+                      </Transition>
+                    </>
+                  )}
+                </Popover>
+              </div>
+            </div>
           </div>
         </div>
       </Show>
