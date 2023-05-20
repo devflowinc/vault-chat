@@ -406,7 +406,7 @@ const Layout = (props: LayoutProps) => {
                               class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 focus:bg-neutral-200 focus:outline-none hover:cursor-pointer dark:border-neutral-600 dark:focus:bg-neutral-600"
                               onClick={() => {
                                 setNewMessageContent(
-                                  "Judge the round and tell me who won",
+                                  'You are the Debate judge who must decide a winner in the debate, reason to the best degree who won this debate, respond either "affirmative" or "negative". Then explain why.',
                                 );
                               }}
                             >
@@ -437,7 +437,7 @@ const Layout = (props: LayoutProps) => {
                                   }}
                                   onClick={() => {
                                     setNewMessageContent(
-                                      "Summarize the points of contention in this round",
+                                      "Summarize the main areas of clash that occurred in this debate",
                                     );
                                   }}
                                 >

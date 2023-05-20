@@ -370,7 +370,7 @@ export const Sidebar = (props: SidebarProps) => {
             <div>Logout</div>
           </button>
           <button
-            class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
+            class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
             onClick={() => setSettingsModalOpen(true)}
           >
             <div class="pl-1 text-2xl">
@@ -379,7 +379,7 @@ export const Sidebar = (props: SidebarProps) => {
             <div>Settings</div>
           </button>
           <button
-            class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
+            class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
             onClick={() => setHelpModalOpen(true)}
           >
             <div class="pl-1 text-2xl">
@@ -387,6 +387,15 @@ export const Sidebar = (props: SidebarProps) => {
             </div>
             <div>Help</div>
           </button>
+          <div class="flex w-full items-center space-x-4 rounded-md px-3 py-2 font-semibold">
+            <img
+              src="/logo_512.png"
+              class="h-10 w-10"
+              elementtiming={""}
+              fetchpriority={"auto"}
+            />
+            <div>Made with ❤️ by Arguflow</div>
+          </div>
         </div>
       </div>
       <button
