@@ -356,10 +356,6 @@ const Layout = (props: LayoutProps) => {
                       });
                       return;
                     }
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      submitNewMessage();
-                    }
                   }}
                   rows="1"
                 />
