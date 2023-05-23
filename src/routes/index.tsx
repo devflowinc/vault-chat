@@ -138,10 +138,8 @@ export default function Home() {
           </div>
           <div class="flex items-center gap-4">
             <div class="hidden items-center gap-4 md:flex">
-              <a href="#product">Product</a>
-              <a href="#reviews">Reviews</a>
-              <a href="#pricing">Pricing</a>
-              <a href="https://blog.arguflow.com/">Blog</a>
+              <a class="hover:underline" href="https://vault.arguflow.com/">Evidence Vault</a>
+              <a class="hover:underline" href="https://blog.arguflow.com/">Blog</a>
             </div>
             <ThemeModeController />
             <A

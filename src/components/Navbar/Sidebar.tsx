@@ -340,6 +340,13 @@ export const Sidebar = (props: SidebarProps) => {
         </div>
         <div class="flex-1 " />
         <div class="flex w-full flex-col space-y-1 border-t px-2 py-2 dark:border-neutral-400">
+          <a
+            class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
+            href="https://vault.arguflow.com/"
+          >
+            <IoSparklesOutline class="mr-2" />
+            Try Arguflow Evidence Vault
+          </a>
           {/* <Show when={currentPlan() == "free"}>
             <a
               class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
