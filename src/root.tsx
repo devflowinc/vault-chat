@@ -13,16 +13,24 @@ import UserStoreContext from "./components/contexts/UserStoreContext";
 import "./root.css";
 
 export default function Root() {
-  let theme = "";
-  if (
-    localStorage.theme === "dark" ||
-    (!("theme" in localStorage) &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches)
-  )
-    theme = "dark";
+  const theme = (() => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme')
+    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark'
+    }
+    return 'light'
+  })()
+
+  if (theme === 'light') {
+    document.documentElement.classList.remove('dark')
+  } else {
+    document.documentElement.classList.add('dark')
+  }
 
   return (
-    <Html lang="en" class={theme}>
+    <Html lang="en">
       <Head>
         <Title>AI Debate Coach</Title>
         <Meta charset="utf-8" />
