@@ -81,6 +81,68 @@ const Layout = (props: LayoutProps) => {
     };
   });
 
+  const handleReader = async (
+    reader: ReadableStreamDefaultReader<Uint8Array>,
+  ) => {
+    let done = false;
+    let finished_feedback = false;
+    let current_content = "";
+    while (!done) {
+      const { value, done: doneReading } = await reader.read();
+      if (doneReading) {
+        done = doneReading;
+        setStreamingCompletion(false);
+      }
+      if (value) {
+        const decoder = new TextDecoder();
+        const chunk = decoder.decode(value);
+
+        if (!finished_feedback) {
+          current_content += chunk;
+
+          if (current_content.length < 8) {
+            continue;
+          }
+
+          if (!current_content.toLowerCase().startsWith("feedback")) {
+            finished_feedback = true;
+            setMessages((prev) => {
+              const newMessage = {
+                content: current_content,
+              };
+              return [...prev.slice(0, prev.length - 1), newMessage];
+            });
+            continue;
+          }
+
+          if (current_content.endsWith("\n")) {
+            finished_feedback = true;
+            current_content = current_content.slice(0, -2);
+          }
+          setMessages((prev) => {
+            const lastMessage = prev[prev.length - 1];
+            const newMessage = {
+              content: lastMessage.content,
+              feedback: current_content,
+            };
+            return [...prev.slice(0, prev.length - 1), newMessage];
+          });
+          continue;
+        }
+
+        setMessages((prev) => {
+          const lastMessage = prev[prev.length - 1];
+          const newMessage = {
+            feedback: lastMessage.feedback,
+            content: lastMessage.content + chunk,
+          };
+          return [...prev.slice(0, prev.length - 1), newMessage];
+        });
+        scrollToBottomOfMessages();
+      }
+    }
+  };
+
   const fetchCompletion = async ({
     new_message_content,
     topic_id,
@@ -96,7 +158,10 @@ const Layout = (props: LayoutProps) => {
       requestMethod = "DELETE";
       setMessages((prev) => {
         const newMessages = [{ content: "" }];
-        return [...prev.slice(0, prev.length - 1), ...newMessages];
+        return [
+          ...prev.slice(0, prev.length > 3 ? prev.length - 1 : prev.length),
+          ...newMessages,
+        ];
       });
     } else {
       setNewMessageContent("");
@@ -133,63 +198,8 @@ const Layout = (props: LayoutProps) => {
         return;
       }
       setStreamingCompletion(true);
-      let done = false;
-      let finished_feedback = false;
-      let current_content = "";
-      while (!done) {
-        const { value, done: doneReading } = await reader.read();
-        if (doneReading) {
-          done = doneReading;
-          setStreamingCompletion(false);
-        }
-        if (value) {
-          const decoder = new TextDecoder();
-          const chunk = decoder.decode(value);
-
-          if (!finished_feedback) {
-            current_content += chunk;
-
-            if (current_content.length < 8) {
-              continue;
-            }
-
-            if (!current_content.toLowerCase().startsWith("feedback")) {
-              finished_feedback = true;
-              setMessages((prev) => {
-                const newMessage = {
-                  content: current_content,
-                };
-                return [...prev.slice(0, prev.length - 1), newMessage];
-              });
-              continue;
-            }
-
-            if (current_content.endsWith("\n")) {
-              finished_feedback = true;
-              current_content = current_content.slice(0, -2);
-            }
-            setMessages((prev) => {
-              const lastMessage = prev[prev.length - 1];
-              const newMessage = {
-                content: lastMessage.content,
-                feedback: current_content,
-              };
-              return [...prev.slice(0, prev.length - 1), newMessage];
-            });
-            continue;
-          }
-
-          setMessages((prev) => {
-            const lastMessage = prev[prev.length - 1];
-            const newMessage = {
-              feedback: lastMessage.feedback,
-              content: lastMessage.content + chunk,
-            };
-            return [...prev.slice(0, prev.length - 1), newMessage];
-          });
-          scrollToBottomOfMessages();
-        }
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const _ = await handleReader(reader);
     } catch (e) {
       console.error(e);
     }
@@ -267,6 +277,48 @@ const Layout = (props: LayoutProps) => {
                   <AfMessage
                     role={messageRoleFromIndex(idx())}
                     content={message.content}
+                    onEdit={(content: string) => {
+                      const newMessage: Message = {
+                        content: "",
+                      };
+                      setMessages((prev) => {
+                        return [...prev.slice(0, idx() + 1), newMessage];
+                      });
+                      completionAbortController().abort();
+                      setCompletionAbortController(new AbortController());
+                      fetch(`${api_host}/message`, {
+                        method: "PUT",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        credentials: "include",
+                        signal: completionAbortController().signal,
+                        body: JSON.stringify({
+                          new_message_content: content,
+                          message_sort_order: idx() + 1,
+                          topic_id: props.selectedTopic()?.id,
+                        }),
+                      })
+                        .then((response) => {
+                          if (!response.ok) {
+                            return;
+                          }
+                          const reader = response.body?.getReader();
+                          if (!reader) {
+                            return;
+                          }
+                          setStreamingCompletion(true);
+                          handleReader(reader).catch((e) => {
+                            console.error("Error handling reader: ", e);
+                          });
+                        })
+                        .catch((e) => {
+                          console.error(
+                            "Error fetching completion on edit message: ",
+                            e,
+                          );
+                        });
+                    }}
                     feedback={message.feedback}
                   />
                 );

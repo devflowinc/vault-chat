@@ -5,30 +5,17 @@ import {
   BiLogosYoutube,
   BiRegularCheck,
 } from "solid-icons/bi";
-import { Setter, createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
 import { A, useSearchParams } from "solid-start";
 import { Survey } from "~/components/Forms/Survey";
 import ThemeModeController from "~/components/Navbar/ThemeModeController";
-import {
-  detectReferralToken,
-  isStripeCheckoutSessionResponse,
-  isUserPlan,
-} from "~/types/actix-api";
+import { detectReferralToken } from "~/types/actix-api";
 
 export default function Home() {
   const api_host: string = import.meta.env.VITE_API_HOST as unknown as string;
-  const silver_plan_id: string = import.meta.env
-    .VITE_STRIPE_SILVER_PLAN_ID as unknown as string;
-  const gold_plan_id: string = import.meta.env
-    .VITE_STRIPE_GOLD_PLAN_ID as unknown as string;
 
   const [searchParams] = useSearchParams();
   const [isLogin, setIsLogin] = createSignal<boolean>(false);
-  const [silverPlanUrl, setSilverPlanUrl] = createSignal<string>("");
-  const [goldPlanUrl, setGoldPlanUrl] = createSignal<string>("");
-  const [currentPlan, setCurrentPlan] = createSignal<
-    "free" | "silver" | "gold"
-  >("free");
 
   detectReferralToken(searchParams.t);
 
@@ -55,70 +42,6 @@ export default function Home() {
     };
   });
 
-  createEffect(() => {
-    const silver_plan_abort_controller = new AbortController();
-    const gold_plan_abort_controller = new AbortController();
-
-    const getPlanUrl = (
-      plan_id: string,
-      setPlanUrl: Setter<string>,
-      abortController: AbortController,
-    ) => {
-      void fetch(`${api_host}/stripe/${plan_id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        signal: abortController.signal,
-      }).then(async (response) => {
-        if (!response.ok) {
-          return;
-        }
-        const response_json = (await response.json()) as unknown;
-        if (!isStripeCheckoutSessionResponse(response_json)) {
-          return;
-        }
-        setPlanUrl(response_json.checkout_session_url);
-      });
-    };
-
-    getPlanUrl(silver_plan_id, setSilverPlanUrl, silver_plan_abort_controller);
-    getPlanUrl(gold_plan_id, setGoldPlanUrl, gold_plan_abort_controller);
-
-    return () => {
-      silver_plan_abort_controller.abort();
-      gold_plan_abort_controller.abort();
-    };
-  });
-
-  createEffect(() => {
-    const get_stripe_plan_abort_controller = new AbortController();
-
-    void fetch(`${api_host}/stripe/plan`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      signal: get_stripe_plan_abort_controller.signal,
-    }).then((response) => {
-      if (!response.ok) {
-        return;
-      }
-      void response.json().then((data) => {
-        if (!isUserPlan(data)) {
-          return;
-        }
-        setCurrentPlan(data.plan);
-      });
-    });
-
-    return () => {
-      get_stripe_plan_abort_controller.abort();
-    };
-  });
-
   return (
     <div class="bg-neutral-50 text-neutral-900 dark:bg-neutral-900 dark:text-neutral-50">
       <div class="bg-gradient-radial-t from-magenta-400 p-4">
@@ -138,8 +61,12 @@ export default function Home() {
           </div>
           <div class="flex items-center gap-4">
             <div class="hidden items-center gap-4 md:flex">
-              <a class="hover:underline" href="https://vault.arguflow.com/">Evidence Vault</a>
-              <a class="hover:underline" href="https://blog.arguflow.com/">Blog</a>
+              <a class="hover:underline" href="https://vault.arguflow.com/">
+                Evidence Vault
+              </a>
+              <a class="hover:underline" href="https://blog.arguflow.com/">
+                Blog
+              </a>
             </div>
             <ThemeModeController />
             <A

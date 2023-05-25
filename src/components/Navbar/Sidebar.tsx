@@ -7,20 +7,12 @@ import {
   BiRegularX,
 } from "solid-icons/bi";
 import { TbGavel } from "solid-icons/tb";
-import {
-  Accessor,
-  createEffect,
-  createSignal,
-  For,
-  Setter,
-  Show,
-} from "solid-js";
+import { Accessor, createSignal, For, Setter, Show } from "solid-js";
 import type { Topic } from "~/types/topics";
 import { FiSettings } from "solid-icons/fi";
 import { FullScreenModal } from "../Atoms/FullScreenModal";
 import { IoSparklesOutline } from "solid-icons/io";
 import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
-import { isStripeCheckoutSessionResponse, isUserPlan } from "~/types/actix-api";
 import { BsQuestionCircle } from "solid-icons/bs";
 import { FaSolidCircle } from "solid-icons/fa";
 
@@ -41,22 +33,11 @@ const HelpTips: string[] = [
 
 export const Sidebar = (props: SidebarProps) => {
   const api_host = import.meta.env.VITE_API_HOST as unknown as string;
-  const silver_plan_id: string = import.meta.env
-    .VITE_STRIPE_SILVER_PLAN_ID as unknown as string;
-  const gold_plan_id: string = import.meta.env
-    .VITE_STRIPE_GOLD_PLAN_ID as unknown as string;
 
   const [editingIndex, setEditingIndex] = createSignal(-1);
   const [editingTopic, setEditingTopic] = createSignal("");
   const [settingsModalOpen, setSettingsModalOpen] = createSignal(false);
   const [helpModalOpen, setHelpModalOpen] = createSignal(false);
-  const [currentPlan, setCurrentPlan] = createSignal<
-    "free" | "silver" | "gold"
-  >("free");
-  const [silverPlanUrl, setSilverPlanUrl] = createSignal<string>("");
-  const [goldPlanUrl, setGoldPlanUrl] = createSignal<string>("");
-  const [planStatus, setPlanStatus] = createSignal<string>("");
-  const [planPrice, setPlanPrice] = createSignal<string>("");
 
   const submitEditText = async () => {
     const topics = props.topics();
@@ -116,108 +97,6 @@ export const Sidebar = (props: SidebarProps) => {
       window.location.href = "/auth/login";
     });
   };
-
-  const cancelPlan = () => {
-    void fetch(`${api_host}/stripe/plan`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-    }).then((response) => {
-      if (!response.ok) {
-        return;
-      }
-      setPlanStatus("canceled");
-    });
-  };
-
-  const putToPlan = (plan_id: string) => {
-    void fetch(`${api_host}/stripe/plan`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({
-        plan_id: plan_id,
-      }),
-    }).then((response) => {
-      if (!response.ok) {
-        return;
-      }
-      const newPlanType = plan_id === silver_plan_id ? "silver" : "gold";
-      setCurrentPlan(newPlanType);
-      setPlanStatus("active");
-      setPlanPrice(plan_id === silver_plan_id ? "$9.99" : "$49.99");
-    });
-  };
-
-  createEffect(() => {
-    const silver_plan_abort_controller = new AbortController();
-    const gold_plan_abort_controller = new AbortController();
-
-    const getPlanUrl = (
-      plan_id: string,
-      setPlanUrl: Setter<string>,
-      abortController: AbortController,
-    ) => {
-      void fetch(`${api_host}/stripe/${plan_id}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        signal: abortController.signal,
-      }).then(async (response) => {
-        if (!response.ok) {
-          return;
-        }
-        const response_json = (await response.json()) as unknown;
-        if (!isStripeCheckoutSessionResponse(response_json)) {
-          return;
-        }
-        setPlanUrl(response_json.checkout_session_url);
-      });
-    };
-
-    getPlanUrl(silver_plan_id, setSilverPlanUrl, silver_plan_abort_controller);
-    getPlanUrl(gold_plan_id, setGoldPlanUrl, gold_plan_abort_controller);
-
-    return () => {
-      silver_plan_abort_controller.abort();
-      gold_plan_abort_controller.abort();
-    };
-  });
-
-  createEffect(() => {
-    const get_stripe_plan_abort_controller = new AbortController();
-
-    void fetch(`${api_host}/stripe/plan`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include",
-      signal: get_stripe_plan_abort_controller.signal,
-    }).then((response) => {
-      if (!response.ok) {
-        return;
-      }
-      void response.json().then((data) => {
-        if (!isUserPlan(data)) {
-          return;
-        }
-        setCurrentPlan(data.plan);
-        setPlanStatus(data.status);
-        setPlanPrice(data.plan === "silver" ? "$9.99" : "$49.99");
-      });
-    });
-
-    return () => {
-      get_stripe_plan_abort_controller.abort();
-    };
-  });
 
   return (
     <div class="absolute z-50 flex h-screen w-screen flex-row dark:text-gray-50 md:relative md:w-full">
@@ -347,26 +226,6 @@ export const Sidebar = (props: SidebarProps) => {
             <IoSparklesOutline class="mr-2" />
             Try Arguflow Evidence Vault
           </a>
-          {/* <Show when={currentPlan() == "free"}>
-            <a
-              class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
-              href={silverPlanUrl()}
-            >
-              <IoSparklesOutline class="mr-2" />
-              Upgrade To Silver ($9.99/month)
-            </a>
-          </Show>
-          <Show when={currentPlan() !== "free" && planStatus() == "canceled"}>
-            <button
-              class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
-              onClick={() => {
-                putToPlan(silver_plan_id);
-              }}
-            >
-              <IoSparklesOutline class="mr-2" />
-              Upgrade To Silver ($9.99/month)
-            </button>
-          </Show> */}
           <button
             class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
             onClick={logout}
@@ -449,83 +308,8 @@ export const Sidebar = (props: SidebarProps) => {
               <div class="text-lg font-bold">Subscription Details</div>
               <div class="flex w-full items-center justify-between space-x-4">
                 <div>Tier:</div>
-                <div>{currentPlan()}</div>
+                <div>Free</div>
               </div>
-              <Show when={currentPlan() !== "free"}>
-                <div class="flex w-full items-center justify-between space-x-4">
-                  <div>Price:</div>
-                  <div>{planPrice()}/month</div>
-                </div>
-                <div class="flex w-full items-center justify-between space-x-4">
-                  <div>Status:</div>
-                  <div class="text-right">
-                    {planStatus() === "canceled"
-                      ? "canceled (you will not be charged at the end of current billing cycle)"
-                      : "active"}
-                  </div>
-                </div>
-              </Show>
-            </div>
-            <div class="flex flex-col space-y-2">
-              {/* <Show when={currentPlan() === "free"}>
-                <a
-                  class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
-                  href={silverPlanUrl()}
-                >
-                  <IoSparklesOutline class="mr-2" />
-                  Upgrade To Silver ($9.99/month)
-                </a>
-                <Show when={currentPlan() !== "gold"}>
-                  <a
-                    class="flex w-full items-center justify-center rounded-md bg-amber-500 px-4 py-2 font-bold text-white"
-                    href={goldPlanUrl()}
-                  >
-                    <IoSparklesOutline class="mr-2" />
-                    Upgrade To Gold ($49.99/month) (GPT4)
-                  </a>
-                </Show>
-              </Show> */}
-              <Show when={currentPlan() !== "free"}>
-                <Show
-                  when={
-                    currentPlan() !== "silver" || planStatus() == "canceled"
-                  }
-                >
-                  <button
-                    class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
-                    onClick={() => {
-                      putToPlan(silver_plan_id);
-                    }}
-                  >
-                    <IoSparklesOutline class="mr-2" />
-                    {currentPlan() === "gold" && planStatus() !== "canceled"
-                      ? "Downgrade"
-                      : "Upgrade"}{" "}
-                    To Silver ($9.99/month)
-                  </button>
-                </Show>
-                <Show
-                  when={currentPlan() !== "gold" || planStatus() == "canceled"}
-                >
-                  <button
-                    class="flex w-full items-center justify-center rounded-md bg-amber-500 px-4 py-2 font-bold text-white"
-                    onClick={() => {
-                      putToPlan(gold_plan_id);
-                    }}
-                  >
-                    <IoSparklesOutline class="mr-2" />
-                    Upgrade To Gold ($49.99/month) (GPT4)
-                  </button>
-                </Show>
-                <button
-                  class="flex w-full items-center justify-center rounded-md bg-stone-500 px-4 py-2 text-white"
-                  onClick={() => {
-                    cancelPlan();
-                  }}
-                >
-                  Cancel Subscription
-                </button>
-              </Show>
             </div>
           </div>
         </FullScreenModal>
