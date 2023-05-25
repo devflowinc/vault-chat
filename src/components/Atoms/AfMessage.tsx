@@ -11,7 +11,9 @@ export interface AfMessageProps {
 
 export const AfMessage = (props: AfMessageProps) => {
   const [editing, setEditing] = createSignal(false);
-  const [showEditingIcon, setShowEditingIcon] = createSignal(false);
+  const [showEditingIcon, setShowEditingIcon] = createSignal(
+    window.innerWidth < 450 ? true : false,
+  );
   const [editingMessageContent, setEditingMessageContent] = createSignal("");
 
   createEffect(() => {
@@ -66,7 +68,12 @@ export const AfMessage = (props: AfMessageProps) => {
             "bg-neutral-50 dark:bg-zinc-800": props.role === "user",
           }}
           onMouseEnter={() => setShowEditingIcon(true)}
-          onMouseLeave={() => setShowEditingIcon(false)}
+          onMouseLeave={() => {
+            if (window.innerWidth < 450) {
+              return;
+            }
+            setShowEditingIcon(false);
+          }}
         >
           <div class="flex w-full flex-row space-x-4">
             {props.role === "user" ? <BiSolidUserRectangle /> : <AiFillRobot />}
