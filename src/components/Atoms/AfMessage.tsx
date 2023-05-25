@@ -11,6 +11,7 @@ export interface AfMessageProps {
 
 export const AfMessage = (props: AfMessageProps) => {
   const [editing, setEditing] = createSignal(false);
+  const [editedContent, setEditedContent] = createSignal("");
   const [showEditingIcon, setShowEditingIcon] = createSignal(
     window.innerWidth < 450 ? true : false,
   );
@@ -84,7 +85,7 @@ export const AfMessage = (props: AfMessageProps) => {
               }}
             >
               <div class="col-span-2 whitespace-pre-line text-neutral-800 dark:text-neutral-50">
-                {displayMessage().content}
+                {editedContent() || displayMessage().content}
               </div>
               <Show when={displayMessage().feedback}>
                 <div class="justify-self-end text-neutral-500 dark:text-neutral-400">
@@ -121,6 +122,9 @@ export const AfMessage = (props: AfMessageProps) => {
               onKeyDown={(e) => {
                 if (e.ctrlKey && e.key === "Enter") {
                   e.preventDefault();
+                  props.onEdit(editingMessageContent());
+                  setEditedContent(editingMessageContent());
+                  setEditing(false);
                 }
               }}
               rows="1"
@@ -132,6 +136,7 @@ export const AfMessage = (props: AfMessageProps) => {
                 onClick={(e) => {
                   e.preventDefault();
                   props.onEdit(editingMessageContent());
+                  setEditedContent(editingMessageContent());
                   setEditing(false);
                 }}
               >
