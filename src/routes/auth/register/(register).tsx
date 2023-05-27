@@ -20,13 +20,27 @@ const Register = () => {
     <div class="flex h-screen w-screen items-center justify-center bg-neutral-50 px-10 dark:bg-neutral-800">
       <div class="flex w-full max-w-sm flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
         <a href="/" class="flex flex-col items-center">
-          <img src="/Logo.png" alt="Arguflow Logo" class="mx-auto my-2" />
+          <img
+            src="/Logo.png"
+            alt="Arguflow Logo"
+            class="mx-auto my-2"
+            elementtiming={""}
+            fetchpriority={"auto"}
+          />
         </a>
         <Show when={!getEmailSent()}>
           <div class="text-center text-2xl font-bold">
             <span class="py-2">Register for Arguflow AI Coach</span>
           </div>
           <div class="text-center text-red-500">{getErrorMessage()}</div>
+          <Show when={getErrorMessage().toLowerCase().includes("already")}>
+            <div class="text-center text-sm ">
+              Trouble signing in?{` `}
+              <a class="text-blue-500 underline" href="/auth/password/reset">
+                Reset your password
+              </a>
+            </div>
+          </Show>
           <form class="flex flex-col space-y-4">
             <div class="flex flex-col space-y-2">
               <label for="email">Email</label>
