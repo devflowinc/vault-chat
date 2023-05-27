@@ -253,7 +253,10 @@ export const Sidebar = (props: SidebarProps) => {
             </div>
             <div>Help</div>
           </button>
-          <div class="flex w-full items-center space-x-4 rounded-md px-3 py-2 font-semibold">
+          <a
+            class="flex w-full items-center space-x-4 rounded-md px-3 py-2 font-semibold"
+            href="/"
+          >
             <img
               src="/logo_512.png"
               class="h-10 w-10"
@@ -261,7 +264,7 @@ export const Sidebar = (props: SidebarProps) => {
               fetchpriority={"auto"}
             />
             <div>Made with ❤️ by Arguflow</div>
-          </div>
+          </a>
         </div>
       </div>
       <button
