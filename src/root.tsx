@@ -32,37 +32,36 @@ export default function Root() {
   return (
     <Html lang="en">
       <Head>
-        <Title>AI Debate Coach</Title>
+        <Title>Arguflow AI Debate Coach</Title>
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <title>Arguflow AI Debate Coach</title>
-        <meta
+        <Meta
           name="description"
           content="Get affordable coaching and instant feedback with 24/7 availability from Arguflow - Your AI Debate coach"
         />
 
-        <meta property="og:url" content="https://arguflow.com" />
-        <meta property="og:type" content="website/" />
-        <meta property="og:title" content="Arguflow AI Debate Coach" />
-        <meta
+        <Meta property="og:url" content="https://arguflow.com" />
+        <Meta property="og:type" content="website/" />
+        <Meta property="og:title" content="Arguflow AI Debate Coach" />
+        <Meta
           property="og:description"
           content="Get affordable coaching and instant feedback with 24/7 availability from Arguflow - Your AI Debate coach"
         />
-        <meta
+        <Meta
           property="og:image"
           content="https://blog.arguflow.com/arguflow-og.png"
         />
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content="arguflow.com" />
-        <meta property="twitter:url" content="https://arguflow.com" />
-        <meta name="twitter:title" content="Arguflow AI Debate Coach" />
-        <meta
+        <Meta name="twitter:card" content="summary_large_image" />
+        <Meta property="twitter:domain" content="arguflow.com" />
+        <Meta property="twitter:url" content="https://arguflow.com" />
+        <Meta name="twitter:title" content="Arguflow AI Debate Coach" />
+        <Meta
           name="twitter:description"
           content="Get affordable coaching and instant feedback with 24/7 availability from Arguflow - Your AI Debate coach"
         />
-        <meta
+        <Meta
           name="twitter:image"
           content="https://blog.arguflow.com/arguflow-og.png"
         />
