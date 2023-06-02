@@ -4,6 +4,7 @@ import {
   FileRoutes,
   Head,
   Html,
+  Link,
   Meta,
   Routes,
   Scripts,
@@ -14,20 +15,34 @@ import "./root.css";
 
 export default function Root() {
   const theme = (() => {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-      return localStorage.getItem('theme')
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      return localStorage.getItem("theme");
     }
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark'
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
     }
-    return 'light'
-  })()
+    return "light";
+  })();
 
-  if (theme === 'light') {
-    document.documentElement.classList.remove('dark')
+  if (theme === "light") {
+    document.documentElement.classList.remove("dark");
   } else {
-    document.documentElement.classList.add('dark')
+    document.documentElement.classList.add("dark");
   }
+
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("/sw.js").then(
+      function (registration) {
+        console.log(
+          "Service Worker registered with scope:",
+          registration.scope,
+        );
+      },
+      function (error) {
+        console.log("Service Worker registration failed:", error);
+      },
+    );
+  });
 
   return (
     <Html lang="en">
@@ -35,6 +50,9 @@ export default function Root() {
         <Title>Arguflow AI Debate Coach</Title>
         <Meta charset="utf-8" />
         <Meta name="viewport" content="width=device-width, initial-scale=1" />
+        <Link rel="manifest" href="/manifest.json" />
+        <script async={false} src="/sw.js" />
+        <Meta name="theme-color" content="#5E5E5E" />
 
         <Meta
           name="description"
