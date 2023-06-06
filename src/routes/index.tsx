@@ -286,63 +286,6 @@ export default function Home() {
           />
         </div>
         <div class="py-6 md:py-16" />
-        <p id="reviews" class="text-magenta md:text-xl">
-          Reviews
-        </p>
-        <p class="text-2xl font-medium md:text-4xl">What people are saying</p>
-        <div class="py-3" />
-        <div class="flex flex-col gap-4 md:flex-row md:items-start">
-          <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800 md:basis-1/3">
-            <p class="text-xs text-turquoise md:text-lg"> Mohammad Khan </p>
-            <div class="py-1" />
-            <p class="text-xs md:text-lg">
-              "I've been using Arguflow AI for a few months now, and I'm blown
-              away by how effective it is at improving my debating skills.
-            </p>
-            <div class="pt-3" />
-            <img
-              src="/right-quote.svg"
-              alt=""
-              elementtiming={""}
-              fetchpriority={"high"}
-            />
-          </div>
-          <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800 md:basis-1/3">
-            <p class="text-xs text-turquoise md:text-lg"> Juanita Rodriguez </p>
-            <div class="py-1" />
-            <p class="text-xs md:text-lg">
-              "I've been using Arguflow AI for a few months now, and I'm blown
-              away by how effective it is at improving my debating skills. The
-              platform is incredibly intuitive and user-friendly, making it easy
-              to get started and customize my experience.
-            </p>
-            <div class="pt-3" />
-            <img
-              src="/right-quote.svg"
-              alt=""
-              elementtiming={""}
-              fetchpriority={"high"}
-            />
-          </div>
-          <div class="rounded-lg p-4 shadow-lg dark:bg-neutral-800 md:basis-1/3">
-            <p class="text-xs text-turquoise md:text-lg"> Sarah Davis </p>
-            <div class="py-1" />
-            <p class="text-xs md:text-lg">
-              "I'm blown away by how effective it is at improving my debating
-              skills. The ability to choose any topic for debate is a
-              game-changer, as I can practice on topics that are relevant to me
-              or my business.
-            </p>
-            <div class="pt-3" />
-            <img
-              src="/right-quote.svg"
-              alt=""
-              elementtiming={""}
-              fetchpriority={"high"}
-            />
-          </div>
-        </div>
-        <div class="py-6 md:py-16" />
         <div class="flex flex-col items-center space-y-2 text-center">
           <p class="text-2xl md:text-4xl">Ready to Start Debating?</p>
           <p class="text-xs md:text-lg">
