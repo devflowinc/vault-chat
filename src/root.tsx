@@ -1,3 +1,4 @@
+import { createEffect } from "solid-js";
 import {
   Body,
   ErrorBoundary,
@@ -107,6 +108,7 @@ export default function Root() {
     </Html>
   );
 }
-function createEffect(arg0: () => void) {
+function onCleanup(arg0: () => HTMLScriptElement) {
   throw new Error("Function not implemented.");
 }
+
