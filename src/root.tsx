@@ -30,18 +30,28 @@ export default function Root() {
     document.documentElement.classList.add("dark");
   }
 
-  window.addEventListener("load", function () {
+  window.addEventListener("load", function() {
     navigator.serviceWorker.register("/sw.js").then(
-      function (registration) {
+      function(registration) {
         console.log(
           "Service Worker registered with scope:",
           registration.scope,
         );
       },
-      function (error) {
+      function(error) {
         console.log("Service Worker registration failed:", error);
       },
     );
+  });
+
+  createEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://perhaps.arguflow.com/js/script.js";
+    script.defer = true;
+    script["data-domain"] = "arguflow.com";
+    document.body.appendChild(script);
+
+    onCleanup(() => document.body.removeChild(script));
   });
 
   return (
@@ -96,4 +106,7 @@ export default function Root() {
       </Body>
     </Html>
   );
+}
+function createEffect(arg0: () => void) {
+  throw new Error("Function not implemented.");
 }
