@@ -14,12 +14,13 @@ const Register = () => {
 
   const [getErrorMessage, setErrorMessage] = createSignal("");
   const [getEmail, setEmail] = createSignal("");
-  const [getEmailSent, setEmailSent] = createSignal(false);
+  const [getEmailSent, setEmailSent] = createSignal("");
+  const [getIsLoading, setIsLoading] = createSignal(false);
 
   return (
     <div class="flex h-screen w-screen items-center justify-center bg-neutral-50 px-10 dark:bg-neutral-800">
       <div class="flex w-full max-w-sm flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
-        <a href="/" class="flex flex-col items-center">
+        <A href="/" class="flex flex-col items-center">
           <img
             src="/Logo.png"
             alt="Arguflow Logo"
@@ -27,7 +28,7 @@ const Register = () => {
             elementtiming={""}
             fetchpriority={"auto"}
           />
-        </a>
+        </A>
         <Show when={!getEmailSent()}>
           <div class="text-center text-2xl font-bold">
             <span class="py-2">Register for Arguflow AI Coach</span>
@@ -58,9 +59,14 @@ const Register = () => {
             <div class="w-full">
               <button
                 type="submit"
-                class="w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700"
+                classList={{
+                  "w-full rounded bg-neutral-200 p-2  dark:bg-neutral-700":
+                    true,
+                  "animate-pulse": getIsLoading(),
+                }}
                 onClick={(e) => {
                   e.preventDefault();
+                  setIsLoading(true);
                   setErrorMessage("");
                   const email = getEmail();
                   void fetch(`${api_host}/invitation`, {
@@ -73,6 +79,7 @@ const Register = () => {
                       referral_tokens: getReferralTokenArray(),
                     }),
                   }).then((response) => {
+                    setIsLoading(false);
                     if (!response.ok) {
                       void response.json().then((data) => {
                         if (isActixApiDefaultError(data)) {
@@ -81,11 +88,15 @@ const Register = () => {
                       });
                       return;
                     }
-                    setEmailSent(true);
+
+                    void response.json().then((data) => {
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                      setEmailSent(data.registration_url);
+                    });
                   });
                 }}
               >
-                Send Email to Finish Registration
+                Register
               </button>
             </div>
           </form>
@@ -99,9 +110,14 @@ const Register = () => {
           </div>
         </Show>
         <Show when={getEmailSent()}>
-          <div class="flex w-full max-w-sm flex-col space-y-2 text-neutral-900 dark:text-neutral-50">
+          <div class="flex w-full max-w-sm flex-col space-y-2 p-2 text-neutral-900 dark:text-neutral-50">
             <div class="text-center text-2xl font-bold">
-              <span class="py-2">Check your email to finish registration</span>
+              <A
+                href={`${getEmailSent()}`}
+                class="py-2 text-blue-500 underline hover:text-blue-600"
+              >
+                Click here to set your password
+              </A>
             </div>
             <div class="flex w-full justify-center">
               <span class="">

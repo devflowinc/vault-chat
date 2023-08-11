@@ -25,3 +25,4 @@ Thumbs.db
 
 #env files
 .env.local
+.env

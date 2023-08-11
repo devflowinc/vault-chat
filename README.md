@@ -1,14 +1,36 @@
-# Arguflow AI
+<p align="center">
+  <img height="100" src="https://raw.githubusercontent.com/arguflow/blog/5ef439020707b0e27bf901c8f6b4fb1f487a78d4/apps/frontend/public/assets/horizontal-logo.svg" alt="Arguflow">
+</p>
 
-[Arguflow AI](https://arguflow.com) is your own personal debate coach. Powered by the [SolidJS](https://solidjs.com) framwork, Arguflow AI utilizes AI software to debate against users and provide feedback on how to improve argument skills.
+<p align="center">
+    <b>Easy to use abstraction over Qdrant and Postgres for creating a semantic/full-text socially enabled embedding store and LLM-Chat UX on your data</b>
+</p>
 
-## How to use Arguflow AI
+**Arguflow Vault Chat**: Paired with [vault-server](https://github.com/arguflow/vault-server), Arguflow Vault Chat is an abstraction layer over Qdrant, Postgresql, and a LLM to provide a hallucination-resistant LLM-chat UX that cites your data as it converses with you.
 
-Click "Start Debating Now" from the main menu and create an account.
+<p align="center">
+<strong><a href="https://docs.arguflow.ai">Documentation</a> • <a href="https://coach.arguflow.ai">Debate Coach Demo</a> • <a href="https://discord.gg/CuJVfgZf54">Discord</a>
 
-Once registered, users can select topics, decide whether they are for or against said topic, and begin inputting arguments for their side of the debate. 
+</strong>
+</p>
 
-Arguflow will generate counterarguments as well as feedback on how arguments could be better phrased and improved overall.
+# Vault Chat 
+## Getting started
+
+### Set your .env
+
+```
+VITE_API_HOST=http://127.0.0.1:8090/api
+
+# VITE_API_HOST=https://api.arguflow.ai/api
+```
+
+### Run with yarn 
+
+```
+yarn 
+yarn dev
+```
 
 ## How to contribute
 
@@ -19,15 +41,3 @@ Arguflow will generate counterarguments as well as feedback on how arguments cou
 5. Commit your changes with a descriptive commit message: git commit -m "Add descriptive commit message here"
 6. Push your changes to your forked repository: git push origin your-branch-name
 7. Open a pull request to the main repository and describe your changes in the PR description.
-
-## Storing environment variables in .env file
-
-Create a .env file in the root directory of the project. This .env file will require the following url's and API keys.
-
-```
-DATABASE_URL = [url]
-REDIS_URL = [url]
-SENDGRID_API_KEY = [API key]
-OPENAI_API_KEY = [API key]
-STRIPE_API_SECRET_KEY = [API key]
-```
