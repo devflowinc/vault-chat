@@ -11,7 +11,6 @@ import { Accessor, createSignal, For, Setter, Show } from "solid-js";
 import type { Topic } from "~/types/topics";
 import { FiSettings } from "solid-icons/fi";
 import { FullScreenModal } from "../Atoms/FullScreenModal";
-import { IoSparklesOutline } from "solid-icons/io";
 import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 import { BsQuestionCircle } from "solid-icons/bs";
 import { FaSolidCircle } from "solid-icons/fa";
@@ -131,7 +130,7 @@ export const Sidebar = (props: SidebarProps) => {
               <span class="text-xl">
                 <BiRegularPlus />
               </span>
-              <span>New Regular Chat</span>
+              <span>New Chat</span>
             </div>
           </button>
         </div>
@@ -219,13 +218,6 @@ export const Sidebar = (props: SidebarProps) => {
         </div>
         <div class="flex-1 " />
         <div class="flex w-full flex-col space-y-1 border-t px-2 py-2 dark:border-neutral-400">
-          <a
-            class="flex w-full items-center justify-center rounded-md bg-zinc-500 px-4 py-2 font-bold text-white"
-            href="https://vault.arguflow.com/"
-          >
-            <IoSparklesOutline class="mr-2" />
-            Try Arguflow Evidence Vault
-          </a>
           <button
             class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200   dark:hover:bg-neutral-700"
             onClick={logout}
@@ -253,18 +245,6 @@ export const Sidebar = (props: SidebarProps) => {
             </div>
             <div>Help</div>
           </button>
-          <a
-            class="flex w-full items-center space-x-4 rounded-md px-3 py-2 font-semibold"
-            href="/"
-          >
-            <img
-              src="/logo_512.png"
-              class="h-10 w-10"
-              elementtiming={""}
-              fetchpriority={"auto"}
-            />
-            <div>Made with ❤️ by Arguflow</div>
-          </a>
         </div>
       </div>
       <button
