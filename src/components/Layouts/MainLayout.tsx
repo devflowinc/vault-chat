@@ -85,8 +85,6 @@ const Layout = (props: LayoutProps) => {
     reader: ReadableStreamDefaultReader<Uint8Array>,
   ) => {
     let done = false;
-    let finished_feedback = false;
-    let current_content = "";
     while (!done) {
       const { value, done: doneReading } = await reader.read();
       if (doneReading) {
@@ -97,43 +95,9 @@ const Layout = (props: LayoutProps) => {
         const decoder = new TextDecoder();
         const chunk = decoder.decode(value);
 
-        if (!finished_feedback) {
-          current_content += chunk;
-
-          if (current_content.length < 8) {
-            continue;
-          }
-
-          if (!current_content.toLowerCase().startsWith("feedback")) {
-            finished_feedback = true;
-            setMessages((prev) => {
-              const newMessage = {
-                content: current_content,
-              };
-              return [...prev.slice(0, prev.length - 1), newMessage];
-            });
-            continue;
-          }
-
-          if (current_content.endsWith("\n")) {
-            finished_feedback = true;
-            current_content = current_content.slice(0, -2);
-          }
-          setMessages((prev) => {
-            const lastMessage = prev[prev.length - 1];
-            const newMessage = {
-              content: lastMessage.content,
-              feedback: current_content,
-            };
-            return [...prev.slice(0, prev.length - 1), newMessage];
-          });
-          continue;
-        }
-
         setMessages((prev) => {
           const lastMessage = prev[prev.length - 1];
           const newMessage = {
-            feedback: lastMessage.feedback,
             content: lastMessage.content + chunk,
           };
           return [...prev.slice(0, prev.length - 1), newMessage];
@@ -319,14 +283,13 @@ const Layout = (props: LayoutProps) => {
                           );
                         });
                     }}
-                    feedback={message.feedback}
                   />
                 );
               }}
             </For>
           </div>
 
-          <div class="fixed bottom-0 right-0 flex w-full flex-col items-center space-y-4 bg-gradient-to-b from-transparent via-zinc-200 to-zinc-100 p-4 dark:via-zinc-800 dark:to-zinc-900 md:w-3/4">
+          <div class="fixed bottom-0 right-0 flex w-full flex-col items-center space-y-4 bg-gradient-to-b from-transparent via-zinc-200 to-zinc-100 p-4 dark:via-zinc-800 dark:to-zinc-900 lg:w-3/4">
             <Show when={messages().length > 2}>
               <div class="flex w-full justify-center">
                 <Show when={!streamingCompletion()}>
@@ -392,7 +355,7 @@ const Layout = (props: LayoutProps) => {
                   disabled={streamingCompletion()}
                   onInput={(e) => resizeTextarea(e.target)}
                   onKeyDown={(e) => {
-                    if (e.ctrlKey && e.key === "Enter") {
+                    if (e.key === "Enter") {
                       e.preventDefault();
                       const new_message_content = newMessageContent();
                       if (!new_message_content) {
@@ -451,7 +414,7 @@ const Layout = (props: LayoutProps) => {
                             <MenuItem as="button" aria-label="Empty" />
                             <MenuItem
                               as="button"
-                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 focus:bg-neutral-200 focus:outline-none hover:cursor-pointer dark:border-neutral-600 dark:focus:bg-neutral-600"
+                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 hover:cursor-pointer focus:bg-neutral-200 focus:outline-none dark:border-neutral-600 dark:focus:bg-neutral-600"
                               onClick={() => {
                                 setNewMessageContent(
                                   'You are the Debate judge who must decide a winner in the debate, reason to the best degree who won this debate, respond either "affirmative" or "negative". Then explain why.',
@@ -473,7 +436,7 @@ const Layout = (props: LayoutProps) => {
                             </MenuItem>
                             <MenuItem
                               as="button"
-                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 focus:bg-neutral-200 focus:outline-none hover:cursor-pointer dark:border-neutral-600 dark:focus:bg-neutral-600"
+                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 hover:cursor-pointer focus:bg-neutral-200 focus:outline-none dark:border-neutral-600 dark:focus:bg-neutral-600"
                             >
                               <div>
                                 <RiOthersBoxingLine class="h-6 w-6" />
@@ -495,7 +458,7 @@ const Layout = (props: LayoutProps) => {
                             </MenuItem>
                             <MenuItem
                               as="button"
-                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 focus:bg-neutral-200 focus:outline-none hover:cursor-pointer dark:border-neutral-600 dark:focus:bg-neutral-600"
+                              class="flex items-center space-x-2 rounded-md border border-neutral-200 px-2 py-1 hover:cursor-pointer focus:bg-neutral-200 focus:outline-none dark:border-neutral-600 dark:focus:bg-neutral-600"
                             >
                               <div>
                                 <IoFunnelOutline class="h-6 w-6" />

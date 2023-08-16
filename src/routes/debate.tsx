@@ -74,7 +74,7 @@ export const debate = () => {
   return (
     <Show when={isLogin()}>
       <div class="relative flex h-screen flex-row bg-zinc-100 dark:bg-zinc-900">
-        <div class="hidden w-1/3 md:block">
+        <div class="hidden w-1/3 lg:block">
           <Sidebar
             currentTopic={selectedTopic}
             setCurrentTopic={setSelectedTopic}
@@ -85,7 +85,7 @@ export const debate = () => {
             setIsCreatingNormalTopic={setIsCreatingNormalTopic}
           />
         </div>
-        <div class="md:hidden">
+        <div class="lg:hidden">
           <Show when={sidebarOpen()}>
             <Sidebar
               currentTopic={selectedTopic}

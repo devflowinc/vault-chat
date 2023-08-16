@@ -98,8 +98,8 @@ export const Sidebar = (props: SidebarProps) => {
   };
 
   return (
-    <div class="absolute z-50 flex h-screen w-screen flex-row dark:text-gray-50 md:relative md:w-full">
-      <div class="flex h-full w-2/3 flex-col bg-neutral-50 dark:bg-neutral-800 md:w-full">
+    <div class="absolute z-50 flex h-screen w-screen flex-row dark:text-gray-50 lg:relative lg:w-full">
+      <div class="flex h-full w-2/3 flex-col bg-neutral-50 dark:bg-neutral-800 lg:w-full">
         <div class="flex w-full flex-col space-y-2 px-2 py-2 ">
           <button
             onClick={() => {
@@ -248,10 +248,10 @@ export const Sidebar = (props: SidebarProps) => {
         </div>
       </div>
       <button
-        class="w-1/3 flex-col justify-start bg-gray-500/5 backdrop-blur-[3px] md:hidden"
+        class="w-1/3 flex-col justify-start bg-gray-500/5 backdrop-blur-[3px] lg:hidden"
         onClick={(e) => {
           e.preventDefault();
-          props.setSideBarOpen((prev) => !prev);
+          props.setSideBarOpen(false);
         }}
       >
         <div class="ml-4 text-3xl">

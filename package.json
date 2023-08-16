@@ -7,6 +7,7 @@
   },
   "type": "module",
   "devDependencies": {
+    "@types/sanitize-html": "^2.9.0",
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "prettier": "2.8.7",
@@ -28,6 +29,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-solid": "^0.12.1",
     "prettier-plugin-tailwindcss": "^0.2.7",
+    "sanitize-html": "^2.11.0",
     "solid-headless": "^0.13.1",
     "solid-icons": "^1.0.4",
     "solid-js": "^1.7.2",
