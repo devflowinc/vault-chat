@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import {
   Body,
   ErrorBoundary,
@@ -12,6 +13,7 @@ import {
 } from "solid-start";
 import UserStoreContext from "./components/contexts/UserStoreContext";
 import "./root.css";
+import { createEffect } from "solid-js";
 
 export default function Root() {
   const theme = (() => {
@@ -44,6 +46,20 @@ export default function Root() {
     );
   });
 
+  createEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const script: any = document.createElement("script");
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    script.src = "https://perhaps.arguflow.com/js/script.js";
+    script["data-domain"] = "chat.arguflow.ai";
+    script.defer = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  });
+
   return (
     <Html lang="en">
       <Head>
@@ -53,11 +69,6 @@ export default function Root() {
         <Link rel="manifest" href="/manifest.json" />
         <script async={false} src="/sw.js" />
         <Meta name="theme-color" content="#5E5E5E" />
-        <script
-          defer
-          data-domain="chat.arguflow.ai"
-          src="https://perhaps.arguflow.com/js/script.js"
-        />
 
         <Meta
           name="description"
