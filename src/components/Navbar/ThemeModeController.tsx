@@ -70,7 +70,7 @@ const ThemeModeController = () => {
                   <MenuItem as="button" aria-label="Empty" />
                   <MenuItem
                     as="div"
-                    class="flex space-x-2 rounded-md px-2 py-1 focus:bg-neutral-100 focus:outline-none hover:cursor-pointer dark:focus:bg-neutral-600 dark:hover:bg-neutral-600 dark:hover:bg-none"
+                    class="flex space-x-2 rounded-md px-2 py-1 hover:cursor-pointer focus:bg-neutral-100 focus:outline-none dark:hover:bg-neutral-600 dark:hover:bg-none dark:focus:bg-neutral-600"
                     onClick={() => {
                       setThemeMode("light");
                       setCurrentTheme(getThemeMode());
@@ -99,7 +99,7 @@ const ThemeModeController = () => {
                   </MenuItem>
                   <MenuItem
                     as="div"
-                    class="flex space-x-2 rounded-md px-2 py-1 focus:bg-neutral-100 focus:outline-none hover:cursor-pointer hover:bg-neutral-100 dark:focus:bg-neutral-600 dark:hover:bg-neutral-600"
+                    class="flex space-x-2 rounded-md px-2 py-1 hover:cursor-pointer hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none dark:hover:bg-neutral-600 dark:focus:bg-neutral-600"
                     onClick={() => {
                       setThemeMode("dark");
                       setCurrentTheme(getThemeMode());
@@ -128,7 +128,7 @@ const ThemeModeController = () => {
                   </MenuItem>
                   <MenuItem
                     as="div"
-                    class="flex space-x-2 rounded-md px-2 py-1 focus:bg-neutral-100 focus:outline-none hover:cursor-pointer hover:bg-neutral-100 dark:focus:bg-neutral-600 dark:hover:bg-neutral-600"
+                    class="flex space-x-2 rounded-md px-2 py-1 hover:cursor-pointer hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none dark:hover:bg-neutral-600 dark:focus:bg-neutral-600"
                     onClick={() => {
                       clearThemeMode();
                       setCurrentTheme(getThemeMode());
