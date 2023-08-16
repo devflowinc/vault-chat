@@ -1,4 +1,3 @@
-import { createEffect, onCleanup } from "solid-js";
 import {
   Body,
   ErrorBoundary,
@@ -45,15 +44,6 @@ export default function Root() {
     );
   });
 
-  createEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://perhaps.arguflow.com/js/script.js";
-    script.defer = true;
-    document.body.appendChild(script);
-
-    onCleanup(() => document.body.removeChild(script));
-  });
-
   return (
     <Html lang="en">
       <Head>
@@ -63,6 +53,11 @@ export default function Root() {
         <Link rel="manifest" href="/manifest.json" />
         <script async={false} src="/sw.js" />
         <Meta name="theme-color" content="#5E5E5E" />
+        <script
+          defer
+          data-domain="chat.arguflow.ai"
+          src="https://perhaps.arguflow.com/js/script.js"
+        />
 
         <Meta
           name="description"
