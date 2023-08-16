@@ -16,7 +16,7 @@ const answers = [
     id: "A",
     primaryText: "Chat With My Brief",
     secondaryText:
-      "Upload your brief and chat with it. Addditionally, when the AI is providing counterarguments, it will pull evidence from the brief.",
+      "Upload your brief and chat with it. Addditionally, when the LLM is providing counterarguments, it will pull evidence from the brief.",
     color: "purple-500",
   },
   {
@@ -30,7 +30,7 @@ const answers = [
     id: "C",
     primaryText: "Voice to Text",
     secondaryText:
-      "Use your voice to chat with the AI so you can get practice actually speaking.",
+      "Use your voice to chat with the LLM so you can get practice actually speaking.",
     color: "green-500",
   },
   {

@@ -86,7 +86,10 @@ export const AfMessage = (props: AfMessageProps) => {
                 </div>
                 <Show when={displayMessage().content === ""}>
                   <div class="col-span-2 w-full whitespace-pre-line">
-                    <div class="w-fit animate-spin text-4xl"> 🦀 </div>
+                    <img
+                      src="/cooking-crab.gif"
+                      class="aspect-square w-[128px]"
+                    />
                   </div>
                 </Show>
                 <Show when={displayMessage().card_metadata_with_votes}>
