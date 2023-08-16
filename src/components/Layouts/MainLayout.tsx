@@ -54,6 +54,10 @@ const Layout = (props: LayoutProps) => {
     createSignal<boolean>(false);
   const [completionAbortController, setCompletionAbortController] =
     createSignal<AbortController>(new AbortController());
+  const [disableAutoScroll, setDisableAutoScroll] =
+    createSignal<boolean>(false);
+  const [triggerScrollToBottom, setTriggerScrollToBottom] =
+    createSignal<boolean>(false);
 
   createEffect(() => {
     const element = document.getElementById("topic-layout");
@@ -81,6 +85,26 @@ const Layout = (props: LayoutProps) => {
     };
   });
 
+  createEffect(() => {
+    window.addEventListener("wheel", (event) => {
+      const delta = Math.sign(event.deltaY);
+      7;
+
+      if (delta === -1) {
+        setDisableAutoScroll(true);
+      }
+    });
+  });
+
+  createEffect(() => {
+    const triggerScrollToBottomVal = triggerScrollToBottom();
+    const disableAutoScrollVal = disableAutoScroll();
+    if (triggerScrollToBottomVal && !disableAutoScrollVal) {
+      scrollToBottomOfMessages();
+      setTriggerScrollToBottom(false);
+    }
+  });
+
   const handleReader = async (
     reader: ReadableStreamDefaultReader<Uint8Array>,
   ) => {
@@ -102,7 +126,8 @@ const Layout = (props: LayoutProps) => {
           };
           return [...prev.slice(0, prev.length - 1), newMessage];
         });
-        scrollToBottomOfMessages();
+
+        setTriggerScrollToBottom(true);
       }
     }
   };
@@ -272,6 +297,7 @@ const Layout = (props: LayoutProps) => {
                             return;
                           }
                           setStreamingCompletion(true);
+                          setDisableAutoScroll(false);
                           handleReader(reader).catch((e) => {
                             console.error("Error handling reader: ", e);
                           });
