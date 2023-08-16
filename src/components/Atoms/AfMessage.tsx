@@ -38,11 +38,21 @@ export const AfMessage = (props: AfMessageProps) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       card_metadata_with_votes = JSON.parse(split_content[0]);
       content = split_content[1];
+    } else {
+      return {
+        content:
+          "I am stumped and cannot figure out how to respond to this. Try regenerating your response or making a new debate topic.",
+      };
     }
 
     return {
       card_metadata_with_votes,
-      content: card_metadata_with_votes.length > 1 ? content : "",
+      content:
+        card_metadata_with_votes.length > 1
+          ? content
+              .replace("counterargument:", "")
+              .replace("Counterargument:", "")
+          : "",
     };
   });
 
