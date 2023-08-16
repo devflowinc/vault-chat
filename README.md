@@ -9,12 +9,13 @@
 **Arguflow Vault Chat**: Paired with [vault-server](https://github.com/arguflow/vault-server), Arguflow Vault Chat is an abstraction layer over Qdrant, Postgresql, and a LLM to provide a hallucination-resistant LLM-chat UX that cites your data as it converses with you.
 
 <p align="center">
-<strong><a href="https://docs.arguflow.ai">Documentation</a> • <a href="https://coach.arguflow.ai">Debate Chat Demo</a> • <a href="https://discord.gg/CuJVfgZf54">Discord</a>
+<strong><a href="https://docs.arguflow.ai">Documentation</a> • <a href="https://coach.arguflow.ai">Debate Opponent Demo</a> • <a href="https://discord.gg/CuJVfgZf54">Discord</a>
 
 </strong>
 </p>
 
-# Vault Chat 
+# Vault Chat
+
 ## Getting started
 
 ### Set your .env
@@ -25,10 +26,10 @@ VITE_API_HOST=http://127.0.0.1:8090/api
 # VITE_API_HOST=https://api.arguflow.ai/api
 ```
 
-### Run with yarn 
+### Run with yarn
 
 ```
-yarn 
+yarn
 yarn dev
 ```
 
