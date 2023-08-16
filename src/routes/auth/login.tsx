@@ -19,7 +19,7 @@ const login = () => {
           <img src="/Logo.png" alt="Arguflow Logo" class="mx-auto my-2" />
         </a>
         <div class="text-center text-2xl font-bold">
-          <span class="py-2">Login to Arguflow AI Coach</span>
+          <span class="py-2">Login to Arguflow Chat</span>
         </div>
         <div class="text-center text-red-500">{getErrorMessage()}</div>
         <Show when={getErrorMessage().toLowerCase().includes("incorrect")}>

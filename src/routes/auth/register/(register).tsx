@@ -31,7 +31,7 @@ const Register = () => {
         </A>
         <Show when={!getEmailSent()}>
           <div class="text-center text-2xl font-bold">
-            <span class="py-2">Register for Arguflow AI Coach</span>
+            <span class="py-2">Register for Arguflow Chat</span>
           </div>
           <div class="text-center text-red-500">{getErrorMessage()}</div>
           <Show when={getErrorMessage().toLowerCase().includes("already")}>

@@ -22,7 +22,7 @@ const FinishPasswordReset = () => {
         </a>
         <div class="text-center text-2xl font-bold">
           <span class="py-2">
-            Finish Resetting Your Password for Arguflow AI Coach
+            Finish Resetting Your Password for Arguflow Chat
           </span>
         </div>
         <div class="text-center text-red-500">{getErrorMessage()}</div>

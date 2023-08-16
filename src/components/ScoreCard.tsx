@@ -199,7 +199,7 @@ const ScoreCard = (props: ScoreCardProps) => {
           </Show>
           <a
             title="Open"
-            href={`https://vault.arguflow.ai/card/${props.card.id}`}
+            href={`https://search.arguflow.ai/card/${props.card.id}`}
           >
             <VsFileSymlinkFile class="h-5 w-5 fill-current" />
           </a>
@@ -288,7 +288,7 @@ const ScoreCard = (props: ScoreCardProps) => {
               <Show when={props.card.author}>
                 <span class="font-semibold">Author: </span>
                 <a
-                  href={`https://vault.arguflow.ai/user/${
+                  href={`https://search.arguflow.ai/user/${
                     props.card.author?.id ?? ""
                   }`}
                   class="line-clamp-1 break-all underline"

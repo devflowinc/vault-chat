@@ -130,7 +130,7 @@ export const Sidebar = (props: SidebarProps) => {
               <span class="text-xl">
                 <BiRegularPlus />
               </span>
-              <span>New Chat</span>
+              <span>New Regular Chat</span>
             </div>
           </button>
         </div>
@@ -223,7 +223,7 @@ export const Sidebar = (props: SidebarProps) => {
             onClick={logout}
           >
             <div class="text-3xl">
-              <BiRegularLogOut />
+              <BiRegularLogOut class="fill-current" />
             </div>
             <div>Logout</div>
           </button>

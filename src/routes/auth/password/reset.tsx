@@ -20,7 +20,7 @@ const ResetPassword = () => {
         </a>
         <Show when={!getEmailSent()}>
           <div class="text-center text-2xl font-bold">
-            <span class="py-2">Reset Your Arguflow AI Coach Password</span>
+            <span class="py-2">Reset Your Arguflow Chat Password</span>
           </div>
           <div class="text-center text-red-500">{getErrorMessage()}</div>
           <form class="flex flex-col space-y-4">

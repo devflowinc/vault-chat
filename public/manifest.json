@@ -4,9 +4,9 @@
 	"display": "standalone",
 	"scope": "/",
 	"start_url": "/",
-	"name": "Arguflow AI Debate Coach",
-	"short_name": "AI Debate Coach",
-	"description": "Practice your debate skills against AI.",
+	"name": "Arguflow Chat",
+	"short_name": "LLM Chat",
+	"description": "Demo of Arguflow LLM-chat Infrastructure.",
 	"icons": [
 		{
 			"src": "/android-chrome-192x192.png",
