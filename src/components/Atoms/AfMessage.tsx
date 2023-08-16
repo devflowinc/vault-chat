@@ -24,8 +24,10 @@ export const AfMessage = (props: AfMessageProps) => {
 
   const displayMessage = createMemo(() => {
     if (props.role !== "assistant") {
+      const split_content = props.content.split("||");
+
       return {
-        content: props.content,
+        content: split_content.length > 1 ? split_content[1] : props.content,
       };
     }
 
