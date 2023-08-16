@@ -112,7 +112,7 @@ export const Sidebar = (props: SidebarProps) => {
           >
             <div class="flex flex-row items-center space-x-2">
               <span class="text-xl">
-                <BiRegularPlus />
+                <BiRegularPlus class="fill-current" />
               </span>
               <span>New Debate Topic</span>
             </div>
@@ -128,7 +128,7 @@ export const Sidebar = (props: SidebarProps) => {
           >
             <div class="flex flex-row items-center space-x-2">
               <span class="text-xl">
-                <BiRegularPlus />
+                <BiRegularPlus class="fill-current" />
               </span>
               <span>New Regular Chat</span>
             </div>
@@ -203,6 +203,7 @@ export const Sidebar = (props: SidebarProps) => {
                       {props.currentTopic() == topic && (
                         <div class="text-lg hover:text-purple-500">
                           <BiRegularTrash
+                            class="fill-current"
                             onClick={() => {
                               void deleteSelected();
                             }}

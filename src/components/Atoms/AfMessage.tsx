@@ -82,9 +82,9 @@ export const AfMessage = (props: AfMessageProps) => {
           >
             <div class="flex w-full flex-row space-x-4">
               {props.role === "user" ? (
-                <BiSolidUserRectangle />
+                <BiSolidUserRectangle class="fill-current" />
               ) : (
-                <AiFillRobot />
+                <AiFillRobot class="fill-current" />
               )}
               <div
                 classList={{

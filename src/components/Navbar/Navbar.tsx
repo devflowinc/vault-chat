@@ -15,7 +15,7 @@ export const Navbar = (props: NavbarProps) => {
       <div class="lg:hidden">
         <BiRegularMenuAltLeft
           onClick={() => props.setSideBarOpen((prev) => !prev)}
-          class="text-4xl"
+          class="fill-current text-4xl"
         />
       </div>
       <div class="flex w-full items-center justify-center px-2 text-center">
@@ -28,7 +28,7 @@ export const Navbar = (props: NavbarProps) => {
             props.setIsCreatingTopic(true);
             props.setIsCreatingNormalTopic(false);
           }}
-          class="text-4xl"
+          class="fill-current text-4xl"
         />
       </div>
     </div>
