@@ -48,7 +48,7 @@ export const debate = () => {
 
   const [topics, setTopics] = createSignal<Topic[]>([]);
 
-  const refetchTopics = async () => {
+  const refetchTopics = async (): Promise<Topic[]> => {
     const response = await fetch(`${api_host}/topic`, {
       method: "GET",
       headers: {
@@ -56,15 +56,18 @@ export const debate = () => {
       },
       credentials: "include",
     });
-    if (!response.ok) return;
+    if (!response.ok) return [];
 
     const data: unknown = await response.json();
     if (data !== null && typeof data === "object" && Array.isArray(data)) {
-      const _topics = data.filter((topic: unknown) => {
+      const topics = data.filter((topic: unknown) => {
         return isTopic(topic);
       }) as Topic[];
-      setTopics(_topics);
+      setTopics(topics);
+      return topics;
     }
+
+    return [];
   };
 
   createEffect(() => {
@@ -173,10 +176,11 @@ export const debate = () => {
               onSuccessfulTopicCreation={() => {
                 setLoadingTopic(true);
                 setIsCreatingTopic(false);
-                void refetchTopics();
                 setTimeout(() => {
-                  setSelectedTopic(topics()[0]);
-                  setLoadingTopic(false);
+                  void refetchTopics().then((topics_result) => {
+                    setSelectedTopic(topics_result[0]);
+                    setLoadingTopic(false);
+                  });
                 }, 500);
               }}
               setIsCreatingTopic={setIsCreatingTopic}

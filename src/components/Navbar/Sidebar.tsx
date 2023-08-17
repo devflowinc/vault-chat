@@ -17,7 +17,7 @@ import { FaSolidCircle } from "solid-icons/fa";
 
 export interface SidebarProps {
   topics: Accessor<Topic[]>;
-  refetchTopics: () => Promise<void>;
+  refetchTopics: () => Promise<Topic[]>;
   setIsCreatingTopic: (value: boolean) => boolean;
   currentTopic: Accessor<Topic | undefined>;
   setCurrentTopic: (topic: Topic | undefined) => void;
