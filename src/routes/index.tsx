@@ -101,7 +101,7 @@ export default function Home() {
         <div class="w-fit px-4">
           <iframe
             class="h-[169px] w-[300px] md:h-[315px] md:w-[560px]"
-            src="https://www.youtube.com/embed/dI2TfkghWhA"
+            src="https://www.youtube.com/embed/RRJzvyKbM60"
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
