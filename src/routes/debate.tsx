@@ -105,20 +105,11 @@ export const debate = () => {
           </Show>
         </div>
         <Show when={loadingTopic()}>
-          <Transition
-            class="flex w-full flex-col"
-            show={loadingTopic()}
-            enter="transition-opacity duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
+          <div class="flex w-full flex-col">
             <div class="flex w-full flex-col items-center justify-center">
-              <div class="h-32 w-32 animate-spin rounded-full border-b-2 border-purple-500" />
+              <img src="/cooking-crab.gif" class="aspect-square w-[128px]" />
             </div>
-          </Transition>
+          </div>
         </Show>
         <Show
           when={
