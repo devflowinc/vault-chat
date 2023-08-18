@@ -29,12 +29,12 @@ export interface LayoutProps {
 }
 
 const scrollToBottomOfMessages = () => {
-  const element = document.getElementById("topic-messages");
-  if (!element) {
-    console.error("Could not find element with id 'topic-messages'");
-    return;
-  }
-  element.scrollIntoView({ block: "end" });
+  // const element = document.getElementById("topic-messages");
+  // if (!element) {
+  //   console.error("Could not find element with id 'topic-messages'");
+  //   return;
+  // }
+  // element.scrollIntoView({ block: "end" });
 };
 
 const Layout = (props: LayoutProps) => {
