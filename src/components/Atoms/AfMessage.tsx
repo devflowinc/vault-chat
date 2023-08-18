@@ -80,7 +80,7 @@ export const AfMessage = (props: AfMessageProps) => {
               setShowEditingIcon(false);
             }}
           >
-            <div class="flex w-full flex-row space-x-4">
+            <div class="w-full space-y-2 md:flex md:flex-row md:space-x-2 md:space-y-0 lg:space-x-4">
               {props.role === "user" ? (
                 <BiSolidUserRectangle class="fill-current" />
               ) : (
@@ -89,12 +89,12 @@ export const AfMessage = (props: AfMessageProps) => {
               <div
                 classList={{
                   "w-full": true,
-                  "grid grid-cols-3 gap-4":
+                  "flex flex-col gap-y-8 items-start lg:gap-4 lg:grid lg:grid-cols-3 flex-col-reverse lg:flex-row":
                     !!displayMessage().card_metadata_with_votes,
                 }}
               >
                 <div class="col-span-2 whitespace-pre-line text-neutral-800 dark:text-neutral-50">
-                  {editedContent() || displayMessage().content}
+                  {editedContent() || displayMessage().content.trimStart()}
                 </div>
                 <Show when={displayMessage().content === ""}>
                   <div class="col-span-2 w-full whitespace-pre-line">
@@ -105,23 +105,21 @@ export const AfMessage = (props: AfMessageProps) => {
                   </div>
                 </Show>
                 <Show when={displayMessage().card_metadata_with_votes}>
-                  <div class="justify-self-end text-neutral-800 dark:text-neutral-50">
-                    <div class="w-full flex-col space-y-3">
-                      <For each={displayMessage().card_metadata_with_votes}>
-                        {(card) => (
-                          <ScoreCard
-                            signedInUserId={undefined}
-                            cardCollections={[]}
-                            totalCollectionPages={1}
-                            collection={undefined}
-                            card={card}
-                            score={0}
-                            initialExpanded={false}
-                            bookmarks={[]}
-                          />
-                        )}
-                      </For>
-                    </div>
+                  <div class="w-full flex-col space-y-3">
+                    <For each={displayMessage().card_metadata_with_votes}>
+                      {(card) => (
+                        <ScoreCard
+                          signedInUserId={undefined}
+                          cardCollections={[]}
+                          totalCollectionPages={1}
+                          collection={undefined}
+                          card={card}
+                          score={0}
+                          initialExpanded={false}
+                          bookmarks={[]}
+                        />
+                      )}
+                    </For>
                   </div>
                 </Show>
               </div>

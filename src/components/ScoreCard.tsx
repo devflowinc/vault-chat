@@ -179,7 +179,7 @@ const ScoreCard = (props: ScoreCardProps) => {
   };
 
   return (
-    <div class="ml-2 flex w-full flex-col items-center rounded-md bg-neutral-100 p-2 dark:!bg-neutral-800">
+    <div class="flex w-full flex-col items-center rounded-md bg-neutral-100 p-2 dark:!bg-neutral-800 lg:ml-2">
       <div class="flex w-full flex-col space-y-2">
         <div class="flex h-fit items-center space-x-1">
           <Show when={!props.card.private}>
@@ -335,7 +335,7 @@ const ScoreCard = (props: ScoreCardProps) => {
         />
       </Show>
       <button
-        class="ml-2 font-semibold"
+        class="font-semibold"
         onClick={() => setExpanded((prev) => !prev)}
       >
         {expanded() ? (
