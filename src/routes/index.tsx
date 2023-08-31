@@ -85,8 +85,8 @@ export default function Home() {
             <span class="text-magenta">Chat</span>
           </p>
           <p class="text-center text-lg">
-            Demo of Arguflow's LLM-chat infrastructure for a LLM powered debate
-            opponent
+            Demo of Arguflow's LLM-chat infrastructure for a retrieval augmented
+            AI debate opponent
           </p>
           <A
             class="rounded-lg bg-gradient-to-br from-cyan-900 to-turquoise px-4 py-2 text-white shadow-md"

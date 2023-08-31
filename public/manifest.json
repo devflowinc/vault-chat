@@ -6,7 +6,7 @@
 	"start_url": "/",
 	"name": "Arguflow Chat",
 	"short_name": "LLM Chat",
-	"description": "Demo of Arguflow LLM-chat Infrastructure.",
+	"description": "Demo of Arguflow retrieval-augmented LLM-chat Infrastructure.",
 	"icons": [
 		{
 			"src": "/android-chrome-192x192.png",

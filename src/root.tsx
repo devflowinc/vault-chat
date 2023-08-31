@@ -72,7 +72,7 @@ export default function Root() {
 
         <Meta
           name="description"
-          content="Demo of Arguflow's LLM-chat infrastructure - Your Chat"
+          content="Demo of Arguflow's LLM-chat infrastructure - Retrieval Augmented Chat"
         />
 
         <Meta property="og:url" content="https://arguflow.ai/" />
@@ -80,7 +80,7 @@ export default function Root() {
         <Meta property="og:title" content="Arguflow Chat" />
         <Meta
           property="og:description"
-          content="Demo of Arguflow's LLM-chat infrastructure - Your Chat"
+          content="Demo of Arguflow's LLM-chat infrastructure - Retrieval Augmented Chat"
         />
         <Meta
           property="og:image"
@@ -93,7 +93,7 @@ export default function Root() {
         <Meta name="twitter:title" content="Arguflow Chat" />
         <Meta
           name="twitter:description"
-          content="Demo of Arguflow's LLM-chat infrastructure - Your Chat"
+          content="Demo of Arguflow's LLM-chat infrastructure - Retrieval Augmented Chat"
         />
         <Meta
           name="twitter:image"
