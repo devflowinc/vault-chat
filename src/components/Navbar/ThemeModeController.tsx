@@ -82,7 +82,7 @@ const ThemeModeController = () => {
                         "text-violet-500": currentTheme() === "light",
                       }}
                     >
-                      <BsSun class="h-6 w-6" />
+                      <BsSun class="h-6 w-6 fill-current" />
                     </div>
                     <div>
                       <div
@@ -111,7 +111,7 @@ const ThemeModeController = () => {
                         "text-violet-500": currentTheme() === "dark",
                       }}
                     >
-                      <BsMoonStars class="h-6 w-6" />
+                      <BsMoonStars class="h-6 w-6 fill-current" />
                     </div>
                     <div>
                       <div
@@ -140,7 +140,7 @@ const ThemeModeController = () => {
                         "text-violet-500": currentTheme() === "system",
                       }}
                     >
-                      <CgScreen class="h-6 w-6" />
+                      <CgScreen class="h-6 w-6 fill-current" />
                     </div>
                     <div>
                       <div

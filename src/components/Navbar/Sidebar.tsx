@@ -6,14 +6,22 @@ import {
   BiRegularTrash,
   BiRegularX,
 } from "solid-icons/bi";
-import { TbGavel } from "solid-icons/tb";
-import { Accessor, createSignal, For, Setter, Show } from "solid-js";
+import { TbGavel, TbMinusVertical } from "solid-icons/tb";
+import {
+  Accessor,
+  createEffect,
+  createSignal,
+  For,
+  Setter,
+  Show,
+} from "solid-js";
 import type { Topic } from "~/types/topics";
 import { FiSettings } from "solid-icons/fi";
 import { FullScreenModal } from "../Atoms/FullScreenModal";
 import { OnScreenThemeModeController } from "../Atoms/OnScreenThemeModeController";
 import { BsQuestionCircle } from "solid-icons/bs";
 import { FaSolidCircle } from "solid-icons/fa";
+import { AiFillGithub } from "solid-icons/ai";
 
 export interface SidebarProps {
   topics: Accessor<Topic[]>;
@@ -36,6 +44,7 @@ export const Sidebar = (props: SidebarProps) => {
   const [editingIndex, setEditingIndex] = createSignal(-1);
   const [editingTopic, setEditingTopic] = createSignal("");
   const [settingsModalOpen, setSettingsModalOpen] = createSignal(false);
+  const [starCount, setStarCount] = createSignal(0);
   const [helpModalOpen, setHelpModalOpen] = createSignal(false);
 
   const submitEditText = async () => {
@@ -96,6 +105,26 @@ export const Sidebar = (props: SidebarProps) => {
       window.location.href = "/auth/login";
     });
   };
+
+  createEffect(() => {
+    try {
+      void fetch(`https://api.github.com/repos/arguflow/arguflow`, {
+        headers: {
+          Accept: "application/vnd.github+json",
+        },
+      }).then((response) => {
+        if (!response.ok) {
+          return;
+        }
+        void response.json().then((data) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          setStarCount(data.stargazers_count);
+        });
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  });
 
   return (
     <div class="absolute z-50 flex h-screen w-screen flex-row dark:text-gray-50 lg:relative lg:w-full">
@@ -237,6 +266,17 @@ export const Sidebar = (props: SidebarProps) => {
             </div>
             <div>Settings</div>
           </button>
+          <a
+            href="https://github.com/arguflow/arguflow"
+            class="flex w-full items-center space-x-4 rounded-md px-3 py-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
+          >
+            <AiFillGithub class="h-6 w-6 fill-current" />
+            <div class="flex">
+              <p>STAR US</p>
+              <TbMinusVertical class="h-6 w-6" />
+              <p>{starCount()}</p>
+            </div>
+          </a>
           <button
             class="flex w-full items-center space-x-4  rounded-md px-3 py-2 hover:bg-neutral-200 dark:hover:bg-neutral-700"
             onClick={() => setHelpModalOpen(true)}
@@ -288,11 +328,6 @@ export const Sidebar = (props: SidebarProps) => {
               <div class="flex w-full items-center justify-between space-x-4">
                 <div>Theme:</div>
                 <OnScreenThemeModeController />
-              </div>
-              <div class="text-lg font-bold">Subscription Details</div>
-              <div class="flex w-full items-center justify-between space-x-4">
-                <div>Tier:</div>
-                <div>Free</div>
               </div>
             </div>
           </div>

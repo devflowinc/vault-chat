@@ -1,9 +1,11 @@
+import { AiFillGithub } from "solid-icons/ai";
 import {
   BiLogosGithub,
   BiLogosTwitch,
   BiLogosTwitter,
   BiLogosYoutube,
 } from "solid-icons/bi";
+import { TbMinusVertical } from "solid-icons/tb";
 import { createEffect, createSignal } from "solid-js";
 import { A, useSearchParams } from "solid-start";
 import ThemeModeController from "~/components/Navbar/ThemeModeController";
@@ -14,6 +16,7 @@ export default function Home() {
 
   const [searchParams] = useSearchParams();
   const [isLogin, setIsLogin] = createSignal<boolean>(false);
+  const [starCount, setStarCount] = createSignal(0);
 
   detectReferralToken(searchParams.t);
 
@@ -38,6 +41,26 @@ export default function Home() {
     return () => {
       abort_controller.abort();
     };
+  });
+
+  createEffect(() => {
+    try {
+      void fetch(`https://api.github.com/repos/arguflow/arguflow`, {
+        headers: {
+          Accept: "application/vnd.github+json",
+        },
+      }).then((response) => {
+        if (!response.ok) {
+          return;
+        }
+        void response.json().then((data) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          setStarCount(data.stargazers_count);
+        });
+      });
+    } catch (e) {
+      console.error(e);
+    }
   });
 
   return (
@@ -69,6 +92,14 @@ export default function Home() {
                 Blog
               </a>
             </div>
+            <a href="https://github.com/arguflow/arguflow">
+              <div class="flex items-center justify-center rounded border border-black px-2 py-1 hover:border-gray-300 hover:bg-gray-300 dark:border-white dark:hover:border-neutral-700 dark:hover:bg-neutral-700">
+                <AiFillGithub class="mr-2 h-[26px] w-[26px] fill-current" />
+                <p class="text-sm">STAR US</p>
+                <TbMinusVertical size={25} />
+                <p>{starCount()}</p>
+              </div>
+            </a>
             <ThemeModeController />
             <A
               class="rounded-lg bg-turquoise px-4 py-2 dark:text-neutral-900"
@@ -129,19 +160,19 @@ export default function Home() {
         <div class="py-2" />
         <div class="flex gap-3">
           <a href="https://twitter.com/arguflowai" target="_blank">
-            <BiLogosTwitter size={30} />
+            <BiLogosTwitter class="fill-current" size={30} />
           </a>
           <a href="https://twitch.tv/arguflow" target="_blank">
-            <BiLogosTwitch size={30} />
+            <BiLogosTwitch class="fill-current" size={30} />
           </a>
           <a href="https://www.youtube.com/@arguflow">
-            <BiLogosYoutube size={30} />
+            <BiLogosYoutube class="fill-current" size={30} />
           </a>
           <a
             href="https://github.com/orgs/arguflow/repositories"
             target="_blank"
           >
-            <BiLogosGithub size={30} />
+            <BiLogosGithub class="fill-current" size={30} />
           </a>
         </div>
       </footer>
